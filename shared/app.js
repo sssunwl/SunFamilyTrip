@@ -3,6 +3,7 @@
 // TRIP_ID, TRIP_TITLE, TRIP_SUBTITLE, TRIP_HERO_IMG, PHOTOS_URL,
 // TRIP_CITY, TRIP_COORDS({lat,lon}，留空則不顯示即時資訊), TRIP_DEFAULT_CURRENCY, TRIP_EMERGENCY([{label,phone}]),
 // MEMBERS, ITINERARY, GUIDE_ITEMS, TRIP_POLL(可省略)
+// TRIP_FLIGHTS([{group,from,flightOut,timeOut,flightBack,timeBack}]，可省略), TRIP_ACCOMMODATION({name,address,mapUrl,link,checkIn,checkOut}，可省略)
 
 window.onerror = function (message, source, lineno) {
     console.error(message);
@@ -629,6 +630,37 @@ const MainApp = ({ user, setUser }) => {
                     <div className="bg-white p-4 rounded-3xl shadow-sm col-span-2 aspect-auto border border-gray-100"><h3 className="font-bold text-dark text-lg mb-2">旅伴守則</h3><ul className="space-y-1 text-sm text-gray-500 font-medium"><li>1. 嘈交罰錢 $500</li><li>2. 拒絕求其</li><li>3. 離隊報備</li><li>4. 情緒價值</li></ul>
                         <div className="grid grid-cols-2 gap-2 mt-4">{TRIP_EMERGENCY.map((e, i) => (<a key={i} href={`tel:${e.phone}`} className={`rounded-xl p-2 flex items-center justify-center border gap-1 text-sm font-bold ${i === 0 ? 'bg-red-50 text-red-500 border-red-100' : 'bg-gray-50 text-gray-500 border-gray-100'}`}><Icon name={i === 0 ? 'phone' : 'ambulance'} size={14} /> {e.label} {e.phone}</a>))}</div>
                     </div>
+                    {(typeof TRIP_FLIGHTS !== 'undefined' && TRIP_FLIGHTS.length > 0) && (
+                        <div className="bg-white p-4 rounded-3xl shadow-sm col-span-2 aspect-auto border border-gray-100">
+                            <h3 className="font-bold text-dark text-lg mb-3 flex items-center gap-1"><Icon name="plane" className="text-accent" size={22} /> 航班資訊</h3>
+                            <div className="space-y-2">
+                                {TRIP_FLIGHTS.map((f, i) => (
+                                    <div key={i} className="bg-gray-50 rounded-xl p-3 text-sm">
+                                        <div className="font-bold text-dark mb-1">{f.group}（{f.from}）</div>
+                                        <div className="text-gray-500 font-medium flex flex-wrap gap-x-4 gap-y-1">
+                                            <span>去 {f.flightOut} {f.timeOut}</span>
+                                            <span>回 {f.flightBack} {f.timeBack}</span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                    {(typeof TRIP_ACCOMMODATION !== 'undefined' && TRIP_ACCOMMODATION) && (
+                        <div className="bg-white p-4 rounded-3xl shadow-sm col-span-2 aspect-auto border border-gray-100">
+                            <h3 className="font-bold text-dark text-lg mb-3 flex items-center gap-1"><Icon name="home" className="text-accent" size={22} /> 住宿資訊</h3>
+                            <div className="text-sm font-medium text-dark mb-1">{TRIP_ACCOMMODATION.name}</div>
+                            {TRIP_ACCOMMODATION.address && <div className="text-sm text-gray-500 mb-2">{TRIP_ACCOMMODATION.address}</div>}
+                            <div className="flex flex-wrap gap-2 text-xs font-bold">
+                                {TRIP_ACCOMMODATION.checkIn && <span className="bg-gray-50 px-2 py-1 rounded-lg text-gray-500">入住 {TRIP_ACCOMMODATION.checkIn}</span>}
+                                {TRIP_ACCOMMODATION.checkOut && <span className="bg-gray-50 px-2 py-1 rounded-lg text-gray-500">退房 {TRIP_ACCOMMODATION.checkOut}</span>}
+                            </div>
+                            <div className="flex gap-2 mt-3">
+                                {TRIP_ACCOMMODATION.link && <a href={TRIP_ACCOMMODATION.link} target="_blank" className="flex-1 text-center bg-primary/10 text-primary rounded-xl py-2 text-sm font-bold">訂房連結</a>}
+                                {TRIP_ACCOMMODATION.mapUrl && <a href={TRIP_ACCOMMODATION.mapUrl} target="_blank" className="flex-1 text-center bg-gray-50 text-gray-500 rounded-xl py-2 text-sm font-bold">地圖導航</a>}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
 

@@ -47,21 +47,62 @@
         const TRIP_DEFAULT_CURRENCY = "KRW";
         const TRIP_EMERGENCY = [ { label: "韓國觀光警察(中文)", phone: "1330" }, { label: "韓國救護車/消防", phone: "119" } ];
 
-        // 家族成員，跟泰國團一致；之後有新成員直接在此加入即可
+        // 家族成員，這次 Masa 未必有空先不算進去
         const MEMBERS = [
             { id: 'lam', name: "Lam", avatar: "🦁" }, { id: 'ricky', name: "Ricky", avatar: "🐻" }, { id: 'robin', name: "Robin", avatar: "🐯" },
-            { id: 'jolin', name: "Jolin", avatar: "🐰" }, { id: 'pat', name: "Pat", avatar: "🦊" }, { id: 'masa', name: "Masa", avatar: "🐨" },
+            { id: 'jolin', name: "Jolin", avatar: "🐰" }, { id: 'pat', name: "Pat", avatar: "🦊" },
             { id: 'yi', name: "Yi", avatar: "🐼" }, { id: 'justin', name: "Justin", avatar: "🐵" }, { id: 'han', name: "Han", avatar: "👶", excludeFromSplit: true }
         ];
 
-        // 行程細節尚未規劃，先給日期框架，details 留空，之後用同樣格式補上即可
+        // 航班資訊（時間以公開時間表查詢，實際請以登機證為準）
+        const TRIP_FLIGHTS = [
+            { group: "Ricky / Robin / Jolin / Pat / Justin / Han", from: "香港出發", flightOut: "UO604", timeOut: "02:35→07:00", flightBack: "UO607", timeBack: "待確認" },
+            { group: "Yi", from: "台北出發", flightOut: "7C6154", timeOut: "02:50→06:10", flightBack: "7C6151", timeBack: "待確認" },
+            { group: "Lam", from: "沖繩出發", flightOut: "LJ372", timeOut: "約11:00→13:00", flightBack: "LJ371", timeBack: "待確認" }
+        ];
+
+        // 住宿資訊
+        const TRIP_ACCOMMODATION = {
+            name: "釜山站民宿（Airbnb，待補正式名稱/地址）",
+            address: "",
+            link: "https://www.airbnb.com.tw/rooms/1490277048706862275",
+            mapUrl: "",
+            checkIn: "待確認",
+            checkOut: "待確認"
+        };
+
+        // 行程草案，細節（餐廳名稱/確切時間）之後再補
         const ITINERARY = [
-            { day: "Day 1", date: "8/5", weekday: "(三)", theme: "抵達釜山", id: "d1", highlights: "待規劃", details: [] },
-            { day: "Day 2", date: "8/6", weekday: "(四)", theme: "待規劃", id: "d2", highlights: "待規劃", details: [] },
-            { day: "Day 3", date: "8/7", weekday: "(五)", theme: "待規劃", id: "d3", highlights: "待規劃", details: [] },
-            { day: "Day 4", date: "8/8", weekday: "(六)", theme: "待規劃", id: "d4", highlights: "待規劃", details: [] },
-            { day: "Day 5", date: "8/9", weekday: "(日)", theme: "待規劃", id: "d5", highlights: "待規劃", details: [] },
-            { day: "Day 6", date: "8/10", weekday: "(一)", theme: "返程", id: "d6", highlights: "待規劃", details: [] }
+            { day: "Day 1", date: "8/5", weekday: "(三)", theme: "抵達釜山", id: "d1", highlights: "Spa Land等候會合・釜山站入住", details: [
+                { id: "e1", time: "06:10", title: "港台兩批人抵達", desc: "Yi(7C6154)約06:10、Ricky/Robin/Jolin/Pat/Justin/Han(UO604)約07:00抵達金海機場，先寄放行李。", type: "transport" },
+                { id: "e2", time: "08:00", title: "SPA LAND Centum City", desc: "新世界百貨內，洗澎澎、汗蒸幕休息等 Lam。", type: "activity", location: "SPA LAND Centum City" },
+                { id: "e3", time: "13:00", title: "Lam 抵達會合", desc: "LJ372 沖繩出發約11:00～13:00抵達，與大家會合。", type: "transport" },
+                { id: "e4", time: "15:00", title: "釜山站入住", desc: "辦理 check-in，晚餐自由（草梁洞/南浦洞）。", type: "hotel" }
+            ] },
+            { day: "Day 2", date: "8/6", weekday: "(四)", theme: "甘川洞文化村・南浦洞", id: "d2", highlights: "彩色山城・札嘎其市場", details: [
+                { id: "e5", time: "10:00", title: "甘川洞文化村", desc: "階梯多，留意腳力，可考慮接駁車。", type: "activity", location: "甘川洞文化村" },
+                { id: "e6", time: "12:30", title: "南浦洞午餐", desc: "周邊小吃。", type: "food", location: "南浦洞" },
+                { id: "e7", time: "14:30", title: "BIFF廣場・國際市場", desc: "逛街拍照。", type: "activity", location: "BIFF廣場" },
+                { id: "e8", time: "19:00", title: "晚餐聚餐", desc: "地點待補。", type: "food" }
+            ] },
+            { day: "Day 3", date: "8/7", weekday: "(五)", theme: "西面醫美 + 商圈", id: "d3", highlights: "醫美半天（項目待補）・樂天百貨", details: [
+                { id: "e9", time: "10:00", title: "西面醫美行程", desc: "項目尚未確定，之後補上。", type: "activity", location: "西面" },
+                { id: "e10", time: "14:00", title: "西面商圈逛街", desc: "樂天百貨、地下街。", type: "activity", location: "西面" },
+                { id: "e11", time: "19:00", title: "西面美食街晚餐", desc: "地點待補。", type: "food", location: "西面" }
+            ] },
+            { day: "Day 4", date: "8/8", weekday: "(六)", theme: "海雲台 + 廣安里無人機表演", id: "d4", highlights: "廣安里海邊看無人機秀(22:00場)", details: [
+                { id: "e12", time: "10:00", title: "海雲台海邊散步", desc: "海邊走走，午餐就在附近。", type: "activity", location: "海雲台" },
+                { id: "e13", time: "18:30", title: "廣安里海邊晚餐", desc: "晚餐或包遊艇出海，視當天安排。", type: "food", location: "廣安里" },
+                { id: "e14", time: "22:00", title: "廣安里無人機表演", desc: "광안리M드론라이트쇼，每週六固定場次，廣安里海邊任何位置都能看，約12分鐘。", type: "activity", location: "廣安里海水浴場" }
+            ] },
+            { day: "Day 5", date: "8/9", weekday: "(日)", theme: "釜山塔 + 自由採購", id: "d5", highlights: "龍頭山公園・伴手禮採購", details: [
+                { id: "e15", time: "10:00", title: "釜山塔", desc: "龍頭山公園，建議早上人少先去。", type: "activity", location: "釜山塔" },
+                { id: "e16", time: "14:00", title: "自由活動/採購", desc: "化妝品、伴手禮。", type: "activity" },
+                { id: "e17", time: "19:00", title: "餞別大餐", desc: "地點待補。", type: "food" }
+            ] },
+            { day: "Day 6", date: "8/10", weekday: "(一)", theme: "返程", id: "d6", highlights: "視各自航班退房", details: [
+                { id: "e18", time: "—", title: "退房・前往機場", desc: "視各自航班時間安排。", type: "transport" }
+            ] }
         ];
 
         const GUIDE_ITEMS = []; // 景點/美食資料尚未整理，之後用跟泰國團同樣格式補上
