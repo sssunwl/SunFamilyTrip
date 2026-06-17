@@ -3,7 +3,7 @@
 // TRIP_ID, TRIP_TITLE, TRIP_SUBTITLE, TRIP_HERO_IMG, PHOTOS_URL,
 // TRIP_CITY, TRIP_COORDS({lat,lon}，留空則不顯示即時資訊), TRIP_DEFAULT_CURRENCY, TRIP_EMERGENCY([{label,phone}]),
 // MEMBERS, ITINERARY, GUIDE_ITEMS, TRIP_POLL(可省略)
-// TRIP_FLIGHTS([{group,from,flightOut,timeOut,flightBack,timeBack}]，可省略), TRIP_ACCOMMODATION({name,address,mapUrl,link,checkIn,checkOut}，可省略)
+// TRIP_FLIGHTS([{group,from,flightOut,timeOut,flightBack,timeBack}]，可省略), TRIP_ACCOMMODATION({name,address,mapUrl,link,checkIn,checkOut,notes,photos:[{src,caption}]}，可省略)
 
 window.onerror = function (message, source, lineno) {
     console.error(message);
@@ -651,6 +651,17 @@ const MainApp = ({ user, setUser }) => {
                             <h3 className="font-bold text-dark text-lg mb-3 flex items-center gap-1"><Icon name="home" className="text-accent" size={22} /> 住宿資訊</h3>
                             <div className="text-sm font-medium text-dark mb-1">{TRIP_ACCOMMODATION.name}</div>
                             {TRIP_ACCOMMODATION.address && <div className="text-sm text-gray-500 mb-2">{TRIP_ACCOMMODATION.address}</div>}
+                            {TRIP_ACCOMMODATION.notes && <div className="text-xs text-gray-400 mb-3 leading-relaxed">{TRIP_ACCOMMODATION.notes}</div>}
+                            {TRIP_ACCOMMODATION.photos && TRIP_ACCOMMODATION.photos.length > 0 && (
+                                <div className="flex gap-2 mb-3">
+                                    {TRIP_ACCOMMODATION.photos.map((p, i) => (
+                                        <div key={i} className="flex-1">
+                                            <img src={p.src} alt={p.caption || ''} className="w-full aspect-square object-cover rounded-xl" />
+                                            {p.caption && <div className="text-[11px] text-gray-400 text-center mt-1">{p.caption}</div>}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                             <div className="flex flex-wrap gap-2 text-xs font-bold">
                                 {TRIP_ACCOMMODATION.checkIn && <span className="bg-gray-50 px-2 py-1 rounded-lg text-gray-500">入住 {TRIP_ACCOMMODATION.checkIn}</span>}
                                 {TRIP_ACCOMMODATION.checkOut && <span className="bg-gray-50 px-2 py-1 rounded-lg text-gray-500">退房 {TRIP_ACCOMMODATION.checkOut}</span>}

@@ -63,12 +63,18 @@
 
         // 住宿資訊
         const TRIP_ACCOMMODATION = {
-            name: "釜山站民宿（Airbnb，待補正式名稱/地址）",
-            address: "",
+            name: "釜山站 Roots House",
+            address: "釜山站步行約5分鐘（3樓，無電梯），最多可住10人",
             link: "https://www.airbnb.com.tw/rooms/1490277048706862275",
             mapUrl: "",
             checkIn: "待確認",
-            checkOut: "待確認"
+            checkOut: "待確認",
+            notes: "4間房・8張Super Single床＋客廳2張沙發床，每房附吹風機；2間乾濕分離廁所＋2間獨立淋浴間；附10人餐桌/餐具、淨水器、IH爐、微波爐、洗碗機；地暖+冷氣全房皆有，高速WiFi。附近停車：唐人街公營停車場（步行2分），24h 15,000韓元，每房可憑收據申請停車補助10,000韓元。",
+            photos: [
+                { src: "../assets/busan/roots_house_floorplan.jpg", caption: "樓層配置" },
+                { src: "../assets/busan/roots_house_kitchen.jpg", caption: "廚房" },
+                { src: "../assets/busan/roots_house_bedroom.jpg", caption: "房間" }
+            ]
         };
 
         // 行程草案，細節（餐廳名稱/確切時間）之後再補
@@ -81,7 +87,7 @@
             ] },
             { day: "Day 2", date: "8/6", weekday: "(四)", theme: "甘川洞文化村・南浦洞", id: "d2", highlights: "彩色山城・札嘎其市場", details: [
                 { id: "e5", time: "10:00", title: "甘川洞文化村", desc: "階梯多，留意腳力，可考慮接駁車。", type: "activity", location: "甘川洞文化村" },
-                { id: "e6", time: "12:30", title: "南浦洞午餐", desc: "周邊小吃。", type: "food", location: "南浦洞" },
+                { id: "e6", time: "12:30", title: "札嘎其市場海鮮午餐", desc: "中午剛拍賣完的海鮮最新鮮，人也比晚上少，長輩好坐位。跟下午的BIFF廣場/國際市場同一區，動線順。", type: "food", location: "札嘎其市場" },
                 { id: "e7", time: "14:30", title: "BIFF廣場・國際市場", desc: "逛街拍照。", type: "activity", location: "BIFF廣場" },
                 { id: "e8", time: "19:00", title: "晚餐聚餐", desc: "地點待補。", type: "food" }
             ] },
