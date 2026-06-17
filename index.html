@@ -5,65 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>家族旅行誌</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2060/2060206.png">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%8E%88%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%8E%88%3C/text%3E%3C/svg%3E">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Playfair+Display:wght@700&display=swap');
         * { box-sizing: border-box; }
         body {
             font-family: 'Zen Maru Gothic', sans-serif;
+            font-size: 16px;
             background-color: #F5F2ED;
             color: #4A4A4A;
             margin: 0;
-            padding: 32px 20px 60px;
+            padding: 36px 20px 60px;
         }
         .font-serif { font-family: 'Playfair Display', serif; }
-        .header { text-align: center; margin-bottom: 32px; }
-        .header h1 { font-family: 'Playfair Display', serif; font-size: 28px; margin: 0 0 6px; }
-        .header p { font-size: 13px; color: #9CA3AF; font-weight: bold; margin: 0; }
-        .trip-list { max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+        .header { text-align: center; margin-bottom: 12px; }
+        .header h1 { font-family: 'Playfair Display', serif; font-size: 32px; margin: 0 0 8px; }
+        .header p { font-size: 14px; color: #8B8B8B; font-weight: bold; margin: 0; }
+        .stats { text-align: center; font-size: 14px; color: #B5B5B5; font-weight: bold; margin-bottom: 36px; }
+
+        .wrap { max-width: 920px; margin: 0 auto; }
+        .section-title { font-size: 14px; font-weight: bold; color: #9CA3AF; margin: 0 0 14px 4px; letter-spacing: 1px; }
+        .trip-grid { display: grid; grid-template-columns: 1fr; gap: 18px; margin-bottom: 44px; }
+        @media (min-width: 680px) {
+            .trip-grid { grid-template-columns: 1fr 1fr; }
+        }
+
         .trip-card {
             display: block; text-decoration: none; color: inherit;
             background: #fff; border-radius: 24px; overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid rgba(255,255,255,0.6);
-            transition: transform 0.15s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.07); border: 1px solid rgba(255,255,255,0.6);
+            border-top: 6px solid var(--card-accent, #E09F7D);
+            transition: transform 0.15s, box-shadow 0.15s;
         }
         .trip-card:active { transform: scale(0.98); }
-        .trip-cover { height: 140px; width: 100%; object-fit: cover; display: block; }
-        .trip-body { padding: 16px 18px; }
-        .trip-tag { display: inline-block; font-size: 10px; font-weight: bold; padding: 3px 10px; border-radius: 99px; margin-bottom: 8px; }
-        .tag-upcoming { background: #FDECE3; color: #E09F7D; }
-        .tag-past { background: #EEF2F0; color: #7A9E8E; }
-        .trip-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: bold; margin: 0 0 4px; }
-        .trip-meta { font-size: 12px; color: #9CA3AF; font-weight: bold; }
-        .footer-note { text-align: center; margin-top: 40px; font-size: 11px; color: #B0B0B0; }
+        @media (hover: hover) {
+            .trip-card:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(0,0,0,0.1); }
+        }
+        .trip-cover { height: 160px; width: 100%; object-fit: cover; display: block; }
+        .trip-body { padding: 18px 20px; }
+        .trip-tag { display: inline-block; font-size: 12px; font-weight: bold; padding: 4px 12px; border-radius: 99px; margin-bottom: 10px; background: color-mix(in srgb, var(--card-accent, #E09F7D) 15%, white); color: var(--card-accent, #E09F7D); }
+        .trip-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: bold; margin: 0 0 6px; }
+        .trip-meta { font-size: 13px; color: #8B8B8B; font-weight: bold; }
+
+        .placeholder-card {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            min-height: 200px; border-radius: 24px; border: 2px dashed #D8D2C8;
+            color: #B5AFA3; text-align: center; padding: 20px; gap: 8px;
+        }
+        .placeholder-card .icon { font-size: 32px; }
+        .placeholder-card .title { font-size: 16px; font-weight: bold; }
+        .placeholder-card .sub { font-size: 13px; }
+
+        .footer-note { text-align: center; margin-top: 40px; font-size: 13px; color: #B0B0B0; }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>家族旅行誌</h1>
-        <p>A Universe Built By Family · 每段旅程都記錄下來</p>
+        <p>每一次出發，都值得好好記住</p>
+    </div>
+    <div class="stats">已記錄 2 次旅程 · 9 位家人</div>
+
+    <div class="wrap">
+        <div class="section-title">即將出發</div>
+        <div class="trip-grid">
+            <a class="trip-card" style="--card-accent:#3E7E97" href="trips/busan2026.html">
+                <img class="trip-cover" src="https://images.unsplash.com/photo-1538485399081-7191377e8241?w=800&q=80" />
+                <div class="trip-body">
+                    <span class="trip-tag">即將出發</span>
+                    <div class="trip-title">釜山尋味之旅</div>
+                    <div class="trip-meta">2026/8/5 - 8/10 · 韓國</div>
+                </div>
+            </a>
+            <div class="placeholder-card">
+                <div class="icon">🎈</div>
+                <div class="title">下一次去哪？</div>
+                <div class="sub">敬請期待</div>
+            </div>
+        </div>
+
+        <div class="section-title">回憶錄</div>
+        <div class="trip-grid">
+            <a class="trip-card" style="--card-accent:#DD8E5C" href="trips/pattaya2026.html">
+                <img class="trip-cover" src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80" />
+                <div class="trip-body">
+                    <span class="trip-tag">回憶中</span>
+                    <div class="trip-title">泰嘆芭堤雅</div>
+                    <div class="trip-meta">2026/2/13 - 2/18 · 泰國</div>
+                </div>
+            </a>
+        </div>
     </div>
 
-    <div class="trip-list">
-        <a class="trip-card" href="trips/busan2026.html">
-            <img class="trip-cover" src="https://images.unsplash.com/photo-1538485399081-7191377e8241?w=800&q=80" />
-            <div class="trip-body">
-                <span class="trip-tag tag-upcoming">即將出發</span>
-                <div class="trip-title">釜山尋味之旅</div>
-                <div class="trip-meta">2026/8/5 - 8/10 · 韓國</div>
-            </div>
-        </a>
-
-        <a class="trip-card" href="trips/pattaya2026.html">
-            <img class="trip-cover" src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80" />
-            <div class="trip-body">
-                <span class="trip-tag tag-past">回憶中</span>
-                <div class="trip-title">泰嘆芭堤雅</div>
-                <div class="trip-meta">2026/2/13 - 2/18 · 泰國</div>
-            </div>
-        </a>
-    </div>
-
-    <div class="footer-note">每次旅行結束後，記得回來留下這次的回憶 🌙</div>
+    <div class="footer-note">每次旅行結束後，記得回來留下這次的回憶 🎈</div>
 </body>
 </html>

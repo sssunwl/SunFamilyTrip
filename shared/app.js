@@ -1,7 +1,8 @@
 // 共用 App 樣板：所有旅程頁面共用這份邏輯/UI
 // 依賴每個旅程頁面先定義好以下全域變數：
 // TRIP_ID, TRIP_TITLE, TRIP_SUBTITLE, TRIP_HERO_IMG, PHOTOS_URL,
-// MEMBERS, ITINERARY, GUIDE_ITEMS, WEATHER_DATA, TRIP_POLL(可省略)
+// TRIP_CITY, TRIP_COORDS({lat,lon}，留空則不顯示即時資訊), TRIP_DEFAULT_CURRENCY, TRIP_EMERGENCY([{label,phone}]),
+// MEMBERS, ITINERARY, GUIDE_ITEMS, TRIP_POLL(可省略)
 
 window.onerror = function (message, source, lineno) {
     console.error(message);
@@ -48,19 +49,16 @@ const HeroHeader = () => (
     </div>
 );
 
-const FloatingTopNav = ({ activeDay, scrollTo, onMenuClick }) => {
+const FloatingTopNav = ({ activeDay, scrollTo }) => {
     const dayTabs = ITINERARY.map((day, i) => ({ id: day.id, label: day.date, weekday: day.weekday, dayNum: `Day ${i + 1}` }));
     return (
-        <div className="sticky-nav-container">
-            <div className="menu-btn-wrapper" onClick={onMenuClick}>
-                <Icon name="menu" size={24} className="text-primary" />
-            </div>
+        <div className="sticky-nav-container justify-center">
             <div className="day-tabs-wrapper no-scrollbar">
                 {dayTabs.map((tab) => (
                     <button key={tab.id} onClick={() => scrollTo(tab.id)} className={`day-pill ${activeDay === tab.id ? 'active' : ''}`}>
-                        <span className="text-[10px] font-bold leading-tight">{tab.label}</span>
-                        <span className="text-[8px] opacity-80 leading-tight">{tab.weekday}</span>
-                        <span className="text-[9px] font-black mt-0.5">{tab.dayNum}</span>
+                        <span className="text-[13px] font-bold leading-tight">{tab.label}</span>
+                        <span className="text-[12px] opacity-80 leading-tight">{tab.weekday}</span>
+                        <span className="text-[12px] font-black mt-0.5">{tab.dayNum}</span>
                     </button>
                 ))}
             </div>
@@ -68,9 +66,34 @@ const FloatingTopNav = ({ activeDay, scrollTo, onMenuClick }) => {
     );
 };
 
-const MenuDropdown = ({ user, scrollTo, onClose, onSwitchUser, isOpen }) => {
-    const [isUserOpen, setIsUserOpen] = useState(false);
-    const menuItems = [
+const AvatarButton = ({ user, onClick }) => (
+    <button onClick={onClick} className="avatar-fixed-btn" aria-label="切換身份">
+        <span className="text-2xl">{user.avatar}</span>
+    </button>
+);
+
+const IdentitySheet = ({ user, onSelect, onClose }) => (
+    <div className="fixed inset-0 z-[100] flex flex-col justify-end">
+        <div className="modal-overlay" onClick={onClose}></div>
+        <div className="modal-content animate-slide-up">
+            <div className="modal-handle-bar" onClick={onClose}><div className="modal-drag-line"></div><div className="modal-close-text mt-1">下拉關閉</div></div>
+            <div className="p-6 pt-2">
+                <h3 className="font-serif text-xl text-dark font-bold mb-4 text-center">切換身份</h3>
+                <div className="grid grid-cols-3 gap-4">
+                    {MEMBERS.map(m => (
+                        <button key={m.id} onClick={() => { onSelect(m); onClose(); }} className={`flex flex-col items-center gap-2 p-4 rounded-2xl shadow-soft border btn-press ${user.id === m.id ? 'border-accent bg-accent/10' : 'border-white bg-white'}`}>
+                            <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-3xl">{m.avatar}</div>
+                            <span className="text-sm font-bold text-dark">{m.name}</span>
+                        </button>
+                    ))}
+                </div>
+            </div>
+        </div>
+    </div>
+);
+
+const BottomNav = ({ scrollTo }) => {
+    const navItems = [
         { id: 'timeline', icon: 'calendar', label: '行程' },
         { id: 'guide', icon: 'compass', label: '資訊' },
         { id: 'wallet', icon: 'wallet', label: '記帳' },
@@ -78,56 +101,102 @@ const MenuDropdown = ({ user, scrollTo, onClose, onSwitchUser, isOpen }) => {
         { id: 'tools', icon: 'wrench', label: '工具' },
         { id: 'memory', icon: 'image', label: '回憶' }
     ];
-
-    if (!isOpen) return null;
-
     return (
-        <div className="menu-dropdown">
-            <div className="flex flex-col items-center gap-1 p-2 border-b border-gray-200/50 mb-1 cursor-pointer hover:bg-gray-100 rounded-xl w-full" onClick={() => setIsUserOpen(!isUserOpen)}>
-                <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm">{user.avatar}</div>
-                <span className="text-[10px] font-bold text-gray-500 truncate w-full text-center">{user.name}</span>
-            </div>
-
-            {isUserOpen && (
-                <div className="user-popout">
-                    <div className="flex gap-2 overflow-x-auto p-1 no-scrollbar">
-                        {MEMBERS.map(m => (
-                            <div key={m.id} className="flex flex-col items-center flex-shrink-0 cursor-pointer p-1 hover:bg-gray-100 rounded-lg" onClick={() => { onSwitchUser(m); setIsUserOpen(false); }}>
-                                <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">{m.avatar}</div>
-                                <span className="text-[8px] font-bold mt-1">{m.name}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
-
-            {menuItems.map(item => (
-                <div key={item.id} onClick={() => { scrollTo(item.id); onClose(); }} className="menu-item w-full justify-center">
-                    <Icon name={item.icon} size={18} /><span className="text-[10px]">{item.label}</span>
-                </div>
+        <div className="bottom-nav">
+            {navItems.map(item => (
+                <button key={item.id} onClick={() => scrollTo(item.id)} className="bottom-nav-item">
+                    <Icon name={item.icon} size={22} />
+                    <span className="text-[12px] font-bold mt-0.5">{item.label}</span>
+                </button>
             ))}
         </div>
     );
 };
 
+/* --- 即時資訊（當地時間 + 即時天氣 + 即時匯率） --- */
+const WEATHER_CODE_MAP = {
+    0: { icon: 'sun', label: '晴天' }, 1: { icon: 'sun', label: '晴時多雲' }, 2: { icon: 'cloud-sun', label: '多雲時晴' }, 3: { icon: 'cloud', label: '多雲' },
+    45: { icon: 'cloud-fog', label: '有霧' }, 48: { icon: 'cloud-fog', label: '有霧' },
+    51: { icon: 'cloud-drizzle', label: '小雨' }, 53: { icon: 'cloud-drizzle', label: '小雨' }, 55: { icon: 'cloud-drizzle', label: '毛毛雨' },
+    61: { icon: 'cloud-rain', label: '下雨' }, 63: { icon: 'cloud-rain', label: '下雨' }, 65: { icon: 'cloud-rain', label: '大雨' },
+    71: { icon: 'cloud-snow', label: '下雪' }, 73: { icon: 'cloud-snow', label: '下雪' }, 75: { icon: 'cloud-snow', label: '大雪' },
+    80: { icon: 'cloud-rain', label: '陣雨' }, 81: { icon: 'cloud-rain', label: '陣雨' }, 82: { icon: 'cloud-rain', label: '強陣雨' },
+    95: { icon: 'cloud-lightning', label: '雷雨' }, 96: { icon: 'cloud-lightning', label: '雷雨' }, 99: { icon: 'cloud-lightning', label: '雷雨' }
+};
+
+const useLiveWeather = () => {
+    const [weather, setWeather] = useState(null);
+    useEffect(() => {
+        if (!TRIP_COORDS) return;
+        fetch(`https://api.open-meteo.com/v1/forecast?latitude=${TRIP_COORDS.lat}&longitude=${TRIP_COORDS.lon}&current_weather=true&timezone=auto`)
+            .then(res => res.json())
+            .then(data => setWeather({ ...data.current_weather, utc_offset_seconds: data.utc_offset_seconds }))
+            .catch(() => {});
+    }, []);
+    return weather;
+};
+
+const LiveInfoBar = () => {
+    const weather = useLiveWeather();
+    const [, forceTick] = useState(0);
+    const exchangeRates = useExchangeRates();
+    const [quickRateInput, setQuickRateInput] = useState('1000');
+    const [leftCurr, setLeftCurr] = useState(TRIP_DEFAULT_CURRENCY || 'THB');
+    const [rightCurr, setRightCurr] = useState('HKD');
+
+    useEffect(() => { const t = setInterval(() => forceTick(n => n + 1), 60000); return () => clearInterval(t); }, []);
+
+    const quickRateOutput = exchangeRates ? (parseFloat(quickRateInput || 0) * (exchangeRates[rightCurr] / exchangeRates[leftCurr])).toFixed(2) : '...';
+
+    let localTimeLabel = null;
+    if (weather) {
+        const destDate = new Date(Date.now() + weather.utc_offset_seconds * 1000);
+        localTimeLabel = `${String(destDate.getUTCHours()).padStart(2, '0')}:${String(destDate.getUTCMinutes()).padStart(2, '0')}`;
+    }
+    const wInfo = weather ? (WEATHER_CODE_MAP[weather.weathercode] || { icon: 'cloud', label: '—' }) : null;
+
+    return (
+        <div className="px-6 mb-4 mt-4 space-y-3">
+            {weather && (
+                <div className="bg-white/80 backdrop-blur rounded-2xl p-3 shadow-sm border border-white flex items-center justify-center gap-6">
+                    <div className="flex items-center gap-2"><Icon name="clock" size={18} className="text-primary" /><span className="text-sm font-bold text-dark">{TRIP_CITY} {localTimeLabel}</span></div>
+                    <div className="flex items-center gap-2"><Icon name={wInfo.icon} size={18} className="text-primary" /><span className="text-sm font-bold text-dark">{Math.round(weather.temperature)}°C {wInfo.label}</span></div>
+                </div>
+            )}
+            <div className="flex justify-center">
+                <div className="bg-white/80 backdrop-blur rounded-full p-2 pl-4 pr-4 shadow-sm border border-white flex items-center gap-2 w-full max-w-xs">
+                    <select value={leftCurr} onChange={e => setLeftCurr(e.target.value)} className="bg-transparent text-sm font-bold text-gray-500 outline-none"><option value="THB">THB</option><option value="HKD">HKD</option><option value="TWD">TWD</option><option value="USD">USD</option><option value="CNY">CNY</option><option value="JPY">JPY</option><option value="KRW">KRW</option></select>
+                    <input type="number" value={quickRateInput} onChange={e => setQuickRateInput(e.target.value)} className="bg-transparent w-full outline-none font-bold text-dark text-center" placeholder="輸入" />
+                    <span className="text-sm font-bold text-gray-400">≈</span>
+                    <span className="text-sm font-bold text-primary">{quickRateOutput}</span>
+                    <select value={rightCurr} onChange={e => setRightCurr(e.target.value)} className="bg-transparent text-sm font-bold text-primary outline-none"><option value="HKD">HKD</option><option value="THB">THB</option><option value="TWD">TWD</option><option value="USD">USD</option><option value="CNY">CNY</option><option value="JPY">JPY</option><option value="KRW">KRW</option></select>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 /* --- Expense Module（記帳，透過 Firestore 即時同步） --- */
+const CURRENCY_SYMBOLS = { THB: '฿', KRW: '₩', HKD: 'HK$', TWD: 'NT$', USD: '$', CNY: '¥', JPY: '¥' };
+
 const useExchangeRates = () => {
     const [rates, setRates] = useState(null);
     useEffect(() => {
-        const saved = JSON.parse(localStorage.getItem("exchange_rates"));
+        const cacheKey = `exchange_rates_${TRIP_DEFAULT_CURRENCY}`;
+        const saved = JSON.parse(localStorage.getItem(cacheKey));
         const today = new Date().toDateString();
         if (saved && saved.date === today) { setRates(saved.rates); return; }
-        fetch("https://open.er-api.com/v6/latest/THB")
+        fetch(`https://open.er-api.com/v6/latest/${TRIP_DEFAULT_CURRENCY}`)
             .then(res => res.json())
             .then(data => {
                 const filtered = {};
                 ["THB", "HKD", "TWD", "JPY", "CNY", "USD", "KRW"].forEach(c => filtered[c] = data.rates[c]);
-                localStorage.setItem("exchange_rates", JSON.stringify({ date: today, rates: filtered }));
+                localStorage.setItem(cacheKey, JSON.stringify({ date: today, rates: filtered }));
                 setRates(filtered);
             })
             .catch(() => {
                 if (saved) setRates(saved.rates);
-                else setRates({ THB: 1, HKD: 0.22, TWD: 0.9, JPY: 4.2, CNY: 0.2, USD: 0.028, KRW: 37 });
+                else setRates({ [TRIP_DEFAULT_CURRENCY]: 1, HKD: 0.22, TWD: 0.9, JPY: 4.2, CNY: 0.2, USD: 0.028, KRW: 37, THB: 1 });
             });
     }, []);
     return rates;
@@ -138,7 +207,7 @@ const ExpenseModule = ({ user }) => {
     const [expenses, setExpenses] = useState([]);
     const [item, setItem] = useState("");
     const [cost, setCost] = useState("");
-    const [currency, setCurrency] = useState("THB");
+    const [currency, setCurrency] = useState(TRIP_DEFAULT_CURRENCY || "THB");
     const [payer, setPayer] = useState(user.id);
     const [splitters, setSplitters] = useState(SPLITTABLE_MEMBERS.map(m => m.id));
     const [showHistoryModal, setShowHistoryModal] = useState(false);
@@ -194,7 +263,8 @@ const ExpenseModule = ({ user }) => {
         return acc;
     }, 0);
 
-    const toHKD = (thb) => (thb * (exchangeRates ? exchangeRates['HKD'] : 0.23)).toFixed(0);
+    const toHKD = (amt) => (amt * (exchangeRates ? exchangeRates['HKD'] : 0.23)).toFixed(0);
+    const baseSymbol = CURRENCY_SYMBOLS[TRIP_DEFAULT_CURRENCY] || '';
 
     return (
         <div id="wallet" className="px-4 pb-12 pt-8">
@@ -202,18 +272,18 @@ const ExpenseModule = ({ user }) => {
 
             <div className="bg-white p-4 rounded-3xl flex justify-between items-center relative overflow-hidden shadow-soft border border-white text-center mb-6">
                 <div>
-                    <div className="text-[10px] text-gray-500 mb-1 font-bold">總開支</div>
-                    <div className="text-3xl font-serif font-bold text-dark">฿{(publicTotal).toFixed(0)}</div>
+                    <div className="text-[13px] text-gray-500 mb-1 font-bold">總開支</div>
+                    <div className="text-3xl font-serif font-bold text-dark">{baseSymbol}{(publicTotal).toFixed(0)}</div>
                     <div className="text-sm font-bold text-gray-400">≈ HKD {toHKD(publicTotal)}</div>
                 </div>
                 <div className="border-l border-r border-gray-100 px-4">
-                    <div className="text-[10px] text-gray-500 mb-1 font-bold">每人應付</div>
-                    <div className="text-xl font-bold text-accent">฿{(publicTotal / SPLITTABLE_MEMBERS.length).toFixed(0)}</div>
+                    <div className="text-[13px] text-gray-500 mb-1 font-bold">每人應付</div>
+                    <div className="text-xl font-bold text-accent">{baseSymbol}{(publicTotal / SPLITTABLE_MEMBERS.length).toFixed(0)}</div>
                     <div className="text-sm font-bold text-gray-400">≈ HKD {toHKD(publicTotal / SPLITTABLE_MEMBERS.length)}</div>
                 </div>
                 <div className="bg-primary/10 rounded-xl p-2">
-                    <div className="text-[10px] text-primary mb-1 font-bold">個人開支</div>
-                    <div className="text-lg font-bold text-primary">฿{privateTotal.toFixed(0)}</div>
+                    <div className="text-[13px] text-primary mb-1 font-bold">個人開支</div>
+                    <div className="text-lg font-bold text-primary">{baseSymbol}{privateTotal.toFixed(0)}</div>
                     <div className="text-sm font-bold text-primary/70">≈ HKD {toHKD(privateTotal)}</div>
                 </div>
             </div>
@@ -252,7 +322,7 @@ const ExpenseModule = ({ user }) => {
                         {expenseMode === 'public' && (
                             <>
                                 <div><label className="text-xs text-gray-400 font-bold mb-1 block">誰付錢</label><div className="person-selector">{MEMBERS.map(m => <div key={m.id} onClick={() => setPayer(m.id)} className={`person-item ${payer === m.id ? 'selected' : 'unselected'}`}><div className="person-avatar">{m.avatar}</div><span className="person-name">{m.name}</span></div>)}</div></div>
-                                <div><div className="flex justify-between mb-1"><label className="text-xs text-gray-400 font-bold">誰分攤</label><button onClick={toggleAll} className="text-[10px] text-accent">全選/清空</button></div><div className="person-selector">{MEMBERS.map(m => <div key={m.id} onClick={() => toggleSplitter(m.id)} className={`person-item ${splitters.includes(m.id) ? 'selected' : 'unselected'}`}><div className="person-avatar">{m.avatar}</div><span className="person-name">{m.name}</span></div>)}</div></div>
+                                <div><div className="flex justify-between mb-1"><label className="text-xs text-gray-400 font-bold">誰分攤</label><button onClick={toggleAll} className="text-[13px] text-accent">全選/清空</button></div><div className="person-selector">{MEMBERS.map(m => <div key={m.id} onClick={() => toggleSplitter(m.id)} className={`person-item ${splitters.includes(m.id) ? 'selected' : 'unselected'}`}><div className="person-avatar">{m.avatar}</div><span className="person-name">{m.name}</span></div>)}</div></div>
                             </>
                         )}
                         <div className="flex gap-2"><button onClick={() => setExpenseMode(null)} className="flex-1 bg-gray-100 py-3 rounded-xl font-bold text-gray-500">取消</button><button onClick={addExpense} className="flex-[2] btn-confirm py-3 shadow-lg">加入帳本</button></div>
@@ -371,7 +441,7 @@ const UniversalDetailSheet = ({ item, onClose, type }) => {
                         <img src={img} className="w-full h-full object-cover" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                         <div className="absolute bottom-4 left-4">
-                            <span className="bg-accent text-white text-[10px] px-2 py-1 rounded-md font-bold uppercase inline-block mb-1 shadow-sm">{tag}</span>
+                            <span className="bg-accent text-white text-[13px] px-2 py-1 rounded-md font-bold uppercase inline-block mb-1 shadow-sm">{tag}</span>
                             <h1 className="text-2xl font-serif font-bold text-white leading-tight">{title}</h1>
                         </div>
                     </div>
@@ -396,7 +466,7 @@ const UniversalDetailSheet = ({ item, onClose, type }) => {
                     )}
 
                     {desc2 && (<div><p className="text-sm text-gray-600 leading-relaxed bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">{desc2}</p></div>)}
-                    {thai && (<div className="bg-primary/10 rounded-2xl p-4 flex items-center justify-between border border-primary/20"><div><div className="text-[10px] text-primary font-bold mb-1">SHOW TO DRIVER</div><div className="text-xl font-bold text-dark">{thai}</div></div><Icon name="copy" size={20} className="text-primary cursor-pointer" /></div>)}
+                    {thai && (<div className="bg-primary/10 rounded-2xl p-4 flex items-center justify-between border border-primary/20"><div><div className="text-[13px] text-primary font-bold mb-1">SHOW TO DRIVER</div><div className="text-xl font-bold text-dark">{thai}</div></div><Icon name="copy" size={20} className="text-primary cursor-pointer" /></div>)}
                     <div><h4 className="font-bold text-dark mb-2 text-sm">📍 位置導航</h4><div className="square-map shadow-soft overflow-hidden rounded-2xl"><iframe loading="lazy" allowFullScreen src={`https://www.google.com/maps?q=${encodeURIComponent(location)}&output=embed`}></iframe></div><button className="w-full mt-3 bg-dark text-white py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 btn-press shadow-md" onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`, '_blank')}><Icon name="map-pin" size={16} /> 開啟 Google Maps</button></div>
                 </div>
             </div>
@@ -450,9 +520,9 @@ const ExpenseCard = ({ ex, onDelete }) => {
         <div className={`relative overflow-hidden rounded-xl bg-white shadow-sm border border-gray-100 group ${catColor} p-2`}>
             <button className="absolute right-1 top-1 text-gray-300 hover:text-red-500" onClick={() => onDelete(ex.id)}><Icon name="x" size={14} /></button>
             <div className="flex flex-col gap-1">
-                <div className="flex items-center gap-1"><div className="cat-tag static w-auto h-auto bg-transparent text-gray-400 p-0"><Icon name="bookmark" size={12} fill="currentColor" /></div><span className="text-[10px] font-bold text-gray-500">{ex.category}</span></div>
+                <div className="flex items-center gap-1"><div className="cat-tag static w-auto h-auto bg-transparent text-gray-400 p-0"><Icon name="bookmark" size={12} fill="currentColor" /></div><span className="text-[13px] font-bold text-gray-500">{ex.category}</span></div>
                 <div className="text-sm font-bold text-dark truncate">{ex.item}</div>
-                <div className="flex justify-between items-end mt-1"><div className="text-[9px] text-gray-400">{MEMBERS.find(m => m.id === ex.payer)?.name} 付 • {ex.type === 'public' ? '公' : '私'}</div><div className="text-right leading-tight"><div className="font-bold text-dark text-xs">฿{ex.cost}</div>{ex.inputCurrency !== 'THB' && <div className="text-[8px] text-gray-400">{ex.inputCurrency}</div>}</div></div>
+                <div className="flex justify-between items-end mt-1"><div className="text-[12px] text-gray-400">{MEMBERS.find(m => m.id === ex.payer)?.name} 付 • {ex.type === 'public' ? '公' : '私'}</div><div className="text-right leading-tight"><div className="font-bold text-dark text-xs">{CURRENCY_SYMBOLS[ex.inputCurrency] || ''}{ex.cost}</div>{ex.inputCurrency !== TRIP_DEFAULT_CURRENCY && <div className="text-[12px] text-gray-400">{ex.inputCurrency}</div>}</div></div>
             </div>
         </div>
     );
@@ -463,15 +533,10 @@ const MainApp = ({ user, setUser }) => {
     const [selectedItem, setSelectedItem] = useState(null);
     const [selectedType, setSelectedType] = useState(null);
     const [activeDay, setActiveDay] = useState(ITINERARY[0]?.id);
-    const [menuOpen, setMenuOpen] = useState(false);
+    const [identityOpen, setIdentityOpen] = useState(false);
     const [filter, setFilter] = useState("全部");
     const [isGuideExpanded, setIsGuideExpanded] = useState(false);
     const [expandedDay, setExpandedDay] = useState(null);
-
-    const [quickRateInput, setQuickRateInput] = useState('');
-    const [leftCurr, setLeftCurr] = useState('THB');
-    const [rightCurr, setRightCurr] = useState('HKD');
-    const exchangeRates = useExchangeRates();
 
     const toggleDay = (id) => setExpandedDay(expandedDay === id ? null : id);
 
@@ -489,8 +554,6 @@ const MainApp = ({ user, setUser }) => {
     const displayedGuide = isGuideExpanded ? filteredGuide : filteredGuide.slice(0, 9);
     const openDetail = (item, type) => { setSelectedItem(item); setSelectedType(type); };
 
-    const quickRateOutput = exchangeRates ? (parseFloat(quickRateInput || 0) * (exchangeRates[rightCurr] / exchangeRates[leftCurr])).toFixed(2) : '...';
-
     const [adminNote, setAdminNote] = useState(localStorage.getItem(`${TRIP_ID}_admin_note`) || "歡迎大家！");
     const [personalNote, setPersonalNote] = useState(localStorage.getItem(`${TRIP_ID}_note_${user.id}`) || "");
     const [saveStatus, setSaveStatus] = useState("已同步");
@@ -501,29 +564,17 @@ const MainApp = ({ user, setUser }) => {
     const handleSwitchUser = (newUser) => {
         setUser(newUser);
         localStorage.setItem(`${TRIP_ID}_user`, JSON.stringify(newUser));
-        setMenuOpen(false);
     };
 
     return (
-        <div className="min-h-screen bg-bg relative animate-fade-in pl-0 pb-20">
+        <div className="min-h-screen bg-bg relative animate-fade-in pl-0 pb-24">
+            <AvatarButton user={user} onClick={() => setIdentityOpen(true)} />
+            {identityOpen && <IdentitySheet user={user} onSelect={handleSwitchUser} onClose={() => setIdentityOpen(false)} />}
             <HeroHeader />
 
-            {WEATHER_DATA.length > 0 && (
-                <div className="relative z-20 mb-2 mt-2 px-6 flex justify-center"><div className="flex gap-3 w-max bg-white/60 backdrop-blur rounded-2xl p-2 shadow-sm border border-white/50">{WEATHER_DATA.map((w, i) => (<div key={i} className="flex flex-col items-center min-w-[45px]"><span className="text-[9px] text-gray-400 font-bold mb-0.5">{w.date}</span><Icon name={w.icon} size={18} className="text-primary" /><span className="text-[10px] font-bold text-dark mt-0.5">{w.temp}</span></div>))}</div></div>
-            )}
+            <LiveInfoBar />
 
-            <div className="px-6 mb-4 flex justify-center mt-4">
-                <div className="bg-white/80 backdrop-blur rounded-full p-2 pl-4 pr-4 shadow-sm border border-white flex items-center gap-2 w-full max-w-xs">
-                    <select value={leftCurr} onChange={e => setLeftCurr(e.target.value)} className="bg-transparent text-xs font-bold text-gray-500 outline-none"><option value="THB">THB</option><option value="HKD">HKD</option><option value="TWD">TWD</option><option value="USD">USD</option><option value="CNY">CNY</option><option value="JPY">JPY</option><option value="KRW">KRW</option></select>
-                    <input type="number" value={quickRateInput} onChange={e => setQuickRateInput(e.target.value)} className="bg-transparent w-full outline-none font-bold text-dark text-center" placeholder="輸入" />
-                    <span className="text-xs font-bold text-gray-400">≈</span>
-                    <span className="text-xs font-bold text-primary">{quickRateOutput}</span>
-                    <select value={rightCurr} onChange={e => setRightCurr(e.target.value)} className="bg-transparent text-xs font-bold text-primary outline-none"><option value="HKD">HKD</option><option value="THB">THB</option><option value="TWD">TWD</option><option value="USD">USD</option><option value="CNY">CNY</option><option value="JPY">JPY</option><option value="KRW">KRW</option></select>
-                </div>
-            </div>
-
-            <FloatingTopNav activeDay={activeDay} scrollTo={scrollTo} onMenuClick={() => setMenuOpen(!menuOpen)} />
-            <MenuDropdown user={user} scrollTo={scrollTo} onClose={() => setMenuOpen(false)} onSwitchUser={handleSwitchUser} isOpen={menuOpen} />
+            <FloatingTopNav activeDay={activeDay} scrollTo={scrollTo} />
 
             <div id="timeline" className="px-4 pb-12 space-y-4 relative mt-4 pl-20">
                 <div className="timeline-line"></div>
@@ -558,7 +609,7 @@ const MainApp = ({ user, setUser }) => {
                         <div className="flex justify-center gap-2 overflow-x-auto no-scrollbar mb-4">{categories.map(c => (<button key={c} onClick={() => setFilter(c)} className={`pill-btn ${filter === c ? 'active' : ''}`}>{c}</button>))}</div>
                         <div className="grid grid-cols-3 gap-3">
                             {displayedGuide.map((item) => (
-                                <div key={item.id} className="bg-white rounded-xl overflow-hidden shadow-soft btn-press cursor-pointer relative group aspect-square hover:shadow-lg transition-shadow" onClick={() => openDetail(item, 'guide')}><div className="relative h-full"><img src={item.cover || item.img} className="w-full h-full object-cover" /><div className="absolute top-1 right-1 bg-white/90 backdrop-blur px-1.5 py-0.5 rounded text-[8px] font-bold text-dark shadow-sm z-10">{item.tag || item.type}</div></div></div>
+                                <div key={item.id} className="bg-white rounded-xl overflow-hidden shadow-soft btn-press cursor-pointer relative group aspect-square hover:shadow-lg transition-shadow" onClick={() => openDetail(item, 'guide')}><div className="relative h-full"><img src={item.cover || item.img} className="w-full h-full object-cover" /><div className="absolute top-1 right-1 bg-white/90 backdrop-blur px-1.5 py-0.5 rounded text-[12px] font-bold text-dark shadow-sm z-10">{item.tag || item.type}</div></div></div>
                             ))}
                         </div>
                         {!isGuideExpanded && filteredGuide.length > 9 && <button onClick={() => setIsGuideExpanded(true)} className="w-full mt-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-400 text-xs font-bold flex items-center justify-center gap-1 hover:bg-gray-50">查看更多 <Icon name="chevron-down" size={14} /></button>}
@@ -573,10 +624,10 @@ const MainApp = ({ user, setUser }) => {
             <div id="tools" className="px-4 pb-12 pt-8 bg-white/50 rounded-t-[2.5rem]">
                 <h2 className="font-serif text-3xl text-dark mb-6 px-2 flex items-center gap-2"><Icon name="wrench" className="text-accent" size={28} /> 實用工具</h2>
                 <div className="grid grid-cols-2 gap-4">
-                    <div id="board" className="bg-[#F2E6E1] p-4 rounded-3xl shadow-sm flex flex-col aspect-square"><div className="flex justify-between items-center mb-1"><h3 className="font-bold text-accent text-lg flex items-center gap-1"><Icon name="megaphone" size={24} /> 公告</h3><button onClick={() => setIsNoteEditing(!isNoteEditing)} className="text-[10px] bg-white px-2 py-1 rounded text-accent font-bold">Edit</button></div><div className="text-sm text-dark leading-relaxed overflow-y-auto flex-1 font-medium p-1">{isNoteEditing ? <textarea value={adminNote} onChange={e => { setAdminNote(e.target.value); saveAdmin(e.target.value); }} className="w-full h-full bg-white/50 p-1 rounded" /> : adminNote}</div></div>
+                    <div id="board" className="bg-[#F2E6E1] p-4 rounded-3xl shadow-sm flex flex-col aspect-square"><div className="flex justify-between items-center mb-1"><h3 className="font-bold text-accent text-lg flex items-center gap-1"><Icon name="megaphone" size={24} /> 公告</h3><button onClick={() => setIsNoteEditing(!isNoteEditing)} className="text-[13px] bg-white px-2 py-1 rounded text-accent font-bold">Edit</button></div><div className="text-sm text-dark leading-relaxed overflow-y-auto flex-1 font-medium p-1">{isNoteEditing ? <textarea value={adminNote} onChange={e => { setAdminNote(e.target.value); saveAdmin(e.target.value); }} className="w-full h-full bg-white/50 p-1 rounded" /> : adminNote}</div></div>
                     <div id="memo" className="bg-[#EAEAEA] p-4 rounded-3xl shadow-sm flex flex-col aspect-square"><h3 className="font-bold text-dark mb-1 text-lg flex items-center gap-1"><Icon name="edit-3" className="text-gray-500" size={24} /> 筆記</h3><textarea value={personalNote} onChange={e => { setPersonalNote(e.target.value); savePersonalNote(e.target.value); }} className="flex-1 bg-white p-2 rounded-xl text-sm outline-none resize-none mb-1" placeholder="寫點什麼..."></textarea></div>
                     <div className="bg-white p-4 rounded-3xl shadow-sm col-span-2 aspect-auto border border-gray-100"><h3 className="font-bold text-dark text-lg mb-2">旅伴守則</h3><ul className="space-y-1 text-sm text-gray-500 font-medium"><li>1. 嘈交罰錢 $500</li><li>2. 拒絕求其</li><li>3. 離隊報備</li><li>4. 情緒價值</li></ul>
-                        <div className="grid grid-cols-2 gap-2 mt-4"><a href="tel:1155" className="bg-red-50 rounded-xl p-2 flex items-center justify-center text-red-500 border border-red-100 gap-1 text-xs font-bold"><Icon name="phone" size={14} /> 泰國旅遊警察 1155</a><a href="tel:191" className="bg-gray-50 rounded-xl p-2 flex items-center justify-center text-gray-500 border border-gray-100 gap-1 text-xs font-bold"><Icon name="ambulance" size={14} /> 泰國救護車 191</a></div>
+                        <div className="grid grid-cols-2 gap-2 mt-4">{TRIP_EMERGENCY.map((e, i) => (<a key={i} href={`tel:${e.phone}`} className={`rounded-xl p-2 flex items-center justify-center border gap-1 text-sm font-bold ${i === 0 ? 'bg-red-50 text-red-500 border-red-100' : 'bg-gray-50 text-gray-500 border-gray-100'}`}><Icon name={i === 0 ? 'phone' : 'ambulance'} size={14} /> {e.label} {e.phone}</a>))}</div>
                     </div>
                 </div>
             </div>
@@ -589,6 +640,7 @@ const MainApp = ({ user, setUser }) => {
             </div>
 
             {selectedItem && <UniversalDetailSheet item={selectedItem} type={selectedType} onClose={() => setSelectedItem(null)} />}
+            <BottomNav scrollTo={scrollTo} />
         </div>
     );
 };

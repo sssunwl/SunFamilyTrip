@@ -7,14 +7,24 @@
 
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2060/2060206.png">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%8E%88%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%8E%88%3C/text%3E%3C/svg%3E">
     <link rel="stylesheet" href="../shared/style.css">
+    <style>
+        /* 泰國團主題：暖橙夕陽感 */
+        :root { --accent: #DD8E5C; --page-bg: #FBF3EA; }
+    </style>
 
     <!-- 核心庫 -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: {
+            primary: '#DD8E5C', accent: '#B5673A', dark: '#4A4A4A', bg: '#FBF3EA'
+        } } } };
+    </script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -32,6 +42,10 @@
         const TRIP_SUBTITLE = "新年度假團 · 2026/2/13-18";
         const TRIP_HERO_IMG = "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80";
         const PHOTOS_URL = "https://photos.app.goo.gl/jQoBiWFPsgr7chNe6";
+        const TRIP_CITY = "芭堤雅";
+        const TRIP_COORDS = { lat: 12.9236, lon: 100.8825 };
+        const TRIP_DEFAULT_CURRENCY = "THB";
+        const TRIP_EMERGENCY = [ { label: "泰國旅遊警察", phone: "1155" }, { label: "泰國救護車", phone: "191" } ];
 
         const MEMBERS = [
             { id: 'lam', name: "Lam", avatar: "🦁" }, { id: 'ricky', name: "Ricky", avatar: "🐻" }, { id: 'robin', name: "Robin", avatar: "🐯" },
@@ -39,7 +53,6 @@
             { id: 'yi', name: "Yi", avatar: "🐼" }, { id: 'justin', name: "Justin", avatar: "🐵" }, { id: 'han', name: "Han", avatar: "👶", excludeFromSplit: true }
         ];
 
-        const WEATHER_DATA = [ { date: "2/13", icon: "cloud-sun", temp: "31°", label: "Day 1" }, { date: "2/14", icon: "sun", temp: "32°", label: "Day 2" }, { date: "2/15", icon: "sun", temp: "29°", label: "Day 3" }, { date: "2/16", icon: "sun", temp: "30°", label: "Day 4" }, { date: "2/17", icon: "cloud-sun", temp: "31°", label: "Day 5" }, { date: "2/18", icon: "plane", temp: "28°", label: "Day 6" } ];
 
         const MOCK_GALLERY = [
             "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=300", "https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=300", "https://images.unsplash.com/photo-1544551763-46a8723ba3f9?w=300",

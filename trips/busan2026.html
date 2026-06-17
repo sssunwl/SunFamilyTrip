@@ -7,14 +7,24 @@
 
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2060/2060206.png">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%8E%88%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Ctext%20y%3D%22.9em%22%20font-size%3D%2290%22%3E%F0%9F%8E%88%3C/text%3E%3C/svg%3E">
     <link rel="stylesheet" href="../shared/style.css">
+    <style>
+        /* 釜山團主題：海洋夜市冷色調 */
+        :root { --accent: #3E7E97; --page-bg: #EAF2F4; }
+    </style>
 
     <!-- 核心庫 -->
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: {
+            primary: '#3E7E97', accent: '#235870', dark: '#3B4750', bg: '#EAF2F4'
+        } } } };
+    </script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -32,6 +42,10 @@
         const TRIP_SUBTITLE = "2026 夏季家族旅行 · 8/5-8/10";
         const TRIP_HERO_IMG = "https://images.unsplash.com/photo-1538485399081-7191377e8241?w=800&q=80";
         const PHOTOS_URL = "https://photos.app.goo.gl/fK9xsz8W5jbbevAY8";
+        const TRIP_CITY = "釜山";
+        const TRIP_COORDS = { lat: 35.1796, lon: 129.0756 };
+        const TRIP_DEFAULT_CURRENCY = "KRW";
+        const TRIP_EMERGENCY = [ { label: "韓國觀光警察(中文)", phone: "1330" }, { label: "韓國救護車/消防", phone: "119" } ];
 
         // 家族成員，跟泰國團一致；之後有新成員直接在此加入即可
         const MEMBERS = [
@@ -51,7 +65,6 @@
         ];
 
         const GUIDE_ITEMS = []; // 景點/美食資料尚未整理，之後用跟泰國團同樣格式補上
-        const WEATHER_DATA = []; // 出發前再補上天氣資料
 
         const TRIP_POLL = { id: "first_pick", question: "想最先安排哪個體驗？(先投票給 SS 參考)", options: ["海雲台海邊", "甘川洞文化村", "札嘎其市場海鮮", "釜山塔夜景"] };
     </script>
