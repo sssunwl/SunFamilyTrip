@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>泰嘆芭堤雅🇹🇭新年度假團</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2060/2060206.png">
+    <link rel="stylesheet" href="../shared/style.css">
+
+    <!-- 核心庫 -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="../shared/firebase-config.js"></script>
+    <script src="../shared/firebase-init.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <div id="loading">載入中...</div>
+    <div id="error-message"></div>
+
+    <script>
+        const TRIP_ID = "pattaya2026";
+        const TRIP_TITLE = "泰嘆芭堤雅";
+        const TRIP_SUBTITLE = "新年度假團 · 2026/2/13-18";
+        const TRIP_HERO_IMG = "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80";
+        const PHOTOS_URL = "https://photos.app.goo.gl/jQoBiWFPsgr7chNe6";
+
+        const MEMBERS = [
+            { id: 'lam', name: "Lam", avatar: "🦁" }, { id: 'ricky', name: "Ricky", avatar: "🐻" }, { id: 'robin', name: "Robin", avatar: "🐯" },
+            { id: 'jolin', name: "Jolin", avatar: "🐰" }, { id: 'pat', name: "Pat", avatar: "🦊" }, { id: 'masa', name: "Masa", avatar: "🐨" },
+            { id: 'yi', name: "Yi", avatar: "🐼" }, { id: 'justin', name: "Justin", avatar: "🐵" }, { id: 'han', name: "Han", avatar: "👶", excludeFromSplit: true }
+        ];
+
+        const WEATHER_DATA = [ { date: "2/13", icon: "cloud-sun", temp: "31°", label: "Day 1" }, { date: "2/14", icon: "sun", temp: "32°", label: "Day 2" }, { date: "2/15", icon: "sun", temp: "29°", label: "Day 3" }, { date: "2/16", icon: "sun", temp: "30°", label: "Day 4" }, { date: "2/17", icon: "cloud-sun", temp: "31°", label: "Day 5" }, { date: "2/18", icon: "plane", temp: "28°", label: "Day 6" } ];
+
+        const MOCK_GALLERY = [
+            "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=300", "https://images.unsplash.com/photo-1590523277543-a94d2e4eb00b?w=300", "https://images.unsplash.com/photo-1544551763-46a8723ba3f9?w=300",
+            "https://images.unsplash.com/photo-1516916759473-600c07bc99d7?w=300", "https://images.unsplash.com/photo-1534008753122-a837cf46d288?w=300", "https://images.unsplash.com/photo-1540206395-688085723adb?w=300",
+            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=300", "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=300", "https://images.unsplash.com/photo-1571896349842-6e5c48dc52e3?w=300"
+        ];
+        const IG_GALLERY = MOCK_GALLERY.map(url => ({ url, desc: "點擊查看詳情" }));
+
+        const ITINERARY = [
+            { day: "Day 1", date: "2/13", weekday: "(五)", theme: "「泰」快閃", id: "d1", highlights: "落機即衝夜市", details: [
+                { id: "e1", time: "14:25", title: "抵達 BKK 機場", desc: "泰航 TG601 準時降落，專車已在機場等候。", type: "transport", img: "https://images.unsplash.com/photo-1542296332-2e449c29d009?w=800", gallery: IG_GALLERY, desc_1: "接機大廳集合，專車舒適。", desc_2: "車程約1.5小時，中途可停休息站。", location: "Suvarnabhumi Airport", thai_text: "สนามบินสุวรรณภูมิ" },
+                { id: "e2", time: "16:30", title: "入住 Akara Hotel", desc: "芭堤雅北區精品酒店，頂樓泳池絕美。", type: "hotel", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800", gallery: IG_GALLERY, desc_1: "辦理入住手續，分配房卡。", desc_2: "頂樓泳池開放至晚上10點。", location: "Akara Hotel Pattaya", thai_text: "โรงแรมอัครา พัทยา" },
+                { id: "e3", time: "18:00", title: "飛機夜市掃街", desc: "就在酒店對面！必吃香蕉煎餅。", type: "activity", img: "https://images.unsplash.com/photo-1555243560-ef023c04294a?w=800", gallery: IG_GALLERY, desc_1: "各式泰國街頭小吃雲集。", desc_2: "推薦：芒果糯米飯、烤肉串。", location: "Runway Street Food Pattaya", thai_text: "ตลาดนัดเครื่องบิน พัทยา" },
+                { id: "e4", time: "19:30", title: "Ginger Farm", desc: "米芝蓮泰北菜，環境夢幻。", type: "food", img: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800", gallery: IG_GALLERY, desc_1: "來自清邁的有機農場餐廳。", desc_2: "招牌菜：炸豬皮、泰北咖哩麵。", location: "Ginger Farm Kitchen Pattaya", thai_text: "ร้านจินเจอร์ ฟาร์ม คิทเช่น" },
+                { id: "e5", time: "21:30", title: "Makkah Spa", desc: "舒緩飛行疲勞。", type: "spa", img: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800", gallery: IG_GALLERY, desc_1: "環境清幽，服務親切。", desc_2: "建議預約：泰式傳統按摩 90分鐘。", location: "Makkah Health & Spa Pattaya", thai_text: "มัคคา เฮลท์ แอนด์ สปา" }
+            ]},
+            { day: "Day 2", date: "2/14", weekday: "(六)", theme: "「泰」科幻", id: "d2", highlights: "星際探險之旅", details: [
+                { id: "e6", time: "11:00", title: "往 Space Hotel", desc: "入住全泰首座太空酒店。", type: "hotel", img: "https://images.unsplash.com/photo-1571896349842-6e5c48dc52e3?w=800", gallery: IG_GALLERY, desc_1: "大廳有互動遊戲區。", desc_2: "房間內有極光投影。", location: "Grande Centre Point Space Pattaya", thai_text: "โรงแรม แกรนด์ เซนเตอร์ พอยต์ สเปซ พัทยา" },
+                { id: "e7", time: "12:00", title: "Tora Tapas", desc: "精緻泰西合璧料理。", type: "food", img: "https://images.unsplash.com/photo-1514326640560-7d063ef2aed5?w=800", gallery: IG_GALLERY, desc_1: "日式與西班牙風格結合。", desc_2: "午餐套餐性價比高。", location: "Tora Tapas Pattaya", thai_text: "โทรา ทาปาส พัทยา" },
+                { id: "e8", time: "14:00", title: "Space 水上樂園", desc: "挑戰滑水道與人造浪。", type: "activity", img: "https://images.unsplash.com/photo-1533316447883-492770977218?w=800", gallery: IG_GALLERY, desc_1: "僅限住客使用，人潮較少。", desc_2: "記得帶防曬與防水袋。", location: "Grande Centre Point Space Pattaya", thai_text: "สวนน้ำอวกาศ" },
+                { id: "e9", time: "19:00", title: "Orbit 自助餐", desc: "海鮮生蠔任食。", type: "food", img: "https://images.unsplash.com/photo-1625937751876-453009747972?w=800", gallery: IG_GALLERY, desc_1: "酒店內餐廳，方便舒適。", desc_2: "甜點區非常豐富。", location: "Grande Centre Point Space Pattaya", thai_text: "ห้องอาหารออร์บิท" }
+            ]},
+            { day: "Day 3", date: "2/15", weekday: "(日)", theme: "「泰」熱血", id: "d3", highlights: "木雕與越野", details: [
+                { id: "e10", time: "10:30", title: "真理聖殿", desc: "全木造建築奇蹟。", type: "activity", img: "https://images.unsplash.com/photo-1599553765870-07a828cb0085?w=800", gallery: IG_GALLERY, desc_1: "無釘子建造，工藝精湛。", desc_2: "有騎大象與遊船活動。", location: "Sanctuary of Truth", thai_text: "ปราสาทสัจธรรม" },
+                { id: "e11", time: "13:00", title: "ATV 越野飛車", desc: "穿越叢林，熱血沸騰。", type: "activity", img: "https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=800", gallery: IG_GALLERY, desc_1: "全程約2小時，包含教學。", desc_2: "建議穿著不怕髒的衣物。", location: "Pattaya Offroad Safari", thai_text: "พัทยา ออฟโรด ซาฟารี" },
+                { id: "e12", time: "18:30", title: "Bay Bay Seafood", desc: "海濱 BBQ 盛宴。", type: "food", img: "https://images.unsplash.com/photo-1534008753122-a837cf46d288?w=800", gallery: IG_GALLERY, desc_1: "新鮮海鮮現點現烤。", desc_2: "露天座位氣氛佳。", location: "BayBay Buffet Talaypao", thai_text: "เบย์เบย์ บุฟเฟต์ทะเลเผา" },
+                { id: "e13", time: "20:30", title: "中天夜市", desc: "散步吃宵夜。", type: "activity", img: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800", gallery: IG_GALLERY, desc_1: "比市區夜市更悠閒。", desc_2: "水果與手工藝品便宜。", location: "Jomtien Night Market", thai_text: "ตลาดนัดจอมเทียน" }
+            ]},
+            { day: "Day 4", date: "2/16", weekday: "(一)", theme: "「泰」招積", id: "d4", highlights: "私人包船", details: [
+                { id: "e14", time: "10:30", title: "往 Villa", desc: "人貨分流，行李先行。", type: "transport", img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b91d?w=800", gallery: IG_GALLERY, desc_1: "更換住宿至私人別墅。", desc_2: "管家協助處理行李。", location: "Villa De Amore Pattaya", thai_text: "วิลล่า เดอ อะมอเร่ พัทยา" },
+                { id: "e15", time: "11:30", title: "前往碼頭", desc: "準備出海！", type: "transport", img: "https://images.unsplash.com/photo-1569263979104-565b63418962?w=800", gallery: IG_GALLERY, desc_1: "車程約1小時。", desc_2: "碼頭有便利商店可補給。", location: "Port of Samae Sarn", thai_text: "ท่าเรือแสมสาร" },
+                { id: "e16", time: "13:00", title: "Sealyn 私人包船", desc: "豪華雙層船，滑梯、獨木舟。", type: "activity", img: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=800", gallery: IG_GALLERY, desc_1: "包含船上午餐與飲料。", desc_2: "可體驗海釣與浮潛。", location: "Samae San Island", thai_text: "เหมาเรือส่วนตัว Seanlyn" },
+                { id: "e17", time: "17:30", title: "Villa De Amore", desc: "入住私人泳池別墅。", type: "hotel", img: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800", gallery: IG_GALLERY, desc_1: "9人包棟，設施齊全。", desc_2: "晚上可唱KTV或游泳。", location: "Villa De Amore Pattaya", thai_text: "วิลล่า เดอ อะมอเร่" }
+            ]},
+            { day: "Day 5", date: "2/17", weekday: "(二)", theme: "「泰」網紅", id: "d5", highlights: "食神日落", details: [
+                { id: "e18", time: "11:30", title: "Khun Sri 豬雜", desc: "80年老店。", type: "food", img: "https://images.unsplash.com/photo-1548943487-a2e4e43b485c?w=800", gallery: IG_GALLERY, desc_1: "湯頭濃郁，料多實在。", desc_2: "必點脆皮燒肉。", location: "Khun Sri Pork Blood Soup", thai_text: "ต้มเลือดหมูคุณศรี" },
+                { id: "e19", time: "13:00", title: "After Yum", desc: "全泰最紅生醃。", type: "food", img: "https://images.unsplash.com/photo-1626804475297-411d0c624f9c?w=800", gallery: IG_GALLERY, desc_1: "網紅排隊名店。", desc_2: "生醃鮭魚、藍蟹必吃。", location: "After Yum", thai_text: "ร้านอาฟเตอร์ยำ" },
+                { id: "e20", time: "15:00", title: "水上市場", desc: "體驗手划船。", type: "activity", img: "https://images.unsplash.com/photo-1598970434795-0c54fe7c0648?w=800", gallery: IG_GALLERY, desc_1: "感受泰國傳統水上生活。", desc_2: "可購買特色紀念品。", location: "Pattaya Floating Market", thai_text: "ตลาดน้ำ 4 ภาค พัทยา" },
+                { id: "e21", time: "16:30", title: "House of Benedict", desc: "超好拍網紅點。", type: "activity", img: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800", gallery: IG_GALLERY, desc_1: "多種風格攝影棚。", desc_2: "適合拍照打卡。", location: "House of Benedict Pattaya", thai_text: "เฮาส์ ออฟ เบเนดิกต์" },
+                { id: "e22", time: "18:00", title: "Glass House", desc: "日落海鮮餐。", type: "food", img: "https://images.unsplash.com/photo-1537047902294-6228b02e6993?w=800", gallery: IG_GALLERY, desc_1: "沙灘座位，氣氛浪漫。", desc_2: "適合欣賞夕陽。", location: "The Glass House Boho", thai_text: "เดอะ กลาสเฮ้าส์ โบโฮ" },
+                { id: "e23", time: "21:00", title: "Oasis Spa", desc: "高級按摩。", type: "spa", img: "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=800", gallery: IG_GALLERY, desc_1: "服務與環境皆為頂級。", desc_2: "徹底放鬆身心。", location: "Oasis Spa Pattaya Jomtien", thai_text: "โอเอซิส สปา พัทยา" }
+            ]},
+            { day: "Day 6", date: "2/18", weekday: "(三)", theme: "「泰」唔捨得", id: "d6", highlights: "最後衝刺", details: [
+                { id: "e24", time: "11:00", title: "Villa 退房", desc: "收拾心情。", type: "hotel", img: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800", gallery: IG_GALLERY, desc_1: "檢查行李是否遺漏。", desc_2: "與別墅合影留念。", location: "Villa De Amore Pattaya", thai_text: "วิลล่า เดอ อะมอเร่" },
+                { id: "e25", time: "11:30", title: "Lek Seafood", desc: "最後海鮮。", type: "food", img: "https://images.unsplash.com/photo-1599488615731-7e512819a636?w=800", gallery: IG_GALLERY, desc_1: "在地人推薦平價海鮮。", desc_2: "咖哩蟹、蒸魚必點。", location: "Lek Seafood", thai_text: "ร้านอาหารเล็กอาหารทะเล" },
+                { id: "e26", time: "13:15", title: "往機場", desc: "專車直送 BKK。", type: "transport", img: "https://images.unsplash.com/photo-1530521954074-e64f6810b32d?w=800", gallery: IG_GALLERY, desc_1: "預計車程1.5-2小時。", desc_2: "準備搭機返港。", location: "Suvarnabhumi Airport", thai_text: "สนามบินสุวรรณภูมิ" }
+            ]}
+        ];
+
+        const GUIDE_ITEMS = [
+            { id: 1, category: "玩樂", name: "Sealyn 包船", tag: "豪華長尾船", desc_1: "體驗芭堤雅最奢華的私人海上派對！這艘雙層豪華長尾船不僅外型復古吸睛，設施更是應有盡有。", desc_2: "船員會貼心準備釣具讓你體驗海釣樂趣，釣到的魚還能現場加菜。最棒的是船上提供的 BBQ 午餐。", gallery1: ["https://images.unsplash.com/photo-1544551763-46a8723ba3f9?w=600"], gallery2: [], cover: "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=600&q=80", video: "M7lc1UVf-VE" },
+            { id: 4, category: "美食", name: "After Yum", tag: "生醃傳奇", desc_1: "沒吃過 After Yum 就不算來過芭堤雅！這家店是泰國生醃界的頂流。", desc_2: "醬汁酸辣鮮甜比例完美，完全沒有腥味。必點生醃三文魚，厚切肥美；酸辣生蝦口感彈牙。", gallery1: ["https://images.unsplash.com/photo-1626804475297-411d0c624f9c?w=600"], gallery2: ["https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600"], cover: "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80" },
+            { id: 15, category: "購物", name: "必買清單", tag: "手信推薦", desc_1: "泰國 7-11 熱壓吐司、Pocky 香蕉口味、手標泰式茶粉。", desc_2: "Big C 超市可以買到各種零食，推薦小老闆海苔與芒果乾。", gallery1: ["https://images.unsplash.com/photo-1583209814683-c023dd293cc6?w=600"], gallery2: [], cover: "https://images.unsplash.com/photo-1583209814683-c023dd293cc6?w=600&q=80" },
+            { id: 3, category: "住宿", name: "Space Pattaya", tag: "科幻未來", desc_1: "全泰首座...", desc_2: "房間天花板...", gallery1: ["https://images.unsplash.com/photo-1571896349842-6e5c48dc52e3?w=600"], gallery2: [], cover: "https://images.unsplash.com/photo-1571896349842-6e5c48dc52e3?w=600&q=80" },
+            { id: 5, category: "美食", name: "Glass House Boho", tag: "日落晚餐", desc_1: "波希米亞...", desc_2: "吃飽後...", gallery1: ["https://images.unsplash.com/photo-1537047902294-6228b02e6993?w=600"], gallery2: [], cover: "https://images.unsplash.com/photo-1537047902294-6228b02e6993?w=600&q=80" },
+            { id: 6, category: "住宿", name: "Villa De Amore", tag: "私人隱世", desc_1: "9人家庭專屬包場...", desc_2: "客廳挑高寬敞...", gallery1: ["https://images.unsplash.com/photo-1580587771525-78b9dba3b91d?w=600"], gallery2: [], cover: "https://images.unsplash.com/photo-1580587771525-78b9dba3b91d?w=600&q=80" },
+            { id: 7, category: "住宿", name: "Akara Hotel", tag: "都會輕奢", desc_1: "頂樓無邊際泳池...", desc_2: "房間設計現代時尚...", gallery1: ["https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600"], gallery2: [], cover: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80" },
+            { id: 2, category: "玩樂", name: "ATV 越野車", tag: "熱血冒險", desc_1: "穿越叢林泥地...", desc_2: "跟隨專業教練...", gallery1: ["https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=600"], gallery2: [], cover: "https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=600&q=80" },
+            { id: 8, category: "美食", name: "Ginger Farm", tag: "泰北風味", desc_1: "來自清邁的米芝蓮推薦餐廳...", desc_2: "必點炸豬皮...", gallery1: ["https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600"], gallery2: [], cover: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" },
+            { id: 9, category: "玩樂", name: "Makkah Spa", tag: "舒緩放鬆", desc_1: "環境清幽典雅...", desc_2: "第一天舟車勞頓...", gallery1: ["https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600"], gallery2: [], cover: "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80" },
+            { id: 10, category: "美食", name: "Tora Tapas", tag: "精緻料理", desc_1: "結合泰式風味...", desc_2: "午餐時間...", gallery1: ["https://images.unsplash.com/photo-1514326640560-7d063ef2aed5?w=600"], gallery2: [], cover: "https://images.unsplash.com/photo-1514326640560-7d063ef2aed5?w=600&q=80" },
+            { id: 11, category: "美食", name: "Orbit Restaurant", tag: "海鮮自助", desc_1: "飯店頂級海鮮 Buffet...", desc_2: "晚餐就在飯店內...", gallery1: ["https://images.unsplash.com/photo-1625937751876-453009747972?w=600"], gallery2: [], cover: "https://images.unsplash.com/photo-1625937751876-453009747972?w=600&q=80" },
+            { id: 12, category: "玩樂", name: "真理聖殿", tag: "木雕藝術", desc_1: "全木造結構不含一顆釘子...", desc_2: "除了參觀...", gallery1: ["https://images.unsplash.com/photo-1599553765870-07a828cb0085?w=600"], gallery2: [], cover: "https://images.unsplash.com/photo-1599553765870-07a828cb0085?w=600&q=80" },
+            { id: 13, category: "美食", name: "Bay Bay Seafood", tag: "海鮮BBQ", desc_1: "露天海景...", desc_2: "晚餐來到中天海濱...", gallery1: ["https://images.unsplash.com/photo-1534008753122-a837cf46d288?w=600"], gallery2: [], cover: "https://images.unsplash.com/photo-1534008753122-a837cf46d288?w=600&q=80" },
+            { id: 14, category: "玩樂", name: "Jomtien Market", tag: "地道夜市", desc_1: "沿著海濱散步...", desc_2: "吃飽後散步...", gallery1: ["https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600"], gallery2: [], cover: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80" }
+        ];
+
+        const TRIP_POLL = { id: "best_memory", question: "這次旅行你最喜歡哪個環節？", options: ["Sealyn 私人包船", "Villa De Amore 包棟", "After Yum 生醃", "Space 水上樂園"] };
+    </script>
+
+    <script>
+        fetch('../shared/app.js')
+            .then(res => res.text())
+            .then(code => {
+                const compiled = Babel.transform(code, { presets: [['react', { runtime: 'classic' }]] }).code;
+                (0, eval)(compiled);
+            });
+    </script>
+</body>
+</html>

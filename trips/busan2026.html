@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>釜山尋味之旅🇰🇷 2026夏季家族旅行</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2060/2060206.png">
+    <link rel="stylesheet" href="../shared/style.css">
+
+    <!-- 核心庫 -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script src="../shared/firebase-config.js"></script>
+    <script src="../shared/firebase-init.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    <div id="loading">載入中...</div>
+    <div id="error-message"></div>
+
+    <script>
+        const TRIP_ID = "busan2026";
+        const TRIP_TITLE = "釜山尋味之旅";
+        const TRIP_SUBTITLE = "2026 夏季家族旅行 · 8/5-8/10";
+        const TRIP_HERO_IMG = "https://images.unsplash.com/photo-1538485399081-7191377e8241?w=800&q=80";
+        const PHOTOS_URL = "https://photos.app.goo.gl/fK9xsz8W5jbbevAY8";
+
+        // 家族成員，跟泰國團一致；之後有新成員直接在此加入即可
+        const MEMBERS = [
+            { id: 'lam', name: "Lam", avatar: "🦁" }, { id: 'ricky', name: "Ricky", avatar: "🐻" }, { id: 'robin', name: "Robin", avatar: "🐯" },
+            { id: 'jolin', name: "Jolin", avatar: "🐰" }, { id: 'pat', name: "Pat", avatar: "🦊" }, { id: 'masa', name: "Masa", avatar: "🐨" },
+            { id: 'yi', name: "Yi", avatar: "🐼" }, { id: 'justin', name: "Justin", avatar: "🐵" }, { id: 'han', name: "Han", avatar: "👶", excludeFromSplit: true }
+        ];
+
+        // 行程細節尚未規劃，先給日期框架，details 留空，之後用同樣格式補上即可
+        const ITINERARY = [
+            { day: "Day 1", date: "8/5", weekday: "(三)", theme: "抵達釜山", id: "d1", highlights: "待規劃", details: [] },
+            { day: "Day 2", date: "8/6", weekday: "(四)", theme: "待規劃", id: "d2", highlights: "待規劃", details: [] },
+            { day: "Day 3", date: "8/7", weekday: "(五)", theme: "待規劃", id: "d3", highlights: "待規劃", details: [] },
+            { day: "Day 4", date: "8/8", weekday: "(六)", theme: "待規劃", id: "d4", highlights: "待規劃", details: [] },
+            { day: "Day 5", date: "8/9", weekday: "(日)", theme: "待規劃", id: "d5", highlights: "待規劃", details: [] },
+            { day: "Day 6", date: "8/10", weekday: "(一)", theme: "返程", id: "d6", highlights: "待規劃", details: [] }
+        ];
+
+        const GUIDE_ITEMS = []; // 景點/美食資料尚未整理，之後用跟泰國團同樣格式補上
+        const WEATHER_DATA = []; // 出發前再補上天氣資料
+
+        const TRIP_POLL = { id: "first_pick", question: "想最先安排哪個體驗？(先投票給 SS 參考)", options: ["海雲台海邊", "甘川洞文化村", "札嘎其市場海鮮", "釜山塔夜景"] };
+    </script>
+
+    <script>
+        fetch('../shared/app.js')
+            .then(res => res.text())
+            .then(code => {
+                const compiled = Babel.transform(code, { presets: [['react', { runtime: 'classic' }]] }).code;
+                (0, eval)(compiled);
+            });
+    </script>
+</body>
+</html>
