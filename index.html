@@ -48,6 +48,15 @@
         .trip-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: bold; margin: 0 0 6px; }
         .trip-meta { font-size: 13px; color: #8B8B8B; font-weight: bold; }
 
+        .photo-strip { display: flex; gap: 6px; margin-top: 14px; }
+        .photo-strip .thumb { flex: 1; aspect-ratio: 1; border-radius: 10px; overflow: hidden; display: block; position: relative; cursor: pointer; }
+        .photo-strip img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .photo-strip .more-overlay {
+            position: absolute; inset: 0; background: rgba(0,0,0,0.45);
+            color: #fff; display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: bold;
+        }
+
         .placeholder-card {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             min-height: 200px; border-radius: 24px; border: 2px dashed #D8D2C8;
@@ -76,6 +85,18 @@
                     <span class="trip-tag">即將出發</span>
                     <div class="trip-title">釜山尋味之旅</div>
                     <div class="trip-meta">2026/8/5 - 8/10 · 韓國</div>
+                    <div class="photo-strip">
+                        <span class="thumb" onclick="event.preventDefault(); event.stopPropagation(); window.open('https://photos.app.goo.gl/fK9xsz8W5jbbevAY8','_blank')">
+                            <img src="https://images.unsplash.com/photo-1517154421773-0529f29ea451?w=200&q=80" />
+                        </span>
+                        <span class="thumb" onclick="event.preventDefault(); event.stopPropagation(); window.open('https://photos.app.goo.gl/fK9xsz8W5jbbevAY8','_blank')">
+                            <img src="https://images.unsplash.com/photo-1517760444937-f6397edcbbcd?w=200&q=80" />
+                        </span>
+                        <span class="thumb" onclick="event.preventDefault(); event.stopPropagation(); window.open('https://photos.app.goo.gl/fK9xsz8W5jbbevAY8','_blank')">
+                            <img src="https://images.unsplash.com/photo-1604762524889-3e2fcc145683?w=200&q=80" />
+                            <span class="more-overlay">期待中</span>
+                        </span>
+                    </div>
                 </div>
             </a>
             <div class="placeholder-card">
@@ -93,6 +114,21 @@
                     <span class="trip-tag">回憶中</span>
                     <div class="trip-title">泰嘆芭堤雅</div>
                     <div class="trip-meta">2026/2/13 - 2/18 · 泰國</div>
+                    <div class="photo-strip">
+                        <span class="thumb" onclick="event.preventDefault(); event.stopPropagation(); window.open('https://photos.app.goo.gl/jQoBiWFPsgr7chNe6','_blank')">
+                            <img src="https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=200&q=80" />
+                        </span>
+                        <span class="thumb" onclick="event.preventDefault(); event.stopPropagation(); window.open('https://photos.app.goo.gl/jQoBiWFPsgr7chNe6','_blank')">
+                            <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=200&q=80" />
+                        </span>
+                        <span class="thumb" onclick="event.preventDefault(); event.stopPropagation(); window.open('https://photos.app.goo.gl/jQoBiWFPsgr7chNe6','_blank')">
+                            <img src="https://images.unsplash.com/photo-1530521954074-e64f6810b32d?w=200&q=80" />
+                        </span>
+                        <span class="thumb" onclick="event.preventDefault(); event.stopPropagation(); window.open('https://photos.app.goo.gl/jQoBiWFPsgr7chNe6','_blank')">
+                            <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=200&q=80" />
+                            <span class="more-overlay">看全部</span>
+                        </span>
+                    </div>
                 </div>
             </a>
         </div>
