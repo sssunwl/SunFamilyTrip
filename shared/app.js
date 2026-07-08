@@ -97,6 +97,7 @@ const BottomNav = ({ scrollTo }) => {
     const navItems = [
         { id: 'timeline', icon: 'calendar', label: '行程' },
         { id: 'guide', icon: 'compass', label: '資訊' },
+        { id: 'pocket', icon: 'utensils', label: '口袋' },
         { id: 'wallet', icon: 'wallet', label: '記帳' },
         ...(TRIP_POLL ? [{ id: 'vote', icon: 'check-square', label: '投票' }] : []),
         { id: 'tools', icon: 'wrench', label: '工具' },
@@ -619,6 +620,8 @@ const MainApp = ({ user, setUser }) => {
                 )}
             </div>
 
+            <PocketList />
+
             <ExpenseModule user={user} />
             <VoteModule user={user} />
 
@@ -684,6 +687,56 @@ const MainApp = ({ user, setUser }) => {
 
             {selectedItem && <UniversalDetailSheet item={selectedItem} type={selectedType} onClose={() => setSelectedItem(null)} />}
             <BottomNav scrollTo={scrollTo} />
+        </div>
+    );
+};
+
+/* --- 口袋名單：讀取 Sosolsunday 地圖站的 places.json，過濾本趟城市 --- */
+const POCKET_SOURCE = 'https://sssunwl.github.io/sosolsunday/data/places.json';
+const PocketList = () => {
+    const [places, setPlaces] = useState(null); // null = 載入中, [] = 無資料
+    useEffect(() => {
+        fetch(POCKET_SOURCE + '?v=' + Date.now())
+            .then(r => r.ok ? r.json() : { places: [] })
+            .then(d => {
+                const list = (d.places || []).filter(p =>
+                    p.region === TRIP_CITY &&
+                    (!p.publishTo || p.publishTo.indexOf('SunfamilyTrip') !== -1)
+                );
+                setPlaces(list);
+            })
+            .catch(() => setPlaces([]));
+    }, []);
+    return (
+        <div id="pocket" className="px-4 pb-12 pt-8 bg-white/50 rounded-t-[2.5rem]">
+            <h2 className="font-serif text-2xl text-dark mb-1 px-2 flex items-center gap-2"><Icon name="utensils" className="text-accent" /> 口袋名單</h2>
+            <p className="text-gray-400 text-xs mb-5 px-2">從收藏整理來的 {TRIP_CITY} 美食景點 · 點卡片看地圖或詳情</p>
+            {places === null ? (
+                <div className="text-center text-sm text-gray-400 py-8">載入中…</div>
+            ) : places.length === 0 ? (
+                <div className="text-center text-sm text-gray-400 py-8">還沒有 {TRIP_CITY} 的口袋收藏 🍽️<br />之後在收藏整理加入就會出現在這裡</div>
+            ) : (
+                <div className="space-y-3">
+                    {places.map((p, i) => (
+                        <div key={i} className="bg-white rounded-2xl shadow-soft p-4 border-l-4 border-accent">
+                            <div className="flex justify-between items-start gap-2">
+                                <h3 className="font-bold text-dark text-base leading-tight">{p.name}</h3>
+                                {p.category && <span className="flex-shrink-0 text-[12px] font-bold text-white bg-accent px-2 py-0.5 rounded-full mt-0.5">{p.category}</span>}
+                            </div>
+                            {p.summary && <p className="text-sm text-gray-600 mt-2 leading-relaxed">{p.summary}</p>}
+                            {p.tags && p.tags.length > 0 && (
+                                <div className="flex flex-wrap gap-1.5 mt-2">
+                                    {p.tags.map((t, j) => <span key={j} className="text-[11px] text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">#{t}</span>)}
+                                </div>
+                            )}
+                            <div className="flex gap-3 mt-3">
+                                {p.lat && p.lon && <a href={`https://www.google.com/maps/search/?api=1&query=${p.lat},${p.lon}`} target="_blank" className="text-[13px] font-bold text-accent flex items-center gap-1"><Icon name="map-pin" size={14} /> 導航</a>}
+                                {p.link && <a href={p.link} target="_blank" className="text-[13px] font-bold text-gray-400 flex items-center gap-1"><Icon name="external-link" size={14} /> 詳情</a>}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
