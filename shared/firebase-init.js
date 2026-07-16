@@ -28,6 +28,16 @@ window.TripDB = {
             .set({ votes: { [userId]: choice } }, { merge: true });
     },
 
+    // 必買清單勾選狀態（全團共用一份，value = 勾選人的 avatar）
+    listenChecklist(tripId, callback) {
+        return db.collection('trips').doc(tripId).collection('tools').doc('shopping')
+            .onSnapshot(doc => callback(doc.exists ? (doc.data().checked || {}) : {}));
+    },
+    setChecklistItem(tripId, itemId, value) {
+        return db.collection('trips').doc(tripId).collection('tools').doc('shopping')
+            .set({ checked: { [itemId]: value === null ? firebase.firestore.FieldValue.delete() : value } }, { merge: true });
+    },
+
     listenNotes(tripId, callback) {
         return db.collection('trips').doc(tripId).collection('notes')
             .orderBy('createdAt', 'desc')

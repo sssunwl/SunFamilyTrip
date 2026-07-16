@@ -39,6 +39,19 @@ const WelcomeView = ({ onSelect }) => (
     </div>
 );
 
+// 出發倒數／旅程進行中標籤（頁面有定義 TRIP_START_DATE 先顯示）
+const TripCountdown = () => {
+    if (typeof TRIP_START_DATE === 'undefined') return null;
+    const now = new Date();
+    const start = new Date(TRIP_START_DATE + 'T00:00:00');
+    const end = new Date((typeof TRIP_END_DATE !== 'undefined' ? TRIP_END_DATE : TRIP_START_DATE) + 'T23:59:59');
+    let label;
+    if (now < start) label = `✈️ 距離出發仲有 ${Math.ceil((start - now) / 86400000)} 日`;
+    else if (now <= end) label = `🎉 旅程進行中 · Day ${Math.floor((now - start) / 86400000) + 1}`;
+    else label = "🎈 旅程圓滿結束，記得返嚟留回憶";
+    return <div className="inline-block bg-white/90 backdrop-blur text-primary text-xs font-black px-4 py-1.5 rounded-full shadow-sm mt-2">{label}</div>;
+};
+
 const HeroHeader = () => (
     <div className="relative h-[220px] w-full overflow-hidden bg-white z-0 flex flex-col justify-end pb-4 items-center">
         <img src={TRIP_HERO_IMG} className="absolute inset-0 w-full h-full object-cover opacity-90" />
@@ -46,6 +59,7 @@ const HeroHeader = () => (
         <div className="relative z-10 text-center mb-1">
             <h1 className="font-serif text-3xl text-dark font-bold tracking-wide leading-tight shadow-sm text-center">{TRIP_TITLE}</h1>
             <div className="text-gray-500 text-xs font-bold mt-1 tracking-wider text-center">{TRIP_SUBTITLE}</div>
+            <TripCountdown />
         </div>
     </div>
 );
@@ -94,11 +108,15 @@ const IdentitySheet = ({ user, onSelect, onClose }) => (
 );
 
 const BottomNav = ({ scrollTo }) => {
+    const hasShopping = typeof TRIP_SHOPPING !== 'undefined' && TRIP_SHOPPING.length > 0;
+    const hasPhrases = typeof TRIP_PHRASES !== 'undefined' && TRIP_PHRASES.length > 0;
     const navItems = [
         { id: 'timeline', icon: 'calendar', label: '行程' },
         { id: 'guide', icon: 'compass', label: '資訊' },
+        ...(hasShopping ? [{ id: 'shopping', icon: 'shopping-cart', label: '清單' }] : []),
+        ...(hasPhrases ? [{ id: 'phrases', icon: 'volume-2', label: typeof TRIP_PHRASES_LABEL !== 'undefined' ? TRIP_PHRASES_LABEL : '會話' }] : []),
         { id: 'wallet', icon: 'wallet', label: '記帳' },
-        ...(TRIP_POLL ? [{ id: 'vote', icon: 'check-square', label: '投票' }] : []),
+        ...(TRIP_POLL && !hasShopping && !hasPhrases ? [{ id: 'vote', icon: 'check-square', label: '投票' }] : []),
         { id: 'tools', icon: 'wrench', label: '工具' },
         { id: 'memory', icon: 'image', label: '回憶' }
     ];
@@ -137,6 +155,43 @@ const useLiveWeather = () => {
     return weather;
 };
 
+// 未來7日天氣預報（旅程期間自動變成當地每日天氣）
+const useForecast = () => {
+    const [forecast, setForecast] = useState(null);
+    useEffect(() => {
+        if (!TRIP_COORDS) return;
+        fetch(`https://api.open-meteo.com/v1/forecast?latitude=${TRIP_COORDS.lat}&longitude=${TRIP_COORDS.lon}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&forecast_days=7&timezone=auto`)
+            .then(res => res.json())
+            .then(data => setForecast(data.daily))
+            .catch(() => {});
+    }, []);
+    return forecast;
+};
+
+const ForecastStrip = () => {
+    const forecast = useForecast();
+    if (!forecast || !forecast.time) return null;
+    return (
+        <div className="bg-white/80 backdrop-blur rounded-2xl p-3 shadow-sm border border-white">
+            <div className="text-[11px] font-bold text-gray-400 mb-2 text-center">{TRIP_CITY} 未來7日天氣</div>
+            <div className="flex gap-2 overflow-x-auto no-scrollbar">
+                {forecast.time.map((d, i) => {
+                    const info = WEATHER_CODE_MAP[forecast.weathercode[i]] || { icon: 'cloud', label: '—' };
+                    const date = new Date(d + 'T00:00:00');
+                    return (
+                        <div key={d} className="flex flex-col items-center min-w-[52px] flex-1 gap-0.5">
+                            <span className="text-[11px] font-bold text-gray-400">{date.getMonth() + 1}/{date.getDate()}</span>
+                            <Icon name={info.icon} size={18} className="text-primary" />
+                            <span className="text-[11px] font-bold text-dark">{Math.round(forecast.temperature_2m_min[i])}-{Math.round(forecast.temperature_2m_max[i])}°</span>
+                            <span className="text-[10px] font-bold text-blue-400">☔{forecast.precipitation_probability_max[i]}%</span>
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
+};
+
 const LiveInfoBar = () => {
     const weather = useLiveWeather();
     const [, forceTick] = useState(0);
@@ -173,6 +228,16 @@ const LiveInfoBar = () => {
                     <select value={rightCurr} onChange={e => setRightCurr(e.target.value)} className="bg-transparent text-sm font-bold text-primary outline-none"><option value="HKD">HKD</option><option value="THB">THB</option><option value="TWD">TWD</option><option value="USD">USD</option><option value="CNY">CNY</option><option value="JPY">JPY</option><option value="KRW">KRW</option></select>
                 </div>
             </div>
+            {typeof TRIP_RATE_CHIPS !== 'undefined' && exchangeRates && (
+                <div className="flex justify-center gap-2 flex-wrap">
+                    {TRIP_RATE_CHIPS.map(amt => (
+                        <span key={amt} className="bg-white/70 text-[11px] font-bold text-gray-500 px-3 py-1 rounded-full border border-white">
+                            {CURRENCY_SYMBOLS[TRIP_DEFAULT_CURRENCY] || ''}{amt.toLocaleString()} ≈ HK${(amt * (exchangeRates['HKD'] / exchangeRates[TRIP_DEFAULT_CURRENCY])).toFixed(amt * (exchangeRates['HKD'] / exchangeRates[TRIP_DEFAULT_CURRENCY]) < 100 ? 1 : 0)}
+                        </span>
+                    ))}
+                </div>
+            )}
+            <ForecastStrip />
         </div>
     );
 };
@@ -381,6 +446,108 @@ const VoteModule = ({ user }) => {
     );
 };
 
+/* --- 當地語言小幫手（發聲 + 大字卡）＋ 必買清單（Firestore 即時同步） --- */
+const speakLocal = (text) => {
+    if (!window.speechSynthesis) return;
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = (typeof TRIP_PHRASE_LANG !== 'undefined') ? TRIP_PHRASE_LANG : 'ko-KR';
+    u.rate = 0.85;
+    const voices = speechSynthesis.getVoices();
+    const match = voices.find(v => v.lang && v.lang.replace('_', '-').startsWith(u.lang.split('-')[0]));
+    if (match) u.voice = match;
+    speechSynthesis.speak(u);
+};
+
+// 全螢幕大字卡：直接舉機俾司機/店員睇
+const BigTextOverlay = ({ card, onClose }) => (
+    <div className="big-text-overlay" onClick={onClose}>
+        <div className="text-xs font-bold text-gray-400 tracking-widest">SHOW THIS 俾對方睇</div>
+        <div className="big-text-main">{card.text}</div>
+        {card.sub && <div className="text-lg font-bold text-gray-500">{card.sub}</div>}
+        <div className="flex gap-3 mt-4">
+            <button className="btn-confirm px-6 py-3 flex items-center gap-2" onClick={(e) => { e.stopPropagation(); speakLocal(card.text); }}><Icon name="volume-2" size={18} /> 發聲</button>
+            <button className="btn-secondary px-6 py-3 flex items-center gap-2" onClick={(e) => { e.stopPropagation(); navigator.clipboard && navigator.clipboard.writeText(card.text); }}><Icon name="copy" size={18} /> 複製</button>
+        </div>
+        <div className="text-xs text-gray-400 font-bold mt-2">㩒任何地方關閉</div>
+    </div>
+);
+
+const PhraseModule = () => {
+    const cats = Array.from(new Set(TRIP_PHRASES.map(p => p.category)));
+    const [cat, setCat] = useState(cats[0]);
+    const [bigCard, setBigCard] = useState(null);
+    const shown = TRIP_PHRASES.filter(p => p.category === cat);
+    return (
+        <div id="phrases" className="px-4 pb-12 pt-8">
+            <h2 className="font-serif text-2xl text-dark mb-2 px-2 flex items-center gap-2"><Icon name="volume-2" className="text-accent" /> {typeof TRIP_PHRASES_LABEL !== 'undefined' ? TRIP_PHRASES_LABEL : '會話'}小幫手</h2>
+            <p className="text-xs text-gray-400 px-2 mb-4 font-bold">㩒 🔊 即場發聲，㩒句子開大字卡俾店員睇</p>
+            <div className="flex gap-2 overflow-x-auto no-scrollbar mb-4 px-1">{cats.map(c => <button key={c} onClick={() => setCat(c)} className={`pill-btn ${cat === c ? 'active' : ''}`}>{c}</button>)}</div>
+            <div className="space-y-2">
+                {shown.map((p, i) => (
+                    <div key={i} className="bg-white rounded-2xl p-3.5 shadow-soft border border-white flex items-center gap-3">
+                        <div className="flex-1 cursor-pointer" onClick={() => setBigCard({ text: p.ko, sub: `${p.zh}（${p.roman}）` })}>
+                            <div className="font-black text-dark text-lg leading-snug">{p.ko}</div>
+                            <div className="text-[11px] text-gray-400 font-bold">{p.roman}</div>
+                            <div className="text-xs text-gray-500 font-bold mt-0.5">{p.zh}</div>
+                        </div>
+                        <button onClick={() => speakLocal(p.ko)} className="w-11 h-11 rounded-full bg-primary/10 text-primary flex items-center justify-center btn-press shrink-0" aria-label="發聲"><Icon name="volume-2" size={20} /></button>
+                    </div>
+                ))}
+            </div>
+            {bigCard && <BigTextOverlay card={bigCard} onClose={() => setBigCard(null)} />}
+        </div>
+    );
+};
+
+const ShoppingModule = ({ user }) => {
+    const [checked, setChecked] = useState({});
+    const [activeCat, setActiveCat] = useState(0);
+    useEffect(() => TripDB.listenChecklist(TRIP_ID, setChecked), []);
+
+    const group = TRIP_SHOPPING[activeCat];
+    const totalAll = TRIP_SHOPPING.reduce((a, g) => a + g.items.length, 0);
+    const doneAll = TRIP_SHOPPING.reduce((a, g) => a + g.items.filter(it => checked[it.id]).length, 0);
+    const doneCat = group.items.filter(it => checked[it.id]).length;
+
+    const toggle = (it) => {
+        if (checked[it.id]) TripDB.setChecklistItem(TRIP_ID, it.id, null);
+        else TripDB.setChecklistItem(TRIP_ID, it.id, user.avatar);
+    };
+
+    return (
+        <div id="shopping" className="px-4 pb-12 pt-8 bg-white/50 rounded-t-[2.5rem]">
+            <h2 className="font-serif text-2xl text-dark mb-2 px-2 flex items-center gap-2"><Icon name="shopping-cart" className="text-accent" /> 必買清單</h2>
+            <p className="text-xs text-gray-400 px-2 mb-1 font-bold">全家即時同步：買咗就勾，唔會重複買</p>
+            {typeof TRIP_SHOPPING_NOTE !== 'undefined' && <div className="mx-1 mb-3 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold rounded-xl px-3 py-2">{TRIP_SHOPPING_NOTE}</div>}
+            <div className="flex items-center gap-2 px-1 mb-3">
+                <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden"><div className="h-full bg-primary transition-all" style={{ width: `${totalAll ? (doneAll / totalAll) * 100 : 0}%` }}></div></div>
+                <span className="text-xs font-bold text-gray-400">{doneAll}/{totalAll}</span>
+            </div>
+            <div className="flex gap-2 overflow-x-auto no-scrollbar mb-4 px-1">
+                {TRIP_SHOPPING.map((g, i) => <button key={i} onClick={() => setActiveCat(i)} className={`pill-btn ${activeCat === i ? 'active' : ''}`}>{g.cat}</button>)}
+            </div>
+            <div className="text-[11px] font-bold text-gray-400 px-2 mb-2">{group.cat} · 完成 {doneCat}/{group.items.length}</div>
+            <div className="space-y-2">
+                {group.items.map(it => {
+                    const by = checked[it.id];
+                    return (
+                        <div key={it.id} onClick={() => toggle(it)} className={`rounded-2xl p-3 flex items-center gap-3 cursor-pointer transition-all border ${by ? 'bg-primary/5 border-primary/20' : 'bg-white border-white shadow-soft'}`}>
+                            {/* 勾勾用純文字，唔用 lucide Icon：條件卸載 Icon 會同 React DOM 打架 */}
+                            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 text-xs font-black ${by ? 'bg-primary border-primary text-white' : 'border-gray-200 bg-white text-transparent'}`}>✓</div>
+                            <div className="flex-1 min-w-0">
+                                <div className={`text-sm font-bold truncate ${by ? 'text-gray-400 line-through' : 'text-dark'}`}>{it.name}</div>
+                                {it.note && <div className="text-[11px] text-gray-400 font-bold truncate">{it.note}</div>}
+                            </div>
+                            {by && <span className="text-lg shrink-0" title="邊個買咗">{by}</span>}
+                        </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
+};
+
 /* --- 回憶留言（透過 Firestore 即時同步） --- */
 const MemoryNotes = ({ user }) => {
     const [notes, setNotes] = useState([]);
@@ -422,7 +589,7 @@ const UniversalDetailSheet = ({ item, onClose, type }) => {
     const desc2 = item.galleryDesc || item.desc_2;
     const img = item.img || item.cover;
     const location = item.location || item.name;
-    const thai = item.thai_text;
+    const showText = item.show_text || item.thai_text;
 
     let displayGallery = [];
     if (isGuide) {
@@ -467,7 +634,15 @@ const UniversalDetailSheet = ({ item, onClose, type }) => {
                     )}
 
                     {desc2 && (<div><p className="text-sm text-gray-600 leading-relaxed bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">{desc2}</p></div>)}
-                    {thai && (<div className="bg-primary/10 rounded-2xl p-4 flex items-center justify-between border border-primary/20"><div><div className="text-[13px] text-primary font-bold mb-1">SHOW TO DRIVER</div><div className="text-xl font-bold text-dark">{thai}</div></div><Icon name="copy" size={20} className="text-primary cursor-pointer" /></div>)}
+                    {showText && (
+                        <div className="bg-primary/10 rounded-2xl p-4 flex items-center justify-between gap-3 border border-primary/20">
+                            <div className="min-w-0"><div className="text-[13px] text-primary font-bold mb-1">俾司機/店員睇 SHOW THIS</div><div className="text-xl font-bold text-dark break-words">{showText}</div></div>
+                            <div className="flex gap-2 shrink-0">
+                                <button className="w-10 h-10 rounded-full bg-white text-primary flex items-center justify-center shadow-sm btn-press" onClick={() => speakLocal(showText)} aria-label="發聲"><Icon name="volume-2" size={18} /></button>
+                                <button className="w-10 h-10 rounded-full bg-white text-primary flex items-center justify-center shadow-sm btn-press" onClick={() => navigator.clipboard && navigator.clipboard.writeText(showText)} aria-label="複製"><Icon name="copy" size={18} /></button>
+                            </div>
+                        </div>
+                    )}
                     <div><h4 className="font-bold text-dark mb-2 text-sm">📍 位置導航</h4><div className="square-map shadow-soft overflow-hidden rounded-2xl"><iframe loading="lazy" allowFullScreen src={`https://www.google.com/maps?q=${encodeURIComponent(location)}&output=embed`}></iframe></div><button className="w-full mt-3 bg-dark text-white py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 btn-press shadow-md" onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`, '_blank')}><Icon name="map-pin" size={16} /> 開啟 Google Maps</button></div>
                 </div>
             </div>
@@ -538,6 +713,7 @@ const MainApp = ({ user, setUser }) => {
     const [filter, setFilter] = useState("全部");
     const [isGuideExpanded, setIsGuideExpanded] = useState(false);
     const [expandedDay, setExpandedDay] = useState(null);
+    const [bigCard, setBigCard] = useState(null);
 
     const toggleDay = (id) => setExpandedDay(expandedDay === id ? null : id);
 
@@ -619,6 +795,8 @@ const MainApp = ({ user, setUser }) => {
                 )}
             </div>
 
+            {typeof TRIP_SHOPPING !== 'undefined' && TRIP_SHOPPING.length > 0 && <ShoppingModule user={user} />}
+            {typeof TRIP_PHRASES !== 'undefined' && TRIP_PHRASES.length > 0 && <PhraseModule />}
             <ExpenseModule user={user} />
             <VoteModule user={user} />
 
@@ -641,6 +819,7 @@ const MainApp = ({ user, setUser }) => {
                                             <span>去 {f.flightOut} {f.timeOut}</span>
                                             <span>回 {f.flightBack} {f.timeBack}</span>
                                         </div>
+                                        {f.note && <div className={`text-xs font-bold mt-1.5 ${f.note.includes('⚠️') ? 'text-amber-600' : 'text-gray-400'}`}>{f.note}</div>}
                                     </div>
                                 ))}
                             </div>
@@ -651,6 +830,18 @@ const MainApp = ({ user, setUser }) => {
                             <h3 className="font-bold text-dark text-lg mb-3 flex items-center gap-1"><Icon name="home" className="text-accent" size={22} /> 住宿資訊</h3>
                             <div className="text-sm font-medium text-dark mb-1">{TRIP_ACCOMMODATION.name}</div>
                             {TRIP_ACCOMMODATION.address && <div className="text-sm text-gray-500 mb-2">{TRIP_ACCOMMODATION.address}</div>}
+                            {TRIP_ACCOMMODATION.koreanAddress && (
+                                <button onClick={() => setBigCard({ text: TRIP_ACCOMMODATION.koreanAddress, sub: TRIP_ACCOMMODATION.name })} className="w-full text-left bg-primary/10 border border-primary/20 rounded-xl p-3 mb-2 btn-press">
+                                    <div className="text-[11px] text-primary font-bold mb-0.5 flex items-center gap-1"><Icon name="languages" size={12} /> 韓文地址（㩒一下開大字卡俾司機睇）</div>
+                                    <div className="text-sm font-bold text-dark">{TRIP_ACCOMMODATION.koreanAddress}</div>
+                                </button>
+                            )}
+                            {TRIP_ACCOMMODATION.directions && (
+                                <div className="bg-gray-50 rounded-xl p-3 mb-2">
+                                    <div className="text-[11px] text-gray-400 font-bold mb-0.5 flex items-center gap-1"><Icon name="footprints" size={12} /> 點樣搵</div>
+                                    <div className="text-xs text-gray-500 leading-relaxed">{TRIP_ACCOMMODATION.directions}</div>
+                                </div>
+                            )}
                             {TRIP_ACCOMMODATION.notes && <div className="text-xs text-gray-400 mb-3 leading-relaxed">{TRIP_ACCOMMODATION.notes}</div>}
                             {TRIP_ACCOMMODATION.photos && TRIP_ACCOMMODATION.photos.length > 0 && (
                                 <div className="flex gap-2 mb-3">
@@ -683,6 +874,7 @@ const MainApp = ({ user, setUser }) => {
             </div>
 
             {selectedItem && <UniversalDetailSheet item={selectedItem} type={selectedType} onClose={() => setSelectedItem(null)} />}
+            {bigCard && <BigTextOverlay card={bigCard} onClose={() => setBigCard(null)} />}
             <BottomNav scrollTo={scrollTo} />
         </div>
     );

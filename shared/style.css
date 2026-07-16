@@ -116,6 +116,13 @@
         .person-name { font-size: 13px; font-weight: bold; margin-top: 4px; color: #666; text-align: center; width: 100%; overflow: hidden; text-overflow: ellipsis; }
         .person-item.selected .person-name { color: var(--accent); }
 
+        /* 全螢幕大字卡（俾司機/店員睇） */
+        .big-text-overlay { position: fixed; inset: 0; z-index: 300; background: #FFFFFF; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px; text-align: center; gap: 10px; animation: fadeIn 0.15s ease-out; cursor: pointer; }
+        .big-text-main { font-size: clamp(28px, 9vw, 56px); font-weight: 900; color: #1F2937; line-height: 1.35; word-break: keep-all; overflow-wrap: break-word; max-width: 100%; }
+
+        .btn-press:active { transform: scale(0.94); }
+        .shadow-soft { box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+
         #error-message { display: none; padding: 20px; color: red; text-align: center; background: white; height: 100vh; flex-direction: column; justify-content: center; z-index: 9999; position: fixed; top: 0; left: 0; width: 100%; }
         #loading { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background: var(--page-bg); color: var(--accent); font-weight: bold; z-index: 10000; }
 
