@@ -19,20 +19,35 @@ const { useState, useEffect } = React;
 const SPLITTABLE_MEMBERS = MEMBERS.filter(m => !m.excludeFromSplit);
 
 /* --- Components --- */
+// 用 React-owned 嘅 <span> 做外殼，lucide 只喺 span 內部（React 唔理嘅 imperative 節點）換 svg，
+// 避免 lucide 改動 React 管理嘅 DOM 引致 removeChild 崩潰。
 const Icon = ({ name, size = 20, className }) => {
-    useEffect(() => { lucide.createIcons(); }, [name]);
-    return <i data-lucide={name} style={{ width: size, height: size }} className={className}></i>;
+    const ref = React.useRef(null);
+    useEffect(() => {
+        const host = ref.current;
+        if (!host) return;
+        host.innerHTML = '';
+        const i = document.createElement('i');
+        i.setAttribute('data-lucide', name);
+        host.appendChild(i);
+        try { lucide.createIcons(); } catch (e) {}
+        const svg = host.querySelector('svg');
+        if (svg) { svg.setAttribute('width', size); svg.setAttribute('height', size); }
+    }, [name, size]);
+    return <span ref={ref} aria-hidden="true" className={className} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: size, height: size }}></span>;
 };
 
 const WelcomeView = ({ onSelect }) => (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 animate-fade-in">
-        <h1 className="font-serif text-2xl text-dark font-bold mb-2 text-center">{TRIP_TITLE}</h1>
-        <p className="text-gray-400 text-sm mb-8 text-center">先告訴我們，你是誰？</p>
+        <div className="section-eyebrow mb-3">FAMILY TRIP</div>
+        <h1 className="font-serif text-3xl font-bold mb-1 text-center" style={{ color: 'var(--ink)' }}>{TRIP_TITLE}</h1>
+        <div className="hero-title-underline mb-4"></div>
+        <p className="text-sm mb-8 text-center font-bold" style={{ color: 'var(--muted)' }}>先揀返你係邊個 👋</p>
         <div className="grid grid-cols-3 gap-4 w-full max-w-sm">
-            {MEMBERS.map(m => (
-                <button key={m.id} onClick={() => onSelect(m)} className="flex flex-col items-center gap-2 bg-white p-4 rounded-2xl shadow-soft border border-white btn-press">
-                    <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-3xl">{m.avatar}</div>
-                    <span className="text-sm font-bold text-dark">{m.name}</span>
+            {MEMBERS.map((m, i) => (
+                <button key={m.id} onClick={() => onSelect(m)} className="welcome-avatar glass flex flex-col items-center gap-2 p-4 rounded-2xl btn-press animate-rise" style={{ animationDelay: `${i * 45}ms` }}>
+                    <div className="w-14 h-14 rounded-full flex items-center justify-center text-3xl" style={{ background: 'color-mix(in srgb, var(--accent) 12%, white)' }}>{m.avatar}</div>
+                    <span className="text-sm font-bold" style={{ color: 'var(--ink)' }}>{m.name}</span>
                 </button>
             ))}
         </div>
@@ -49,16 +64,19 @@ const TripCountdown = () => {
     if (now < start) label = `✈️ 距離出發仲有 ${Math.ceil((start - now) / 86400000)} 日`;
     else if (now <= end) label = `🎉 旅程進行中 · Day ${Math.floor((now - start) / 86400000) + 1}`;
     else label = "🎈 旅程圓滿結束，記得返嚟留回憶";
-    return <div className="inline-block bg-white/90 backdrop-blur text-primary text-xs font-black px-4 py-1.5 rounded-full shadow-sm mt-2">{label}</div>;
+    return <div className="chip-pill text-xs mt-3"><span className="font-mono">{label}</span></div>;
 };
 
 const HeroHeader = () => (
-    <div className="relative h-[220px] w-full overflow-hidden bg-white z-0 flex flex-col justify-end pb-4 items-center">
-        <img src={TRIP_HERO_IMG} className="absolute inset-0 w-full h-full object-cover opacity-90" />
-        <div className="absolute inset-0 bg-gradient-to-t from-bg to-transparent"></div>
-        <div className="relative z-10 text-center mb-1">
-            <h1 className="font-serif text-3xl text-dark font-bold tracking-wide leading-tight shadow-sm text-center">{TRIP_TITLE}</h1>
-            <div className="text-gray-500 text-xs font-bold mt-1 tracking-wider text-center">{TRIP_SUBTITLE}</div>
+    <div className="hero-wrap h-[248px] w-full z-0 flex flex-col justify-end pb-5 items-center">
+        <img src={TRIP_HERO_IMG} className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, var(--page-bg) 2%, color-mix(in srgb, var(--page-bg) 30%, transparent) 40%, color-mix(in srgb, #0b1220 30%, transparent))' }}></div>
+        <div className="hero-grid-glow"></div>
+        <div className="relative z-10 text-center mb-1 flex flex-col items-center px-5">
+            <div className="section-eyebrow mb-1" style={{ color: '#fff', opacity: 0.9, textShadow: '0 1px 8px rgba(0,0,0,0.35)' }}>{typeof TRIP_CITY !== 'undefined' ? TRIP_CITY.toUpperCase() : ''} · FAMILY TRIP</div>
+            <h1 className="font-serif text-4xl font-bold tracking-wide leading-tight text-center" style={{ color: '#fff', textShadow: '0 2px 20px rgba(0,0,0,0.35)' }}>{TRIP_TITLE}</h1>
+            <div className="hero-title-underline"></div>
+            <div className="text-xs font-bold mt-2 tracking-wider text-center font-mono" style={{ color: 'rgba(255,255,255,0.92)', textShadow: '0 1px 8px rgba(0,0,0,0.35)' }}>{TRIP_SUBTITLE}</div>
             <TripCountdown />
         </div>
     </div>
@@ -108,24 +126,34 @@ const IdentitySheet = ({ user, onSelect, onClose }) => (
 );
 
 const BottomNav = ({ scrollTo }) => {
-    const hasShopping = typeof TRIP_SHOPPING !== 'undefined' && TRIP_SHOPPING.length > 0;
+    const hasGuide = typeof GUIDE_ITEMS !== 'undefined' && GUIDE_ITEMS.length > 0;
     const hasPhrases = typeof TRIP_PHRASES !== 'undefined' && TRIP_PHRASES.length > 0;
     const navItems = [
         { id: 'timeline', icon: 'calendar', label: '行程' },
-        { id: 'guide', icon: 'compass', label: '資訊' },
-        ...(hasShopping ? [{ id: 'shopping', icon: 'shopping-cart', label: '清單' }] : []),
+        ...(hasGuide ? [{ id: 'guide', icon: 'compass', label: '指南' }] : []),
         ...(hasPhrases ? [{ id: 'phrases', icon: 'volume-2', label: typeof TRIP_PHRASES_LABEL !== 'undefined' ? TRIP_PHRASES_LABEL : '會話' }] : []),
         { id: 'wallet', icon: 'wallet', label: '記帳' },
-        ...(TRIP_POLL && !hasShopping && !hasPhrases ? [{ id: 'vote', icon: 'check-square', label: '投票' }] : []),
         { id: 'tools', icon: 'wrench', label: '工具' },
         { id: 'memory', icon: 'image', label: '回憶' }
     ];
+    const [active, setActive] = useState(navItems[0].id);
+
+    // 捲動高亮：用 IntersectionObserver 追蹤目前段落
+    useEffect(() => {
+        const obs = new IntersectionObserver((entries) => {
+            const vis = entries.filter(e => e.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+            if (vis[0]) setActive(vis[0].target.id);
+        }, { rootMargin: '-45% 0px -45% 0px', threshold: [0, 0.25, 0.5] });
+        navItems.forEach(it => { const el = document.getElementById(it.id); if (el) obs.observe(el); });
+        return () => obs.disconnect();
+    }, []);
+
     return (
         <div className="bottom-nav">
             {navItems.map(item => (
-                <button key={item.id} onClick={() => scrollTo(item.id)} className="bottom-nav-item">
-                    <Icon name={item.icon} size={22} />
-                    <span className="text-[12px] font-bold mt-0.5">{item.label}</span>
+                <button key={item.id} onClick={() => { setActive(item.id); scrollTo(item.id); }} className={`bottom-nav-item ${active === item.id ? 'active' : ''}`}>
+                    <Icon name={item.icon} size={21} />
+                    <span>{item.label}</span>
                 </button>
             ))}
         </div>
@@ -172,18 +200,18 @@ const ForecastStrip = () => {
     const forecast = useForecast();
     if (!forecast || !forecast.time) return null;
     return (
-        <div className="bg-white/80 backdrop-blur rounded-2xl p-3 shadow-sm border border-white">
-            <div className="text-[11px] font-bold text-gray-400 mb-2 text-center">{TRIP_CITY} 未來7日天氣</div>
+        <div className="glass rounded-2xl p-3">
+            <div className="section-eyebrow mb-2 text-center">{TRIP_CITY} · 7-DAY FORECAST</div>
             <div className="flex gap-2 overflow-x-auto no-scrollbar">
                 {forecast.time.map((d, i) => {
                     const info = WEATHER_CODE_MAP[forecast.weathercode[i]] || { icon: 'cloud', label: '—' };
                     const date = new Date(d + 'T00:00:00');
                     return (
                         <div key={d} className="flex flex-col items-center min-w-[52px] flex-1 gap-0.5">
-                            <span className="text-[11px] font-bold text-gray-400">{date.getMonth() + 1}/{date.getDate()}</span>
+                            <span className="text-[11px] font-bold font-mono" style={{ color: 'var(--muted)' }}>{date.getMonth() + 1}/{date.getDate()}</span>
                             <Icon name={info.icon} size={18} className="text-primary" />
-                            <span className="text-[11px] font-bold text-dark">{Math.round(forecast.temperature_2m_min[i])}-{Math.round(forecast.temperature_2m_max[i])}°</span>
-                            <span className="text-[10px] font-bold text-blue-400">☔{forecast.precipitation_probability_max[i]}%</span>
+                            <span className="text-[11px] font-bold font-mono" style={{ color: 'var(--ink)' }}>{Math.round(forecast.temperature_2m_min[i])}-{Math.round(forecast.temperature_2m_max[i])}°</span>
+                            <span className="text-[10px] font-bold font-mono text-blue-400">☔{forecast.precipitation_probability_max[i]}%</span>
                         </div>
                     );
                 })}
@@ -212,26 +240,26 @@ const LiveInfoBar = () => {
     const wInfo = weather ? (WEATHER_CODE_MAP[weather.weathercode] || { icon: 'cloud', label: '—' }) : null;
 
     return (
-        <div className="px-6 mb-4 mt-4 space-y-3">
+        <div className="px-5 mb-4 mt-5 space-y-3">
             {weather && (
-                <div className="bg-white/80 backdrop-blur rounded-2xl p-3 shadow-sm border border-white flex items-center justify-center gap-6">
-                    <div className="flex items-center gap-2"><Icon name="clock" size={18} className="text-primary" /><span className="text-sm font-bold text-dark">{TRIP_CITY} {localTimeLabel}</span></div>
-                    <div className="flex items-center gap-2"><Icon name={wInfo.icon} size={18} className="text-primary" /><span className="text-sm font-bold text-dark">{Math.round(weather.temperature)}°C {wInfo.label}</span></div>
+                <div className="glass rounded-2xl p-3 flex items-center justify-center gap-6">
+                    <div className="flex items-center gap-2"><Icon name="clock" size={18} className="text-primary" /><span className="text-sm font-bold font-mono" style={{ color: 'var(--ink)' }}>{TRIP_CITY} {localTimeLabel}</span></div>
+                    <div className="flex items-center gap-2"><Icon name={wInfo.icon} size={18} className="text-primary" /><span className="text-sm font-bold" style={{ color: 'var(--ink)' }}><span className="font-mono">{Math.round(weather.temperature)}°C</span> {wInfo.label}</span></div>
                 </div>
             )}
             <div className="flex justify-center">
-                <div className="bg-white/80 backdrop-blur rounded-full p-2 pl-4 pr-4 shadow-sm border border-white flex items-center gap-2 w-full max-w-xs">
-                    <select value={leftCurr} onChange={e => setLeftCurr(e.target.value)} className="bg-transparent text-sm font-bold text-gray-500 outline-none"><option value="THB">THB</option><option value="HKD">HKD</option><option value="TWD">TWD</option><option value="USD">USD</option><option value="CNY">CNY</option><option value="JPY">JPY</option><option value="KRW">KRW</option></select>
-                    <input type="number" value={quickRateInput} onChange={e => setQuickRateInput(e.target.value)} className="bg-transparent w-full outline-none font-bold text-dark text-center" placeholder="輸入" />
-                    <span className="text-sm font-bold text-gray-400">≈</span>
-                    <span className="text-sm font-bold text-primary">{quickRateOutput}</span>
-                    <select value={rightCurr} onChange={e => setRightCurr(e.target.value)} className="bg-transparent text-sm font-bold text-primary outline-none"><option value="HKD">HKD</option><option value="THB">THB</option><option value="TWD">TWD</option><option value="USD">USD</option><option value="CNY">CNY</option><option value="JPY">JPY</option><option value="KRW">KRW</option></select>
+                <div className="glass rounded-full p-2 pl-4 pr-4 flex items-center gap-2 w-full max-w-xs">
+                    <select value={leftCurr} onChange={e => setLeftCurr(e.target.value)} className="bg-transparent text-sm font-bold outline-none font-mono" style={{ color: 'var(--muted)' }}><option value="THB">THB</option><option value="HKD">HKD</option><option value="TWD">TWD</option><option value="USD">USD</option><option value="CNY">CNY</option><option value="JPY">JPY</option><option value="KRW">KRW</option></select>
+                    <input type="number" value={quickRateInput} onChange={e => setQuickRateInput(e.target.value)} className="bg-transparent w-full outline-none font-bold text-center font-mono" style={{ color: 'var(--ink)' }} placeholder="輸入" />
+                    <span className="text-sm font-bold" style={{ color: 'var(--muted)' }}>≈</span>
+                    <span className="text-sm font-bold text-primary font-mono">{quickRateOutput}</span>
+                    <select value={rightCurr} onChange={e => setRightCurr(e.target.value)} className="bg-transparent text-sm font-bold text-primary outline-none font-mono"><option value="HKD">HKD</option><option value="THB">THB</option><option value="TWD">TWD</option><option value="USD">USD</option><option value="CNY">CNY</option><option value="JPY">JPY</option><option value="KRW">KRW</option></select>
                 </div>
             </div>
             {typeof TRIP_RATE_CHIPS !== 'undefined' && exchangeRates && (
                 <div className="flex justify-center gap-2 flex-wrap">
                     {TRIP_RATE_CHIPS.map(amt => (
-                        <span key={amt} className="bg-white/70 text-[11px] font-bold text-gray-500 px-3 py-1 rounded-full border border-white">
+                        <span key={amt} className="glass text-[11px] font-bold px-3 py-1 rounded-full font-mono" style={{ color: 'var(--muted)' }}>
                             {CURRENCY_SYMBOLS[TRIP_DEFAULT_CURRENCY] || ''}{amt.toLocaleString()} ≈ HK${(amt * (exchangeRates['HKD'] / exchangeRates[TRIP_DEFAULT_CURRENCY])).toFixed(amt * (exchangeRates['HKD'] / exchangeRates[TRIP_DEFAULT_CURRENCY]) < 100 ? 1 : 0)}
                         </span>
                     ))}
@@ -479,19 +507,22 @@ const PhraseModule = () => {
     const [bigCard, setBigCard] = useState(null);
     const shown = TRIP_PHRASES.filter(p => p.category === cat);
     return (
-        <div id="phrases" className="px-4 pb-12 pt-8">
-            <h2 className="font-serif text-2xl text-dark mb-2 px-2 flex items-center gap-2"><Icon name="volume-2" className="text-accent" /> {typeof TRIP_PHRASES_LABEL !== 'undefined' ? TRIP_PHRASES_LABEL : '會話'}小幫手</h2>
-            <p className="text-xs text-gray-400 px-2 mb-4 font-bold">㩒 🔊 即場發聲，㩒句子開大字卡俾店員睇</p>
+        <div id="phrases" className="px-4 pb-12 pt-9">
+            <div className="px-1 mb-4">
+                <div className="section-eyebrow">SPEAK · SHOW</div>
+                <h2 className="font-serif text-2xl font-bold flex items-center gap-2" style={{ color: 'var(--ink)' }}>{typeof TRIP_PHRASES_LABEL !== 'undefined' ? TRIP_PHRASES_LABEL : '會話'}小幫手</h2>
+                <p className="text-xs font-bold mt-1" style={{ color: 'var(--muted)' }}>㩒 🔊 即場發聲，㩒句子開大字卡舉高俾店員／司機睇</p>
+            </div>
             <div className="flex gap-2 overflow-x-auto no-scrollbar mb-4 px-1">{cats.map(c => <button key={c} onClick={() => setCat(c)} className={`pill-btn ${cat === c ? 'active' : ''}`}>{c}</button>)}</div>
             <div className="space-y-2">
                 {shown.map((p, i) => (
-                    <div key={i} className="bg-white rounded-2xl p-3.5 shadow-soft border border-white flex items-center gap-3">
+                    <div key={i} className="glass rounded-2xl p-3.5 flex items-center gap-3 animate-rise" style={{ animationDelay: `${i * 25}ms` }}>
                         <div className="flex-1 cursor-pointer" onClick={() => setBigCard({ text: p.ko, sub: `${p.zh}（${p.roman}）` })}>
-                            <div className="font-black text-dark text-lg leading-snug">{p.ko}</div>
-                            <div className="text-[11px] text-gray-400 font-bold">{p.roman}</div>
-                            <div className="text-xs text-gray-500 font-bold mt-0.5">{p.zh}</div>
+                            <div className="font-black text-lg leading-snug" style={{ color: 'var(--ink)' }}>{p.ko}</div>
+                            <div className="text-[11px] font-bold font-mono" style={{ color: 'var(--muted)' }}>{p.roman}</div>
+                            <div className="text-xs font-bold mt-0.5" style={{ color: 'var(--muted)' }}>{p.zh}</div>
                         </div>
-                        <button onClick={() => speakLocal(p.ko)} className="w-11 h-11 rounded-full bg-primary/10 text-primary flex items-center justify-center btn-press shrink-0" aria-label="發聲"><Icon name="volume-2" size={20} /></button>
+                        <button onClick={() => speakLocal(p.ko)} className="w-11 h-11 rounded-full text-primary flex items-center justify-center btn-press shrink-0" style={{ background: 'color-mix(in srgb, var(--accent) 12%, white)' }} aria-label="發聲"><Icon name="volume-2" size={20} /></button>
                     </div>
                 ))}
             </div>
@@ -500,50 +531,80 @@ const PhraseModule = () => {
     );
 };
 
-const ShoppingModule = ({ user }) => {
-    const [checked, setChecked] = useState({});
-    const [activeCat, setActiveCat] = useState(0);
-    useEffect(() => TripDB.listenChecklist(TRIP_ID, setChecked), []);
+/* --- 統一指南卡（美食景點 + 必買產品同一張卡，可買嘅有打勾 badge） --- */
+const GuideCard = ({ item, boughtBy, onOpen, onToggleBuy, delay }) => {
+    const [imgOk, setImgOk] = useState(true);
+    const img = item.image || item.cover || item.img;
+    const bought = !!boughtBy;
+    const note = item.note || item.desc_1;
+    return (
+        <div className={`g-card animate-rise ${bought ? 'bought' : ''}`} style={{ animationDelay: `${delay}ms` }} onClick={onOpen}>
+            <div className="g-imgwrap">
+                {img && imgOk
+                    ? <img className="g-img" src={img} loading="lazy" onError={() => setImgOk(false)} />
+                    : <div className="g-emoji-fallback">{item.emoji || '📍'}</div>}
+                <span className="g-chip">{item.tag || item.type || item.category}</span>
+                {item.buyable && (
+                    <button className={`buy-badge ${bought ? 'bought' : ''}`} title={bought ? `${boughtBy} 買咗` : '標記買咗'} onClick={onToggleBuy}>
+                        {bought ? boughtBy : '＋'}
+                    </button>
+                )}
+            </div>
+            <div className="g-body">
+                <div className="g-name">{item.name}</div>
+                {note && <div className="g-note">{note}</div>}
+            </div>
+        </div>
+    );
+};
 
-    const group = TRIP_SHOPPING[activeCat];
-    const totalAll = TRIP_SHOPPING.reduce((a, g) => a + g.items.length, 0);
-    const doneAll = TRIP_SHOPPING.reduce((a, g) => a + g.items.filter(it => checked[it.id]).length, 0);
-    const doneCat = group.items.filter(it => checked[it.id]).length;
+const GuideModule = ({ user, openDetail, checked, toggleBuy }) => {
+    const [filter, setFilter] = useState("全部");
+    const [expanded, setExpanded] = useState(false);
 
-    const toggle = (it) => {
-        if (checked[it.id]) TripDB.setChecklistItem(TRIP_ID, it.id, null);
-        else TripDB.setChecklistItem(TRIP_ID, it.id, user.avatar);
-    };
+    const categories = ["全部", ...Array.from(new Set(GUIDE_ITEMS.map(i => i.category)))];
+    const buyables = GUIDE_ITEMS.filter(i => i.buyable);
+    const bought = buyables.filter(i => checked[i.buyId]).length;
+
+    const filtered = filter === "全部" ? GUIDE_ITEMS : GUIDE_ITEMS.filter(i => i.category === filter);
+    const shown = expanded ? filtered : filtered.slice(0, 8);
 
     return (
-        <div id="shopping" className="px-4 pb-12 pt-8 bg-white/50 rounded-t-[2.5rem]">
-            <h2 className="font-serif text-2xl text-dark mb-2 px-2 flex items-center gap-2"><Icon name="shopping-cart" className="text-accent" /> 必買清單</h2>
-            <p className="text-xs text-gray-400 px-2 mb-1 font-bold">全家即時同步：買咗就勾，唔會重複買</p>
-            {typeof TRIP_SHOPPING_NOTE !== 'undefined' && <div className="mx-1 mb-3 bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold rounded-xl px-3 py-2">{TRIP_SHOPPING_NOTE}</div>}
-            <div className="flex items-center gap-2 px-1 mb-3">
-                <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden"><div className="h-full bg-primary transition-all" style={{ width: `${totalAll ? (doneAll / totalAll) * 100 : 0}%` }}></div></div>
-                <span className="text-xs font-bold text-gray-400">{doneAll}/{totalAll}</span>
+        <div id="guide" className="px-4 pb-12 pt-9">
+            <div className="px-1 mb-4">
+                <div className="section-eyebrow">EXPLORE · SHOP</div>
+                <h2 className="font-serif text-2xl font-bold flex items-center gap-2" style={{ color: 'var(--ink)' }}>旅遊指南 &amp; 必買</h2>
+                <p className="text-xs font-bold mt-1" style={{ color: 'var(--muted)' }}>美食景點同必買產品一齊睇，㩒右上角 <span className="text-primary">＋</span> 標記買咗（全家即時同步）</p>
             </div>
-            <div className="flex gap-2 overflow-x-auto no-scrollbar mb-4 px-1">
-                {TRIP_SHOPPING.map((g, i) => <button key={i} onClick={() => setActiveCat(i)} className={`pill-btn ${activeCat === i ? 'active' : ''}`}>{g.cat}</button>)}
-            </div>
-            <div className="text-[11px] font-bold text-gray-400 px-2 mb-2">{group.cat} · 完成 {doneCat}/{group.items.length}</div>
-            <div className="space-y-2">
-                {group.items.map(it => {
-                    const by = checked[it.id];
-                    return (
-                        <div key={it.id} onClick={() => toggle(it)} className={`rounded-2xl p-3 flex items-center gap-3 cursor-pointer transition-all border ${by ? 'bg-primary/5 border-primary/20' : 'bg-white border-white shadow-soft'}`}>
-                            {/* 勾勾用純文字，唔用 lucide Icon：條件卸載 Icon 會同 React DOM 打架 */}
-                            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 text-xs font-black ${by ? 'bg-primary border-primary text-white' : 'border-gray-200 bg-white text-transparent'}`}>✓</div>
-                            <div className="flex-1 min-w-0">
-                                <div className={`text-sm font-bold truncate ${by ? 'text-gray-400 line-through' : 'text-dark'}`}>{it.name}</div>
-                                {it.note && <div className="text-[11px] text-gray-400 font-bold truncate">{it.note}</div>}
-                            </div>
-                            {by && <span className="text-lg shrink-0" title="邊個買咗">{by}</span>}
-                        </div>
-                    );
-                })}
-            </div>
+
+            {buyables.length > 0 && (
+                <div className="glass rounded-2xl p-4 mb-4">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs font-bold flex items-center gap-1.5" style={{ color: 'var(--ink)' }}><Icon name="shopping-bag" size={14} className="text-primary" /> 必買進度</span>
+                        <span className="text-xs font-bold font-mono" style={{ color: 'var(--muted)' }}>{bought}/{buyables.length}</span>
+                    </div>
+                    <div className="meter"><div className="meter-fill" style={{ width: `${buyables.length ? (bought / buyables.length) * 100 : 0}%` }}></div></div>
+                    {typeof TRIP_SHOPPING_NOTE !== 'undefined' && <div className="mt-3 text-[11px] font-bold rounded-xl px-3 py-2" style={{ background: 'rgba(245,158,11,0.12)', color: '#B45309' }}>{TRIP_SHOPPING_NOTE}</div>}
+                </div>
+            )}
+
+            {GUIDE_ITEMS.length === 0 ? (
+                <div className="text-center text-sm py-8" style={{ color: 'var(--muted)' }}>景點/美食資料尚未整理，敬請期待</div>
+            ) : (
+                <>
+                    <div className="flex gap-2 overflow-x-auto no-scrollbar mb-4 px-1">{categories.map(c => (<button key={c} onClick={() => { setFilter(c); setExpanded(false); }} className={`pill-btn ${filter === c ? 'active' : ''}`}>{c}</button>))}</div>
+                    <div className="g-grid">
+                        {shown.map((item, i) => (
+                            <GuideCard key={item.id} item={item} delay={i * 35}
+                                boughtBy={item.buyable ? checked[item.buyId] : null}
+                                onOpen={() => openDetail(item, 'guide')}
+                                onToggleBuy={(e) => { e.stopPropagation(); toggleBuy(item); }} />
+                        ))}
+                    </div>
+                    {!expanded && filtered.length > 8 && <button onClick={() => setExpanded(true)} className="w-full mt-4 py-3 glass rounded-2xl text-xs font-bold flex items-center justify-center gap-1" style={{ color: 'var(--muted)' }}>查看全部 {filtered.length} 項 <Icon name="chevron-down" size={14} /></button>}
+                    {expanded && <button onClick={() => setExpanded(false)} className="w-full mt-4 py-3 glass rounded-2xl text-xs font-bold flex items-center justify-center gap-1" style={{ color: 'var(--muted)' }}>收起 <Icon name="chevron-up" size={14} /></button>}
+                </>
+            )}
         </div>
     );
 };
@@ -580,16 +641,17 @@ const MemoryNotes = ({ user }) => {
     );
 };
 
-const UniversalDetailSheet = ({ item, onClose, type }) => {
+const UniversalDetailSheet = ({ item, onClose, type, checked, toggleBuy }) => {
     const [activeImgDesc, setActiveImgDesc] = useState("點擊照片查看更多細節...");
     const isGuide = type === 'guide';
     const title = item.title || item.name;
     const tag = item.type || item.tag;
-    const desc1 = item.desc || item.desc_1;
+    const desc1 = item.desc || item.desc_1 || item.note;
     const desc2 = item.galleryDesc || item.desc_2;
-    const img = item.img || item.cover;
+    const img = item.image || item.img || item.cover;
     const location = item.location || item.name;
     const showText = item.show_text || item.thai_text;
+    const boughtBy = item.buyable && checked ? checked[item.buyId] : null;
 
     let displayGallery = [];
     if (isGuide) {
@@ -605,14 +667,21 @@ const UniversalDetailSheet = ({ item, onClose, type }) => {
             <div className="modal-content animate-slide-up">
                 <div className="modal-handle-bar" onClick={onClose}><div className="modal-drag-line"></div><div className="modal-close-text mt-1">下拉關閉</div></div>
                 <div className="p-6 pt-2 space-y-6">
-                    <div className="relative h-56 w-full rounded-2xl overflow-hidden shadow-sm">
-                        <img src={img} className="w-full h-full object-cover" />
+                    <div className="relative h-56 w-full rounded-2xl overflow-hidden shadow-sm" style={{ background: 'linear-gradient(135deg, color-mix(in srgb, var(--accent) 18%, #fff), color-mix(in srgb, var(--accent-2) 18%, #fff))' }}>
+                        {img && <img src={img} className="w-full h-full object-cover" />}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                        <div className="absolute bottom-4 left-4">
-                            <span className="bg-accent text-white text-[13px] px-2 py-1 rounded-md font-bold uppercase inline-block mb-1 shadow-sm">{tag}</span>
+                        <div className="absolute bottom-4 left-4 right-4">
+                            <span className="text-white text-[13px] px-2.5 py-1 rounded-md font-bold inline-block mb-1 shadow-sm" style={{ background: 'linear-gradient(135deg, var(--accent), var(--accent-2))' }}>{tag}</span>
                             <h1 className="text-2xl font-serif font-bold text-white leading-tight">{title}</h1>
                         </div>
                     </div>
+
+                    {item.buyable && (
+                        <button onClick={() => toggleBuy(item)} className={`w-full py-3.5 rounded-2xl font-bold flex items-center justify-center gap-2 btn-press ${boughtBy ? 'btn-secondary' : 'btn-confirm'}`}>
+                            {boughtBy ? <>✅ {boughtBy} 已買到 · 㩒一下取消</> : <><Icon name="shopping-bag" size={17} /> 標記買咗（全家同步）</>}
+                        </button>
+                    )}
+
                     <div className="flex gap-2">
                         <button className="flex-1 py-2 bg-gray-100 rounded-xl text-xs font-bold text-gray-600 flex items-center justify-center gap-1 hover:bg-gray-200" onClick={() => window.open(`https://www.google.com/search?q=${title}`, '_blank')}><Icon name="globe" size={14} /> 官網</button>
                         <button className="flex-1 py-2 bg-gray-100 rounded-xl text-xs font-bold text-gray-600 flex items-center justify-center gap-1 hover:bg-gray-200" onClick={() => window.open(`https://www.youtube.com/results?search_query=${title} ${TRIP_TITLE}`, '_blank')}><Icon name="youtube" size={14} /> 影片</button>
@@ -643,7 +712,7 @@ const UniversalDetailSheet = ({ item, onClose, type }) => {
                             </div>
                         </div>
                     )}
-                    <div><h4 className="font-bold text-dark mb-2 text-sm">📍 位置導航</h4><div className="square-map shadow-soft overflow-hidden rounded-2xl"><iframe loading="lazy" allowFullScreen src={`https://www.google.com/maps?q=${encodeURIComponent(location)}&output=embed`}></iframe></div><button className="w-full mt-3 bg-dark text-white py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 btn-press shadow-md" onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`, '_blank')}><Icon name="map-pin" size={16} /> 開啟 Google Maps</button></div>
+                    {!item.buyable && (<div><h4 className="font-bold mb-2 text-sm" style={{ color: 'var(--ink)' }}>📍 位置導航</h4><div className="square-map shadow-soft overflow-hidden rounded-2xl"><iframe loading="lazy" allowFullScreen src={`https://www.google.com/maps?q=${encodeURIComponent(location)}&output=embed`}></iframe></div><button className="w-full mt-3 btn-primary text-white py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 btn-press" onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`, '_blank')}><Icon name="map-pin" size={16} /> 開啟 Google Maps</button></div>)}
                 </div>
             </div>
         </div>
@@ -710,10 +779,17 @@ const MainApp = ({ user, setUser }) => {
     const [selectedType, setSelectedType] = useState(null);
     const [activeDay, setActiveDay] = useState(ITINERARY[0]?.id);
     const [identityOpen, setIdentityOpen] = useState(false);
-    const [filter, setFilter] = useState("全部");
-    const [isGuideExpanded, setIsGuideExpanded] = useState(false);
     const [expandedDay, setExpandedDay] = useState(null);
     const [bigCard, setBigCard] = useState(null);
+
+    // 必買清單勾選狀態（全家即時同步，單一真相來源）
+    const [checked, setChecked] = useState({});
+    useEffect(() => TripDB.listenChecklist(TRIP_ID, setChecked), []);
+    const toggleBuy = (item) => {
+        if (!item.buyId) return;
+        if (checked[item.buyId]) TripDB.setChecklistItem(TRIP_ID, item.buyId, null);
+        else TripDB.setChecklistItem(TRIP_ID, item.buyId, user.avatar);
+    };
 
     const toggleDay = (id) => setExpandedDay(expandedDay === id ? null : id);
 
@@ -726,9 +802,6 @@ const MainApp = ({ user, setUser }) => {
         if (id.startsWith('d')) setExpandedDay(id);
     };
 
-    const categories = ["全部", ...Array.from(new Set(GUIDE_ITEMS.map(i => i.category)))];
-    const filteredGuide = filter === "全部" ? GUIDE_ITEMS : GUIDE_ITEMS.filter(i => i.category === filter);
-    const displayedGuide = isGuideExpanded ? filteredGuide : filteredGuide.slice(0, 9);
     const openDetail = (item, type) => { setSelectedItem(item); setSelectedType(type); };
 
     const [adminNote, setAdminNote] = useState(localStorage.getItem(`${TRIP_ID}_admin_note`) || "歡迎大家！");
@@ -744,7 +817,7 @@ const MainApp = ({ user, setUser }) => {
     };
 
     return (
-        <div className="min-h-screen bg-bg relative animate-fade-in pl-0 pb-24">
+        <div className="min-h-screen relative animate-fade-in pl-0 pb-28">
             <AvatarButton user={user} onClick={() => setIdentityOpen(true)} />
             {identityOpen && <IdentitySheet user={user} onSelect={handleSwitchUser} onClose={() => setIdentityOpen(false)} />}
             <HeroHeader />
@@ -777,40 +850,26 @@ const MainApp = ({ user, setUser }) => {
                 ))}
             </div>
 
-            <div id="guide" className="px-4 pb-12 pt-8 bg-white/50 rounded-t-[2.5rem]">
-                <h2 className="font-serif text-2xl text-dark mb-6 px-2 flex items-center gap-2"><Icon name="compass" className="text-accent" /> 旅遊指南</h2>
-                {GUIDE_ITEMS.length === 0 ? (
-                    <div className="text-center text-sm text-gray-400 py-8">景點/美食資料尚未整理，敬請期待</div>
-                ) : (
-                    <>
-                        <div className="flex justify-center gap-2 overflow-x-auto no-scrollbar mb-4">{categories.map(c => (<button key={c} onClick={() => setFilter(c)} className={`pill-btn ${filter === c ? 'active' : ''}`}>{c}</button>))}</div>
-                        <div className="grid grid-cols-3 gap-3">
-                            {displayedGuide.map((item) => (
-                                <div key={item.id} className="bg-white rounded-xl overflow-hidden shadow-soft btn-press cursor-pointer relative group aspect-square hover:shadow-lg transition-shadow" onClick={() => openDetail(item, 'guide')}><div className="relative h-full"><img src={item.cover || item.img} className="w-full h-full object-cover" /><div className="absolute top-1 right-1 bg-white/90 backdrop-blur px-1.5 py-0.5 rounded text-[12px] font-bold text-dark shadow-sm z-10">{item.tag || item.type}</div></div></div>
-                            ))}
-                        </div>
-                        {!isGuideExpanded && filteredGuide.length > 9 && <button onClick={() => setIsGuideExpanded(true)} className="w-full mt-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-400 text-xs font-bold flex items-center justify-center gap-1 hover:bg-gray-50">查看更多 <Icon name="chevron-down" size={14} /></button>}
-                        {isGuideExpanded && <button onClick={() => setIsGuideExpanded(false)} className="w-full mt-4 py-3 bg-white border border-gray-200 rounded-xl text-gray-400 text-xs font-bold flex items-center justify-center gap-1 hover:bg-gray-50">收起 <Icon name="chevron-up" size={14} /></button>}
-                    </>
-                )}
-            </div>
+            <GuideModule user={user} openDetail={openDetail} checked={checked} toggleBuy={toggleBuy} />
 
-            {typeof TRIP_SHOPPING !== 'undefined' && TRIP_SHOPPING.length > 0 && <ShoppingModule user={user} />}
             {typeof TRIP_PHRASES !== 'undefined' && TRIP_PHRASES.length > 0 && <PhraseModule />}
             <ExpenseModule user={user} />
             <VoteModule user={user} />
 
-            <div id="tools" className="px-4 pb-12 pt-8 bg-white/50 rounded-t-[2.5rem]">
-                <h2 className="font-serif text-3xl text-dark mb-6 px-2 flex items-center gap-2"><Icon name="wrench" className="text-accent" size={28} /> 實用工具</h2>
+            <div id="tools" className="px-4 pb-12 pt-9">
+                <div className="px-1 mb-5">
+                    <div className="section-eyebrow">TOOLKIT</div>
+                    <h2 className="font-serif text-2xl font-bold flex items-center gap-2" style={{ color: 'var(--ink)' }}>實用工具</h2>
+                </div>
                 <div className="grid grid-cols-2 gap-4">
-                    <div id="board" className="bg-[#F2E6E1] p-4 rounded-3xl shadow-sm flex flex-col aspect-square"><div className="flex justify-between items-center mb-1"><h3 className="font-bold text-accent text-lg flex items-center gap-1"><Icon name="megaphone" size={24} /> 公告</h3><button onClick={() => setIsNoteEditing(!isNoteEditing)} className="text-[13px] bg-white px-2 py-1 rounded text-accent font-bold">Edit</button></div><div className="text-sm text-dark leading-relaxed overflow-y-auto flex-1 font-medium p-1">{isNoteEditing ? <textarea value={adminNote} onChange={e => { setAdminNote(e.target.value); saveAdmin(e.target.value); }} className="w-full h-full bg-white/50 p-1 rounded" /> : adminNote}</div></div>
-                    <div id="memo" className="bg-[#EAEAEA] p-4 rounded-3xl shadow-sm flex flex-col aspect-square"><h3 className="font-bold text-dark mb-1 text-lg flex items-center gap-1"><Icon name="edit-3" className="text-gray-500" size={24} /> 筆記</h3><textarea value={personalNote} onChange={e => { setPersonalNote(e.target.value); savePersonalNote(e.target.value); }} className="flex-1 bg-white p-2 rounded-xl text-sm outline-none resize-none mb-1" placeholder="寫點什麼..."></textarea></div>
-                    <div className="bg-white p-4 rounded-3xl shadow-sm col-span-2 aspect-auto border border-gray-100"><h3 className="font-bold text-dark text-lg mb-2">旅伴守則</h3><ul className="space-y-1 text-sm text-gray-500 font-medium"><li>1. 嘈交罰錢 $500</li><li>2. 拒絕求其</li><li>3. 離隊報備</li><li>4. 情緒價值</li></ul>
-                        <div className="grid grid-cols-2 gap-2 mt-4">{TRIP_EMERGENCY.map((e, i) => (<a key={i} href={`tel:${e.phone}`} className={`rounded-xl p-2 flex items-center justify-center border gap-1 text-sm font-bold ${i === 0 ? 'bg-red-50 text-red-500 border-red-100' : 'bg-gray-50 text-gray-500 border-gray-100'}`}><Icon name={i === 0 ? 'phone' : 'ambulance'} size={14} /> {e.label} {e.phone}</a>))}</div>
+                    <div id="board" className="glass p-4 rounded-3xl flex flex-col aspect-square"><div className="flex justify-between items-center mb-1"><h3 className="font-bold text-primary text-lg flex items-center gap-1"><Icon name="megaphone" size={22} /> 公告</h3><button onClick={() => setIsNoteEditing(!isNoteEditing)} className="text-[12px] bg-white/80 px-2 py-1 rounded-lg text-primary font-bold btn-press">Edit</button></div><div className="text-sm leading-relaxed overflow-y-auto flex-1 font-medium p-1" style={{ color: 'var(--ink)' }}>{isNoteEditing ? <textarea value={adminNote} onChange={e => { setAdminNote(e.target.value); saveAdmin(e.target.value); }} className="w-full h-full bg-white/70 p-1 rounded-lg outline-none" /> : adminNote}</div></div>
+                    <div id="memo" className="glass p-4 rounded-3xl flex flex-col aspect-square"><h3 className="font-bold mb-1 text-lg flex items-center gap-1" style={{ color: 'var(--ink)' }}><Icon name="edit-3" style={{ color: 'var(--muted)' }} size={22} /> 筆記</h3><textarea value={personalNote} onChange={e => { setPersonalNote(e.target.value); savePersonalNote(e.target.value); }} className="flex-1 bg-white/80 p-2 rounded-xl text-sm outline-none resize-none mb-1" placeholder="寫點什麼..."></textarea></div>
+                    <div className="glass p-5 rounded-3xl col-span-2 aspect-auto"><h3 className="font-bold text-lg mb-2" style={{ color: 'var(--ink)' }}>旅伴守則</h3><ul className="space-y-1 text-sm font-medium" style={{ color: 'var(--muted)' }}><li>1. 嘈交罰錢 $500</li><li>2. 拒絕求其</li><li>3. 離隊報備</li><li>4. 情緒價值</li></ul>
+                        <div className="grid grid-cols-2 gap-2 mt-4">{TRIP_EMERGENCY.map((e, i) => (<a key={i} href={`tel:${e.phone}`} className={`rounded-xl p-2.5 flex items-center justify-center border gap-1 text-sm font-bold btn-press ${i === 0 ? 'bg-red-50 text-red-500 border-red-100' : 'bg-white/70 text-gray-500 border-gray-100'}`}><Icon name={i === 0 ? 'phone' : 'ambulance'} size={14} /> {e.label} {e.phone}</a>))}</div>
                     </div>
                     {(typeof TRIP_FLIGHTS !== 'undefined' && TRIP_FLIGHTS.length > 0) && (
-                        <div className="bg-white p-4 rounded-3xl shadow-sm col-span-2 aspect-auto border border-gray-100">
-                            <h3 className="font-bold text-dark text-lg mb-3 flex items-center gap-1"><Icon name="plane" className="text-accent" size={22} /> 航班資訊</h3>
+                        <div className="glass p-5 rounded-3xl col-span-2 aspect-auto">
+                            <h3 className="font-bold text-lg mb-3 flex items-center gap-1" style={{ color: 'var(--ink)' }}><Icon name="plane" className="text-primary" size={22} /> 航班資訊</h3>
                             <div className="space-y-2">
                                 {TRIP_FLIGHTS.map((f, i) => (
                                     <div key={i} className="bg-gray-50 rounded-xl p-3 text-sm">
@@ -826,8 +885,8 @@ const MainApp = ({ user, setUser }) => {
                         </div>
                     )}
                     {(typeof TRIP_ACCOMMODATION !== 'undefined' && TRIP_ACCOMMODATION) && (
-                        <div className="bg-white p-4 rounded-3xl shadow-sm col-span-2 aspect-auto border border-gray-100">
-                            <h3 className="font-bold text-dark text-lg mb-3 flex items-center gap-1"><Icon name="home" className="text-accent" size={22} /> 住宿資訊</h3>
+                        <div className="glass p-5 rounded-3xl col-span-2 aspect-auto">
+                            <h3 className="font-bold text-lg mb-3 flex items-center gap-1" style={{ color: 'var(--ink)' }}><Icon name="home" className="text-primary" size={22} /> 住宿資訊</h3>
                             <div className="text-sm font-medium text-dark mb-1">{TRIP_ACCOMMODATION.name}</div>
                             {TRIP_ACCOMMODATION.address && <div className="text-sm text-gray-500 mb-2">{TRIP_ACCOMMODATION.address}</div>}
                             {TRIP_ACCOMMODATION.koreanAddress && (
@@ -873,7 +932,7 @@ const MainApp = ({ user, setUser }) => {
                 <MemoryNotes user={user} />
             </div>
 
-            {selectedItem && <UniversalDetailSheet item={selectedItem} type={selectedType} onClose={() => setSelectedItem(null)} />}
+            {selectedItem && <UniversalDetailSheet item={selectedItem} type={selectedType} checked={checked} toggleBuy={toggleBuy} onClose={() => setSelectedItem(null)} />}
             {bigCard && <BigTextOverlay card={bigCard} onClose={() => setBigCard(null)} />}
             <BottomNav scrollTo={scrollTo} />
         </div>
