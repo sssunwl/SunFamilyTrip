@@ -63,7 +63,7 @@
         const TRIP_FLIGHTS = [
             { group: "Ricky / Robin / Jolin / Pat / Justin / Han", from: "香港出發", note: "✅ 已出票 · HKG T2 出發，建議 00:30 前到機場", flightOut: "UO604", timeOut: "8/5 02:35→07:00", flightBack: "UO607", timeBack: "8/10 07:45→10:20 (返抵T1)" },
             { group: "Yi", from: "台北出發", note: "✅ 已出票 · 桃園 T1", flightOut: "7C6154", timeOut: "8/5 02:50→06:10", flightBack: "7C6151", timeBack: "8/10 09:30→11:00" },
-            { group: "Lam", from: "沖繩出發", note: "⚠️ 未購票！參考 Jin Air 時間，買咗請通知 SS 更新", flightOut: "LJ372", timeOut: "約11:00→13:00", flightBack: "LJ371", timeBack: "約08:05→10:05" }
+            { group: "Lam", from: "沖繩出發", note: "⚠️ 提早 8/3 到，自己喺廣安里 MOOGM 住2晚，8/5 先同大隊會合入住 Roots House", flightOut: "LJ372", timeOut: "8/3 約11:00→13:00", flightBack: "LJ371", timeBack: "8/10 約08:05→10:05" }
         ];
 
         // 住宿資訊
@@ -76,7 +76,7 @@
             mapUrl: "https://maps.app.goo.gl/BZPWjTxy3sjx2h929",
             checkIn: "待確認",
             checkOut: "待確認",
-            notes: "4間房・8張Super Single床＋客廳2張沙發床，每房附吹風機；2間乾濕分離廁所＋2間獨立淋浴間；附10人餐桌/餐具、淨水器、IH爐、微波爐、洗碗機；地暖+冷氣全房皆有，高速WiFi。附近停車：唐人街公營停車場（步行2分），24h 15,000韓元，每房可憑收據申請停車補助10,000韓元。",
+            notes: "4間房・8張Super Single床＋客廳2張沙發床，每房附吹風機；2間乾濕分離廁所＋2間獨立淋浴間；附10人餐桌/餐具、淨水器、IH爐、微波爐、洗碗機；地暖+冷氣全房皆有，高速WiFi。附近停車：唐人街公營停車場（步行2分），24h 15,000韓元，每房可憑收據申請停車補助10,000韓元。⚠️ Lam 8/3-8/5 提早到，呢兩晚自己另訂咗廣安里 MOOGM（http://moogm.co.kr/ ・地圖 https://maps.app.goo.gl/KdhuijgTFB6eT9Uc7），8/5先退房會合入住呢度。",
             photos: [
                 { src: "../assets/busan/roots_house_floorplan.jpg", caption: "樓層配置" },
                 { src: "../assets/busan/roots_house_kitchen.jpg", caption: "廚房" },
@@ -89,42 +89,43 @@
             { day: "Day 1", date: "8/5", weekday: "(三)", theme: "紅眼抵達・慢慢會合", id: "d1", highlights: "汗蒸幕休息等 Lam・釜山站入住", details: [
                 { id: "e1", time: "06:10", title: "港台兩批人抵達金海機場", desc: "Yi(7C6154)約06:10、香港組(UO604)約07:00抵達。入境用 e-Arrival Card（出發前上網填定），行李多建議直接 Kakao T 叫大型的士（벤티）或分2-3部的士去釜山站住宿放低行李（約30-40分鐘）。", type: "transport", location: "Gimhae International Airport", show_text: "김해공항" },
                 { id: "e2", time: "09:00", title: "SPA LAND Centum City 汗蒸幕", desc: "新世界百貨Centum City內，洗澎澎、汗蒸幕瞓返陣等 Lam。⚠️ 13歲以下不能入場：Han 要有一位大人陪去百貨頂樓 Zooraji 恐龍公園／B1 食街等，或者分批輪流浸。", type: "activity", location: "Spa Land Centum City", show_text: "신세계 센텀시티 스파랜드" },
-                { id: "e3", time: "13:00", title: "Lam 抵達會合", desc: "如買 LJ372 沖繩出發約13:00抵達金海機場，自行搭輕軌/的士會合。（機票未買，買咗更新呢度）", type: "transport" },
+                { id: "e3", time: "13:00", title: "Lam 自廣安里退房會合", desc: "Lam 8/3已經到咗，喺廣安里 MOOGM 住咗2晚，今日退房自行搭的士/地鐵嚟釜山站會合。", type: "transport" },
                 { id: "e4", time: "15:00", title: "釜山站 Roots House 入住", desc: "全員 check-in、分房、抖一抖。屋企對面就係唐人街同草梁一帶。", type: "hotel", location: "Busan Station", show_text: "부산 동구 중앙대로195번가길 21" },
                 { id: "e5", time: "18:30", title: "晚餐：草梁豬肋排巷", desc: "住宿步行10分鐘內嘅草梁돼지갈비골목，炭燒豬肋排老店一條巷，坐得舒服啱長輩；食完早啲返去補眠，第一日唔使搏。", type: "food", location: "Choryang Pork Galbi Alley", show_text: "초량돼지갈비골목" }
             ] },
-            { day: "Day 2", date: "8/6", weekday: "(四)", theme: "甘川洞・南浦洞・Yi 生日🎂", id: "d2", highlights: "彩色山城・札嘎其海鮮・富平夜市慶生", details: [
-                { id: "e6", time: "10:00", title: "甘川洞文化村", desc: "建議直接的士去文化村入口（1號線土城站再轉車好逼）。階梯多，長輩量力而為，主街打卡影小王子就夠。有遮陽帽、水記得帶。", type: "activity", location: "Gamcheon Culture Village", show_text: "감천문화마을 (부산 사하구 감내2로 203)" },
-                { id: "e7", time: "12:30", title: "札嘎其市場海鮮午餐", desc: "中午剛拍賣完的海鮮最新鮮，人也比晚上少，長輩好坐位。1樓揀活海鮮（生章魚/帝王蟹/烤蛤蜊），上2樓代客烹調，落單前先問清楚加工費。", type: "food", location: "Jagalchi Market", show_text: "자갈치시장" },
-                { id: "e8", time: "14:30", title: "BIFF廣場・國際市場・光復路", desc: "必食元祖堅果糖餅（씨앗호떡）、魚板串。呢區 Olive Young 好大間，藥妝可以喺度掃第一輪（睇「清單」tab勾住買）。", type: "activity", location: "BIFF Square", show_text: "비프광장" },
-                { id: "e9", time: "17:30", title: "樂天마트光復店 掃零食", desc: "⚠️ 8/9(日)大型超市公休，所以零食手信提早今日或者8/7掃！樂天百貨光復店隔籬，掃完的士返屋企放低先去食飯。", type: "shopping", location: "Lotte Mart Gwangbok", show_text: "롯데마트 광복점" },
-                { id: "e10", time: "19:00", title: "🎂 Yi 生日晚餐：富平罐頭夜市", desc: "今日係 Yi 生日！富平깡통夜市邊行邊食（豬腳巷都喺呢區），蛋糕可以喺樂天百貨B1或者OPS餅店買定，返屋企切餅慶祝。", type: "food", location: "Bupyeong Kkangtong Market", show_text: "부평깡통시장" }
+            { day: "Day 2", date: "8/6", weekday: "(四)", theme: "海雲台・Yi 生日🎂", id: "d2", highlights: "海岸膠囊列車・沙灘・生日晚餐", details: [
+                { id: "e6", time: "10:00", title: "海雲台 Blueline Park 膠囊列車", desc: "尾浦站搭天空膠囊去青沙浦，靚景又唔使行，長輩小朋友都啱。旺季建議提早網上訂位。", type: "activity", location: "Haeundae Blueline Park Mipo", show_text: "해운대 블루라인파크 미포정거장" },
+                { id: "e7", time: "12:30", title: "海雲台午餐", desc: "尾浦站／青沙浦一帶有唔少海鮮餐廳同咖啡店，或者去 Club D Oasis 嘆個靚景brunch都得。落沙灘玩水記得帶多套衫俾 Han。", type: "food", location: "Haeundae Market", show_text: "해운대시장" },
+                { id: "e8", time: "15:00", title: "彈性行程：SEA LIFE水族館 / The Bay 101 / Club D Oasis", desc: "太熱可以入水族館嘆冷氣（Han 最開心），或者去 The Bay 101／X the SKY 睇靚景，鍾意氣氛可以去 Club D Oasis 沙灘酒吧hea一陣。", type: "activity", location: "SEA LIFE Busan Aquarium", show_text: "부산 씨라이프 아쿠아리움" },
+                { id: "e9", time: "19:00", title: "🎂 Yi 生日晚餐", desc: "推薦해운대암소갈비집（Haeundae Amso Galbi），本地人氣韓牛烤肉老店，環境企理啱慶生；想食海鮮可以揀海雲台市場後面望海景嘅活海鮮餐廳。蛋糕記得提前喺附近百貨/餅店訂定，返到屋企切餅慶祝（餐廳名同營業時間出發前再核實一下）。", type: "food", location: "Haeundae", show_text: "해운대암소갈비집" }
             ] },
-            { day: "Day 3", date: "8/7", weekday: "(五)", theme: "西面醫美日", id: "d3", highlights: "金陽濟皮膚科 09:30・樂天百貨・西面美食", details: [
-                { id: "e11", time: "08:40", title: "出發去西面", desc: "地鐵1號線釜山站→西面站約15分鐘，或者的士約15-20分鐘。醫美5人組唔好遲到！", type: "transport", location: "Seomyeon Station", show_text: "서면역" },
-                { id: "e12", time: "09:30", title: "金陽濟皮膚科報到（5位已預約）", desc: "醫美組：Justin、Yi、Lam、兩位媽媽。已約 8/7 09:30，有廣東話翻譯。地點：西面站附近耕岩大樓5樓。⚠️ 行程有變要經 LINE (@717stezu) 通知診所。想做咩療程可以先睇「指南」入面嘅價目筆記。", type: "activity", location: "고운세상 김양제장봉석피부과", show_text: "부산진구 중앙대로 686 경암빌딩 5층 (고운세상피부과)" },
-                { id: "e13", time: "10:00", title: "非醫美組：西面自由行", desc: "爸爸們帶 Han：田浦咖啡街食brunch、NC百貨、或者飲住咖啡等。中午同醫美組會合。", type: "activity", location: "Jeonpo Cafe Street", show_text: "전포카페거리" },
-                { id: "e14", time: "12:30", title: "午餐：西面豬肉湯飯街", desc: "松亭3代豬肉湯飯等老店一條街，醫美後補充體力一流；唔食內臟可以叫淨肉（고기만）。", type: "food", location: "Seomyeon Pork Soup Street", show_text: "서면 돼지국밥거리" },
-                { id: "e15", time: "14:00", title: "樂天百貨・地下街", desc: "1-6樓百貨、7-8樓免稅店，記得帶護照退稅。地下街連住地鐵站唔怕曬。做完醫美嗰幾位當日避免焗桑拿/劇烈運動，行街冇問題。", type: "shopping", location: "Lotte Department Store Seomyeon", show_text: "롯데백화점 부산본점" },
-                { id: "e16", time: "19:00", title: "晚餐：西面烤肉", desc: "推薦육전식당（Yukjeon Sikdang，人氣烤肉，店員幫手烤）或同區烤腸/烤肉店；旺場要等位，可以派一個人早少少去攞籌。", type: "food", location: "Yukjeon Sikdang Seomyeon", show_text: "육전식당 서면점" }
+            { day: "Day 3", date: "8/7", weekday: "(五)", theme: "甘川洞・南浦洞・札嘎其", id: "d3", highlights: "彩色山城・海鮮午餐・富平夜市", details: [
+                { id: "e10", time: "10:00", title: "甘川洞文化村", desc: "建議直接的士去文化村入口（1號線土城站再轉車好逼）。階梯多，長輩量力而為，主街打卡影小王子就夠。有遮陽帽、水記得帶。", type: "activity", location: "Gamcheon Culture Village", show_text: "감천문화마을 (부산 사하구 감내2로 203)" },
+                { id: "e11", time: "12:30", title: "札嘎其市場海鮮午餐", desc: "中午剛拍賣完的海鮮最新鮮，人也比晚上少，長輩好坐位。1樓揀活海鮮（生章魚/帝王蟹/烤蛤蜊），上2樓代客烹調，落單前先問清楚加工費。", type: "food", location: "Jagalchi Market", show_text: "자갈치시장" },
+                { id: "e12", time: "14:30", title: "BIFF廣場・國際市場・光復路", desc: "必食元祖堅果糖餅（씨앗호떡）、魚板串。呢區 Olive Young 好大間，藥妝可以喺度掃第一輪（睇「清單」tab勾住買，詳細美食推薦見「指南」tab）。", type: "activity", location: "BIFF Square", show_text: "비프광장" },
+                { id: "e13", time: "17:00", title: "樂天마트光復店 掃零食", desc: "⚠️ 8/9(日)大型超市公休，零食手信記得今日買齊！樂天百貨光復店隔籬，掃完的士返屋企放低先去食飯。", type: "shopping", location: "Lotte Mart Gwangbok", show_text: "롯데마트 광복점" },
+                { id: "e14", time: "19:00", title: "晚餐：富平罐頭夜市", desc: "富平깡통夜市邊行邊食（豬腳巷都喺呢區），選擇多啱一家人隨意夾。", type: "food", location: "Bupyeong Kkangtong Market", show_text: "부평깡통시장" }
             ] },
-            { day: "Day 4", date: "8/8", weekday: "(六)", theme: "海雲台・廣安里無人機秀", id: "d4", highlights: "海岸膠囊列車・沙灘・22:00無人機秀", details: [
-                { id: "e17", time: "10:00", title: "海雲台 Blueline Park 膠囊列車", desc: "尾浦站搭天空膠囊去青沙浦，靚景又唔使行，長輩小朋友都啱。旺季建議提早網上訂位。", type: "activity", location: "Haeundae Blueline Park Mipo", show_text: "해운대 블루라인파크 미포정거장" },
-                { id: "e18", time: "12:30", title: "海雲台午餐＋沙灘hea", desc: "海雲台市場食伝統糕餅/魚糕，或者海邊餐廳。落沙灘玩水記得帶多套衫俾 Han。", type: "food", location: "Haeundae Market", show_text: "해운대시장" },
-                { id: "e19", time: "15:00", title: "彈性行程：SEA LIFE水族館 或 The Bay 101", desc: "太熱可以入水族館嘆冷氣（Han 最開心），或者去 X the SKY 100樓觀景台。", type: "activity", location: "SEA LIFE Busan Aquarium", show_text: "부산 씨라이프 아쿠아리움" },
-                { id: "e20", time: "18:30", title: "廣安里海鮮晚餐", desc: "海鮮辣湯（해물탕）或者貝殼燒，望住廣安大橋食飯；唔食辣叫清湯版。食完落沙灘霸定靚位。", type: "food", location: "Gwangalli Beach", show_text: "광안리해수욕장" },
-                { id: "e21", time: "22:00", title: "廣安里無人機表演", desc: "광안리M드론라이트쇼，週六固定場次約12分鐘，沙灘任何位置都睇到。⚠️ 當週實際時間以官方公告為準，長輩攰可以睇完早場先走。", type: "activity", location: "Gwangalli Beach", show_text: "광안리해수욕장" }
+            { day: "Day 4", date: "8/8", weekday: "(六)", theme: "西面醫美・廣安里無人機秀", id: "d4", highlights: "金陽濟皮膚科09:30（已改期）・廣安里晚餐・22:00無人機秀", details: [
+                { id: "e15", time: "08:40", title: "出發去西面", desc: "地鐵1號線釜山站→西面站約15分鐘，或者的士約15-20分鐘。醫美5人組唔好遲到！", type: "transport", location: "Seomyeon Station", show_text: "서면역" },
+                { id: "e16", time: "09:30", title: "金陽濟皮膚科報到（5位已預約，⚠️已由8/7改期到8/8）", desc: "醫美組：Justin、Yi、Lam、兩位媽媽。⚠️ 呢個時段本身約咗喺8/7，因為行程對調改咗嚟8/8，記得自己經 LINE (@717stezu) 同診所確認已改期成功。地點：西面站附近耕岩大樓5樓，有廣東話翻譯。想做咩療程可以先睇「指南」入面嘅價目筆記。", type: "activity", location: "고운세상 김양제장봉석피부과", show_text: "부산진구 중앙대로 686 경암빌딩 5층 (고운세상피부과)" },
+                { id: "e17", time: "10:00", title: "非醫美組：西面自由行", desc: "爸爸們帶 Han：田浦咖啡街食brunch、NC百貨、或者飲住咖啡等。中午同醫美組會合。", type: "activity", location: "Jeonpo Cafe Street", show_text: "전포카페거리" },
+                { id: "e18", time: "12:30", title: "午餐：西面豬肉湯飯街", desc: "松亭3代豬肉湯飯等老店一條街，醫美後補充體力一流；唔食內臟可以叫淨肉（고기만）。", type: "food", location: "Seomyeon Pork Soup Street", show_text: "서면 돼지국밥거리" },
+                { id: "e19", time: "14:00", title: "樂天百貨・地下街", desc: "1-6樓百貨、7-8樓免稅店，記得帶護照退稅。地下街連住地鐵站唔怕曬。做完醫美嗰幾位當日避免焗桑拿/劇烈運動，行街冇問題。", type: "shopping", location: "Lotte Department Store Seomyeon", show_text: "롯데백화점 부산본점" },
+                { id: "e20", time: "17:30", title: "轉場去廣安里", desc: "西面搭地鐵轉乘或直接的士去廣安里，車程約20-30分鐘，建議分批叫車，行李輕便就得。", type: "transport", location: "Gwangalli Beach", show_text: "광안리해수욕장" },
+                { id: "e21", time: "18:30", title: "廣安里海鮮晚餐", desc: "海鮮辣湯（해물탕）或者貝殼燒，望住廣安大橋食飯；唔食辣叫清湯版。食完落沙灘霸定靚位。", type: "food", location: "Gwangalli Beach", show_text: "광안리해수욕장" },
+                { id: "e22", time: "22:00", title: "廣安里無人機表演", desc: "광안리M드론라이트쇼，週六固定場次約12分鐘，沙灘任何位置都睇到。⚠️ 當週實際時間以官方公告為準，長輩攰可以睇完早場先走。", type: "activity", location: "Gwangalli Beach", show_text: "광안리해수욕장" }
             ] },
             { day: "Day 5", date: "8/9", weekday: "(日)", theme: "釜山塔・執漏採購", id: "d5", highlights: "龍頭山公園・最後衝刺購物", details: [
-                { id: "e22", time: "10:00", title: "龍頭山公園・釜山塔", desc: "光復路有扶手電梯上山唔使行樓梯。上塔睇全釜山景，早上人少涼爽。", type: "activity", location: "Busan Tower Yongdusan Park", show_text: "용두산공원 부산타워" },
-                { id: "e23", time: "12:00", title: "南浦洞午餐", desc: "推薦18番완당집（餛飩老店，長輩啱食）或者密麵（밀면，釜山特色冷麵）。", type: "food", location: "Nampodong", show_text: "남포동" },
-                { id: "e24", time: "14:00", title: "執漏採購（大型超市今日公休！）", desc: "⚠️ 8/9係第2個週日，樂天마트/emart 公休。執漏去：樂天百貨（照常開）、Olive Young、藥局、便利店。對返「清單」tab睇邊樣未買。", type: "shopping", location: "Gwangbok-ro", show_text: "광복로" },
-                { id: "e25", time: "19:00", title: "餞別大餐", desc: "最後一晚食好啲：推薦韓牛烤肉或者醬油蟹（간장게장）。想就腳可以返草梁/唐人街一帶，聽日要早起執行李。", type: "food", location: "Choryang", show_text: "초량" }
+                { id: "e23", time: "10:00", title: "龍頭山公園・釜山塔", desc: "光復路有扶手電梯上山唔使行樓梯。上塔睇全釜山景，早上人少涼爽。", type: "activity", location: "Busan Tower Yongdusan Park", show_text: "용두산공원 부산타워" },
+                { id: "e24", time: "12:00", title: "南浦洞午餐", desc: "推薦18番완당집（餛飩老店，長輩啱食）或者密麵（밀면，釜山特色冷麵）。", type: "food", location: "Nampodong", show_text: "남포동" },
+                { id: "e25", time: "14:00", title: "執漏採購（大型超市今日公休！）", desc: "⚠️ 8/9係第2個週日，樂天마트/emart 公休。執漏去：樂天百貨（照常開）、Olive Young、藥局、便利店。對返「清單」tab睇邊樣未買。", type: "shopping", location: "Gwangbok-ro", show_text: "광복로" },
+                { id: "e26", time: "19:00", title: "餞別大餐", desc: "最後一晚食好啲：推薦韓牛烤肉或者醬油蟹（간장게장）。想就腳可以返草梁/唐人街一帶，聽日要早起執行李。", type: "food", location: "Choryang", show_text: "초량" }
             ] },
             { day: "Day 6", date: "8/10", weekday: "(一)", theme: "返程", id: "d6", highlights: "分批退房去機場", details: [
-                { id: "e26", time: "05:00", title: "香港組出發去機場", desc: "UO607 07:45起飛，05:00前出門（的士約30分鐘，前一晚叫定車/預約 Kakao T）。屋企執返原狀、鎖匙放返原位。", type: "transport", location: "Gimhae International Airport", show_text: "김해공항 국제선" },
-                { id: "e27", time: "06:45", title: "Yi 出發去機場", desc: "7C6151 09:30起飛。金海機場國際線人流早上多，預鬆啲。", type: "transport" },
-                { id: "e28", time: "—", title: "Lam 按航班安排", desc: "沖繩機票買咗之後更新。臨走前記得帶埋三진어묵魚糕手信（釜山站有分店）！", type: "transport", location: "Busan Station Samjin Eomuk", show_text: "삼진어묵 부산역점" }
+                { id: "e27", time: "05:00", title: "香港組出發去機場", desc: "UO607 07:45起飛，05:00前出門（的士約30分鐘，前一晚叫定車/預約 Kakao T）。屋企執返原狀、鎖匙放返原位。", type: "transport", location: "Gimhae International Airport", show_text: "김해공항 국제선" },
+                { id: "e28", time: "06:45", title: "Yi 出發去機場", desc: "7C6151 09:30起飛。金海機場國際線人流早上多，預鬆啲。", type: "transport" },
+                { id: "e29", time: "08:05", title: "Lam 出發去機場", desc: "LJ371 約08:05→10:05飛返沖繩。臨走前記得帶埋三진어묵魚糕手信（釜山站有分店）！", type: "transport", location: "Busan Station Samjin Eomuk", show_text: "삼진어묵 부산역점" }
             ] }
         ];
 
