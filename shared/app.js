@@ -839,7 +839,7 @@ const MainApp = ({ user, setUser }) => {
                                     <div key={i} onClick={() => openDetail(item, 'event')} className="event-card">
                                         <div className="flex gap-4 items-center">
                                             <div className="flex flex-col items-center min-w-[45px] text-sm font-bold text-primary bg-primary/10 px-2 py-1 rounded-lg z-10">{item.time}</div>
-                                            <div className="flex-1 border-l-2 border-gray-100 pl-4 py-1"><div className="font-bold text-dark text-base mb-0.5 truncate">{item.title}</div><div className="text-xs text-gray-400 line-clamp-1">{item.desc}</div></div>
+                                            <div className="flex-1 min-w-0 border-l-2 border-gray-100 pl-4 py-1"><div className="font-bold text-dark text-base mb-0.5 truncate">{item.title}</div><div className="text-xs text-gray-400 line-clamp-1">{item.desc}</div></div>
                                             <div className="text-gray-300"><Icon name="chevron-right" size={16} /></div>
                                         </div>
                                     </div>
