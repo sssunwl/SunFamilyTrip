@@ -1,0 +1,1268 @@
+{
+  "meta": {
+    "title": "釜山尋味之旅",
+    "subtitle": "2026 夏季家族旅行 · 8/5-8/10",
+    "city": "釜山",
+    "country": "韓國",
+    "coords": {
+      "lat": 35.1796,
+      "lng": 129.0756
+    },
+    "currency": "KRW",
+    "startDate": "2026-08-05",
+    "endDate": "2026-08-10",
+    "heroImg": "https://images.unsplash.com/photo-1538485399081-7191377e8241?w=800&q=80",
+    "photosUrl": "https://photos.app.goo.gl/fK9xsz8W5jbbevAY8",
+    "emergency": [
+      {
+        "label": "韓國觀光警察(中文)",
+        "phone": "1330"
+      },
+      {
+        "label": "韓國救護車/消防",
+        "phone": "119"
+      }
+    ],
+    "status": "past",
+    "flights": [
+      {
+        "group": "Ricky / Robin / Jolin / Pat / Justin / Han",
+        "from": "香港出發",
+        "note": "✅ 已出票 · HKG T2 出發，建議 00:30 前到機場",
+        "flightOut": "UO604",
+        "timeOut": "8/5 02:35→07:00",
+        "flightBack": "UO607",
+        "timeBack": "8/10 07:45→10:20 (返抵T1)"
+      },
+      {
+        "group": "Yi",
+        "from": "台北出發",
+        "note": "✅ 已出票 · 桃園 T1",
+        "flightOut": "7C6154",
+        "timeOut": "8/5 02:50→06:10",
+        "flightBack": "7C6151",
+        "timeBack": "8/10 09:30→11:00"
+      },
+      {
+        "group": "Lam",
+        "from": "沖繩出發",
+        "note": "⚠️ 提早 8/3 到，自己喺廣安里 MOOGM 住2晚，8/5 先同大隊會合入住 Roots House",
+        "flightOut": "LJ372",
+        "timeOut": "8/3 約11:00→13:00",
+        "flightBack": "LJ371",
+        "timeBack": "8/10 約08:05→10:05"
+      }
+    ],
+    "accommodation": {
+      "name": "釜山站 Roots House（旅居 · ★4.92）",
+      "address": "21 Jungang-daero 195beon-ga-gil 3-4F, Dong-gu, Busan（釜山站對面，步行約5分鐘）",
+      "koreanAddress": "부산 동구 중앙대로195번가길 21, 도구빌딩 3층·4층",
+      "directions": "釜山站對面，穿過 Gupo Noodles（구포국수）旁邊小巷，出巷口喺 Exon 左轉，一樓有紅色招牌森林嘅 Dogwoo 大廈。⚠️ 3樓、4樓，冇電梯，長輩行李安排後生幫手搬。",
+      "link": "https://www.airbnb.com.tw/rooms/1490277048706862275",
+      "mapUrl": "https://maps.app.goo.gl/BZPWjTxy3sjx2h929",
+      "checkIn": "待確認",
+      "checkOut": "待確認",
+      "notes": "4間房・8張Super Single床＋客廳2張沙發床，每房附吹風機；2間乾濕分離廁所＋2間獨立淋浴間；附10人餐桌/餐具、淨水器、IH爐、微波爐、洗碗機；地暖+冷氣全房皆有，高速WiFi。附近停車：唐人街公營停車場（步行2分），24h 15,000韓元，每房可憑收據申請停車補助10,000韓元。⚠️ Lam 8/3-8/5 提早到，呢兩晚自己另訂咗廣安里 MOOGM（http://moogm.co.kr/ ・地圖 https://maps.app.goo.gl/KdhuijgTFB6eT9Uc7），8/5先退房會合入住呢度。",
+      "photos": [
+        {
+          "src": "../assets/busan/roots_house_floorplan.jpg",
+          "caption": "樓層配置"
+        },
+        {
+          "src": "../assets/busan/roots_house_kitchen.jpg",
+          "caption": "廚房"
+        },
+        {
+          "src": "../assets/busan/roots_house_bedroom.jpg",
+          "caption": "房間"
+        }
+      ]
+    }
+  },
+  "members": [
+    {
+      "id": "lam",
+      "name": "Lam",
+      "avatar": "🦁"
+    },
+    {
+      "id": "ricky",
+      "name": "Ricky",
+      "avatar": "🐻"
+    },
+    {
+      "id": "robin",
+      "name": "Robin",
+      "avatar": "🐯"
+    },
+    {
+      "id": "jolin",
+      "name": "Jolin",
+      "avatar": "🐰"
+    },
+    {
+      "id": "pat",
+      "name": "Pat",
+      "avatar": "🦊"
+    },
+    {
+      "id": "yi",
+      "name": "Yi",
+      "avatar": "🐼"
+    },
+    {
+      "id": "justin",
+      "name": "Justin",
+      "avatar": "🐵"
+    },
+    {
+      "id": "han",
+      "name": "Han",
+      "avatar": "👶",
+      "excludeFromSplit": true
+    }
+  ],
+  "days": [
+    {
+      "id": "d1",
+      "date": "2026-08-05",
+      "weekday": "三",
+      "theme": "紅眼抵達・慢慢會合",
+      "highlights": "汗蒸幕休息等 Lam・釜山站入住"
+    },
+    {
+      "id": "d2",
+      "date": "2026-08-06",
+      "weekday": "四",
+      "theme": "海雲台・Yi 生日🎂",
+      "highlights": "海岸膠囊列車・Club D Oasis・生日晚餐"
+    },
+    {
+      "id": "d3",
+      "date": "2026-08-07",
+      "weekday": "五",
+      "theme": "甘川洞・南浦洞・札嘎其",
+      "highlights": "彩色山城・海鮮午餐・富平夜市"
+    },
+    {
+      "id": "d4",
+      "date": "2026-08-08",
+      "weekday": "六",
+      "theme": "西面醫美・廣安里無人機秀",
+      "highlights": "金陽濟皮膚科09:30（已改期）・廣安里晚餐・22:00無人機秀"
+    },
+    {
+      "id": "d5",
+      "date": "2026-08-09",
+      "weekday": "日",
+      "theme": "釜山塔・執漏採購",
+      "highlights": "龍頭山公園・最後衝刺購物"
+    },
+    {
+      "id": "d6",
+      "date": "2026-08-10",
+      "weekday": "一",
+      "theme": "返程",
+      "highlights": "分批退房去機場"
+    }
+  ],
+  "blocks": [
+    {
+      "id": "e1",
+      "type": "transport",
+      "dayId": "d1",
+      "order": 0,
+      "time": "06:10",
+      "durationMin": 170,
+      "title": "港台兩批人抵達金海機場",
+      "desc": "Yi(7C6154)約06:10、香港組(UO604)約07:00抵達。入境用 e-Arrival Card（出發前上網填定），行李多建議直接 Kakao T 叫大型的士（벤티）或分2-3部的士去釜山站住宿放低行李（約30-40分鐘）。",
+      "place": {
+        "name": "Gimhae International Airport",
+        "localName": "김해공항",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Gimhae%20International%20Airport"
+      }
+    },
+    {
+      "id": "e2",
+      "type": "sight",
+      "dayId": "d1",
+      "order": 1,
+      "time": "09:00",
+      "durationMin": 240,
+      "title": "SPA LAND Centum City 汗蒸幕",
+      "desc": "新世界百貨Centum City內，洗澎澎、汗蒸幕瞓返陣等 Lam。",
+      "warn": "13歲以下不能入場：Han 要有一位大人陪去百貨頂樓 Zooraji 恐龍公園／B1 食街等，或者分批輪流浸。",
+      "place": {
+        "name": "Spa Land Centum City",
+        "localName": "신세계 센텀시티 스파랜드",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Spa%20Land%20Centum%20City"
+      }
+    },
+    {
+      "id": "e3",
+      "type": "transport",
+      "dayId": "d1",
+      "order": 2,
+      "time": "13:00",
+      "durationMin": 120,
+      "title": "Lam 自廣安里退房會合",
+      "desc": "Lam 8/3已經到咗，喺廣安里 MOOGM 住咗2晚，今日退房自行搭的士/地鐵嚟釜山站會合。"
+    },
+    {
+      "id": "e4",
+      "type": "hotel",
+      "dayId": "d1",
+      "order": 3,
+      "time": "15:00",
+      "durationMin": 210,
+      "title": "釜山站 Roots House 入住",
+      "desc": "全員 check-in、分房、抖一抖。屋企對面就係唐人街同草梁一帶。",
+      "place": {
+        "name": "Busan Station",
+        "localName": "부산 동구 중앙대로195번가길 21",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Busan%20Station"
+      }
+    },
+    {
+      "id": "e5",
+      "type": "food",
+      "dayId": "d1",
+      "order": 4,
+      "time": "18:30",
+      "durationMin": 90,
+      "title": "晚餐：草梁豬肋排巷",
+      "desc": "住宿步行10分鐘內嘅草梁돼지갈비골목，炭燒豬肋排老店一條巷，坐得舒服啱長輩；食完早啲返去補眠，第一日唔使搏。",
+      "place": {
+        "name": "Choryang Pork Galbi Alley",
+        "localName": "초량돼지갈비골목",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Choryang%20Pork%20Galbi%20Alley"
+      }
+    },
+    {
+      "id": "e6",
+      "type": "sight",
+      "dayId": "d2",
+      "order": 0,
+      "time": "10:00",
+      "durationMin": 150,
+      "title": "海雲台 Blueline Park 膠囊列車",
+      "desc": "尾浦站搭天空膠囊去青沙浦，靚景又唔使行，長輩小朋友都啱。旺季建議提早網上訂位。",
+      "place": {
+        "name": "Haeundae Blueline Park Mipo",
+        "localName": "해운대 블루라인파크 미포정거장",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Haeundae%20Blueline%20Park%20Mipo"
+      }
+    },
+    {
+      "id": "e7",
+      "type": "food",
+      "dayId": "d2",
+      "order": 1,
+      "time": "12:30",
+      "durationMin": 150,
+      "title": "海雲台午餐",
+      "desc": "尾浦站／青沙浦一帶有唔少海鮮餐廳同咖啡店，或者去 Club D Oasis 嘆個靚景brunch都得。落沙灘玩水記得帶多套衫俾 Han。",
+      "place": {
+        "name": "Haeundae Market",
+        "localName": "해운대시장",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Haeundae%20Market"
+      }
+    },
+    {
+      "id": "e8",
+      "type": "sight",
+      "dayId": "d2",
+      "order": 2,
+      "time": "15:00",
+      "durationMin": 240,
+      "title": "彈性行程：SEA LIFE水族館 / The Bay 101 / Club D Oasis",
+      "desc": "太熱可以入水族館嘆冷氣（Han 最開心），或者去 The Bay 101／X the SKY 睇靚景，鍾意氣氛可以去 Club D Oasis 沙灘酒吧hea一陣。",
+      "place": {
+        "name": "SEA LIFE Busan Aquarium",
+        "localName": "부산 씨라이프 아쿠아리움",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=SEA%20LIFE%20Busan%20Aquarium"
+      }
+    },
+    {
+      "id": "e9",
+      "type": "food",
+      "dayId": "d2",
+      "order": 3,
+      "time": "19:00",
+      "durationMin": 90,
+      "title": "🎂 Yi 生日晚餐",
+      "desc": "推薦해운대암소갈비집（Haeundae Amso Galbi），本地人氣韓牛烤肉老店，環境企理啱慶生；想食海鮮可以揀海雲台市場後面望海景嘅活海鮮餐廳。蛋糕記得提前喺附近百貨/餅店訂定，返到屋企切餅慶祝（餐廳名同營業時間出發前再核實一下）。",
+      "place": {
+        "name": "Haeundae",
+        "localName": "해운대암소갈비집",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Haeundae"
+      }
+    },
+    {
+      "id": "e10",
+      "type": "sight",
+      "dayId": "d3",
+      "order": 0,
+      "time": "10:00",
+      "durationMin": 150,
+      "title": "甘川洞文化村",
+      "desc": "建議直接的士去文化村入口（1號線土城站再轉車好逼）。階梯多，長輩量力而為，主街打卡影小王子就夠。有遮陽帽、水記得帶。",
+      "place": {
+        "name": "Gamcheon Culture Village",
+        "localName": "감천문화마을 (부산 사하구 감내2로 203)",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Gamcheon%20Culture%20Village"
+      }
+    },
+    {
+      "id": "e11",
+      "type": "food",
+      "dayId": "d3",
+      "order": 1,
+      "time": "12:30",
+      "durationMin": 120,
+      "title": "札嘎其市場海鮮午餐",
+      "desc": "中午剛拍賣完的海鮮最新鮮，人也比晚上少，長輩好坐位。1樓揀活海鮮（生章魚/帝王蟹/烤蛤蜊），上2樓代客烹調，落單前先問清楚加工費。",
+      "place": {
+        "name": "Jagalchi Market",
+        "localName": "자갈치시장",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Jagalchi%20Market"
+      }
+    },
+    {
+      "id": "e12",
+      "type": "sight",
+      "dayId": "d3",
+      "order": 2,
+      "time": "14:30",
+      "durationMin": 150,
+      "title": "BIFF廣場・國際市場・光復路",
+      "desc": "必食元祖堅果糖餅（씨앗호떡）、魚板串。呢區 Olive Young 好大間，藥妝可以喺度掃第一輪（睇「清單」tab勾住買，詳細美食推薦見「指南」tab）。",
+      "place": {
+        "name": "BIFF Square",
+        "localName": "비프광장",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=BIFF%20Square"
+      }
+    },
+    {
+      "id": "e13",
+      "type": "shopping",
+      "dayId": "d3",
+      "order": 3,
+      "time": "17:00",
+      "durationMin": 120,
+      "title": "樂天마트光復店 掃零食",
+      "desc": "樂天百貨光復店隔籬，掃完的士返屋企放低先去食飯。",
+      "warn": "8/9(日)大型超市公休，零食手信記得今日買齊！",
+      "place": {
+        "name": "Lotte Mart Gwangbok",
+        "localName": "롯데마트 광복점",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Lotte%20Mart%20Gwangbok"
+      }
+    },
+    {
+      "id": "e14",
+      "type": "food",
+      "dayId": "d3",
+      "order": 4,
+      "time": "19:00",
+      "durationMin": 90,
+      "title": "晚餐：富平罐頭夜市",
+      "desc": "富平깡통夜市邊行邊食（豬腳巷都喺呢區），選擇多啱一家人隨意夾。",
+      "place": {
+        "name": "Bupyeong Kkangtong Market",
+        "localName": "부평깡통시장",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Bupyeong%20Kkangtong%20Market"
+      }
+    },
+    {
+      "id": "e15",
+      "type": "transport",
+      "dayId": "d4",
+      "order": 0,
+      "time": "08:40",
+      "durationMin": 50,
+      "title": "出發去西面",
+      "desc": "地鐵1號線釜山站→西面站約15分鐘，或者的士約15-20分鐘。醫美5人組唔好遲到！",
+      "place": {
+        "name": "Seomyeon Station",
+        "localName": "서면역",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Seomyeon%20Station"
+      }
+    },
+    {
+      "id": "e16",
+      "type": "sight",
+      "dayId": "d4",
+      "order": 1,
+      "time": "09:30",
+      "durationMin": 30,
+      "title": "金陽濟皮膚科報到（5位已預約，⚠️已由8/7改期到8/8）",
+      "desc": "醫美組：Justin、Yi、Lam、兩位媽媽。地點：西面站附近耕岩大樓5樓，有廣東話翻譯。想做咩療程可以先睇「指南」入面嘅價目筆記。",
+      "warn": "呢個時段本身約咗喺8/7，因為行程對調改咗嚟8/8，記得自己經 LINE (@717stezu) 同診所確認已改期成功。",
+      "place": {
+        "name": "고운세상 김양제장봉석피부과",
+        "localName": "부산진구 중앙대로 686 경암빌딩 5층 (고운세상피부과)",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=%EA%B3%A0%EC%9A%B4%EC%84%B8%EC%83%81%20%EA%B9%80%EC%96%91%EC%A0%9C%EC%9E%A5%EB%B4%89%EC%84%9D%ED%94%BC%EB%B6%80%EA%B3%BC"
+      }
+    },
+    {
+      "id": "e17",
+      "type": "sight",
+      "dayId": "d4",
+      "order": 2,
+      "time": "10:00",
+      "durationMin": 150,
+      "title": "非醫美組：西面自由行",
+      "desc": "爸爸們帶 Han：田浦咖啡街食brunch、NC百貨、或者飲住咖啡等。中午同醫美組會合。",
+      "place": {
+        "name": "Jeonpo Cafe Street",
+        "localName": "전포카페거리",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Jeonpo%20Cafe%20Street"
+      }
+    },
+    {
+      "id": "e18",
+      "type": "food",
+      "dayId": "d4",
+      "order": 3,
+      "time": "12:30",
+      "durationMin": 90,
+      "title": "午餐：西面豬肉湯飯街",
+      "desc": "松亭3代豬肉湯飯等老店一條街，醫美後補充體力一流；唔食內臟可以叫淨肉（고기만）。",
+      "place": {
+        "name": "Seomyeon Pork Soup Street",
+        "localName": "서면 돼지국밥거리",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Seomyeon%20Pork%20Soup%20Street"
+      }
+    },
+    {
+      "id": "e19",
+      "type": "shopping",
+      "dayId": "d4",
+      "order": 4,
+      "time": "14:00",
+      "durationMin": 210,
+      "title": "樂天百貨・地下街",
+      "desc": "1-6樓百貨、7-8樓免稅店，記得帶護照退稅。地下街連住地鐵站唔怕曬。做完醫美嗰幾位當日避免焗桑拿/劇烈運動，行街冇問題。",
+      "place": {
+        "name": "Lotte Department Store Seomyeon",
+        "localName": "롯데백화점 부산본점",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Lotte%20Department%20Store%20Seomyeon"
+      }
+    },
+    {
+      "id": "e20",
+      "type": "transport",
+      "dayId": "d4",
+      "order": 5,
+      "time": "17:30",
+      "durationMin": 60,
+      "title": "轉場去廣安里",
+      "desc": "西面搭地鐵轉乘或直接的士去廣安里，車程約20-30分鐘，建議分批叫車，行李輕便就得。",
+      "place": {
+        "name": "Gwangalli Beach",
+        "localName": "광안리해수욕장",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Gwangalli%20Beach"
+      }
+    },
+    {
+      "id": "e21",
+      "type": "food",
+      "dayId": "d4",
+      "order": 6,
+      "time": "18:30",
+      "durationMin": 210,
+      "title": "廣安里海鮮晚餐",
+      "desc": "海鮮辣湯（해물탕）或者貝殼燒，望住廣安大橋食飯；唔食辣叫清湯版。食完落沙灘霸定靚位。",
+      "place": {
+        "name": "Gwangalli Beach",
+        "localName": "광안리해수욕장",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Gwangalli%20Beach"
+      }
+    },
+    {
+      "id": "e22",
+      "type": "sight",
+      "dayId": "d4",
+      "order": 7,
+      "time": "22:00",
+      "durationMin": 90,
+      "title": "廣安里無人機表演",
+      "desc": "광안리M드론라이트쇼，週六固定場次約12分鐘，沙灘任何位置都睇到。",
+      "warn": "當週實際時間以官方公告為準，長輩攰可以睇完早場先走。",
+      "place": {
+        "name": "Gwangalli Beach",
+        "localName": "광안리해수욕장",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Gwangalli%20Beach"
+      }
+    },
+    {
+      "id": "e23",
+      "type": "sight",
+      "dayId": "d5",
+      "order": 0,
+      "time": "10:00",
+      "durationMin": 120,
+      "title": "龍頭山公園・釜山塔",
+      "desc": "光復路有扶手電梯上山唔使行樓梯。上塔睇全釜山景，早上人少涼爽。",
+      "place": {
+        "name": "Busan Tower Yongdusan Park",
+        "localName": "용두산공원 부산타워",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Busan%20Tower%20Yongdusan%20Park"
+      }
+    },
+    {
+      "id": "e24",
+      "type": "food",
+      "dayId": "d5",
+      "order": 1,
+      "time": "12:00",
+      "durationMin": 120,
+      "title": "南浦洞午餐",
+      "desc": "推薦18番완당집（餛飩老店，長輩啱食）或者密麵（밀면，釜山特色冷麵）。",
+      "place": {
+        "name": "Nampodong",
+        "localName": "남포동",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Nampodong"
+      }
+    },
+    {
+      "id": "e25",
+      "type": "shopping",
+      "dayId": "d5",
+      "order": 2,
+      "time": "14:00",
+      "durationMin": 300,
+      "title": "執漏採購（大型超市今日公休！）",
+      "desc": "執漏去：樂天百貨（照常開）、Olive Young、藥局、便利店。對返「清單」tab睇邊樣未買。",
+      "warn": "8/9係第2個週日，樂天마트/emart 公休。",
+      "place": {
+        "name": "Gwangbok-ro",
+        "localName": "광복로",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Gwangbok-ro"
+      }
+    },
+    {
+      "id": "e26",
+      "type": "food",
+      "dayId": "d5",
+      "order": 3,
+      "time": "19:00",
+      "durationMin": 90,
+      "title": "餞別大餐",
+      "desc": "最後一晚食好啲：推薦韓牛烤肉或者醬油蟹（간장게장）。想就腳可以返草梁/唐人街一帶，聽日要早起執行李。",
+      "place": {
+        "name": "Choryang",
+        "localName": "초량",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Choryang"
+      }
+    },
+    {
+      "id": "e27",
+      "type": "transport",
+      "dayId": "d6",
+      "order": 0,
+      "time": "05:00",
+      "durationMin": 105,
+      "title": "香港組出發去機場",
+      "desc": "UO607 07:45起飛，05:00前出門（的士約30分鐘，前一晚叫定車/預約 Kakao T）。屋企執返原狀、鎖匙放返原位。",
+      "place": {
+        "name": "Gimhae International Airport",
+        "localName": "김해공항 국제선",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Gimhae%20International%20Airport"
+      }
+    },
+    {
+      "id": "e28",
+      "type": "transport",
+      "dayId": "d6",
+      "order": 1,
+      "time": "06:45",
+      "durationMin": 80,
+      "title": "Yi 出發去機場",
+      "desc": "7C6151 09:30起飛。金海機場國際線人流早上多，預鬆啲。"
+    },
+    {
+      "id": "e29",
+      "type": "transport",
+      "dayId": "d6",
+      "order": 2,
+      "time": "08:05",
+      "durationMin": 90,
+      "title": "Lam 出發去機場",
+      "desc": "LJ371 約08:05→10:05飛返沖繩。臨走前記得帶埋三진어묵魚糕手信（釜山站有分店）！",
+      "place": {
+        "name": "Busan Station Samjin Eomuk",
+        "localName": "삼진어묵 부산역점",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Busan%20Station%20Samjin%20Eomuk"
+      }
+    }
+  ],
+  "guide": [
+    {
+      "id": "1",
+      "category": "美食",
+      "name": "生章魚＆活海鮮",
+      "tag": "札嘎其市場現點現煮",
+      "desc": "韓國規模最大的海鮮集散市場，1樓挑活海鮮，樓上加工費代客烹調（蒸、烤、煮湯都有）。中午剛拍賣完最新鮮，人也比晚上少。\n\n推薦生章魚（산낙지）、king crab、烤魷魚；不太敢吃生食可以選烤蛤蜊或海鮮湯。記得先問清楚加工費再下單，避免溝通誤會。",
+      "images": [
+        "https://images.unsplash.com/photo-1498654200943-1088dd4438ae?w=600&q=80",
+        "https://images.unsplash.com/photo-1498654200943-1088dd4438ae?w=600",
+        "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=600"
+      ],
+      "showText": "자갈치시장",
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "2",
+      "category": "美食",
+      "name": "元祖糖餅（씨앗호떡）",
+      "tag": "BIFF廣場必吃",
+      "desc": "南浦洞BIFF廣場周邊街頭小吃名物，裡面塞滿堅果與肉桂糖漿，外脆內燙口，是釜山最具代表性的甜口小吃。\n\n周邊也有辣炒年糕、炸紫菜飯捲、炒血腸、魚板串可以順便吃，逛BIFF廣場、國際市場逛累了隨時補充體力。",
+      "images": [
+        "https://images.unsplash.com/photo-1576866209830-589e1bfbaa4d?w=600&q=80",
+        "https://images.unsplash.com/photo-1576866209830-589e1bfbaa4d?w=600"
+      ],
+      "showText": "씨앗호떡",
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "3",
+      "category": "美食",
+      "name": "豬肉湯飯（돼지국밥）",
+      "tag": "西面24小時老店",
+      "desc": "釜山代表性平民美食，濃郁豬骨湯頭配白飯，西面巷弄裡有不少24小時營業的老店，深夜也能吃。\n\n湯飯配蝦醬調味，再加點韓式辣椒醬攪拌，口味更道地；醫美行程後當作補充體力的一餐很合適。",
+      "images": [
+        "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=600&q=80",
+        "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=600"
+      ],
+      "showText": "돼지국밥",
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "4",
+      "category": "美食",
+      "name": "五花肉烤肉（삼겹살）",
+      "tag": "西面/海雲台聚餐首選",
+      "desc": "西面、海雲台周邊烤肉店選擇多，五花肉、醃豬肉是主流，多數店家烤盤外圈會附烤蛋、泡菜、蒜頭一起烤。\n\n適合一群人圍爐聚餐，搭配燒酒/Soju氣氛更好；西面人氣店육전식당（Yukjeon Sikdang）有店員代烤，慳好多功夫。",
+      "images": [
+        "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=600&q=80",
+        "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=600"
+      ],
+      "showText": "육전식당",
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "5",
+      "category": "美食",
+      "name": "海鮮辣湯（해물탕）",
+      "tag": "廣安里多人分食",
+      "desc": "辣中帶鮮的海鮮鍋，蝦蟹貝類料多實在，廣安里一帶不少餐廳能邊吃邊看廣安大橋夜景，吃完散步到沙灘剛好接著看無人機表演。\n\n份量通常以人數計算，建議4人以上一起點才划算；不吃辣可請店家做成清湯版本。",
+      "images": [
+        "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=600&q=80",
+        "https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?w=600"
+      ],
+      "showText": "해물탕",
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "6",
+      "category": "美食",
+      "name": "釜山魚糕（부산어묵）",
+      "tag": "在地經典小吃",
+      "desc": "釜山自產自銷的魚漿製品，現場有熱湯版（어묵탕）可以邊喝湯邊吃串，南浦洞、札嘎其市場周邊都能找到專賣店。\n\n三進魚糕（삼진어묵）釜山站有分店，臨上機前買真空包裝當手信最方便，喜歡吃辣可以選辣味夾心款。",
+      "images": [
+        "https://images.unsplash.com/photo-1607330289024-1535c6b4e1c1?w=600&q=80",
+        "https://images.unsplash.com/photo-1607330289024-1535c6b4e1c1?w=600"
+      ],
+      "showText": "삼진어묵 부산역점",
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "7",
+      "category": "美食",
+      "name": "海鮮蔥煎餅（해물파전）",
+      "tag": "下酒菜經典",
+      "desc": "滿滿海鮮跟蔥的煎餅，外皮煎得微焦酥脆，是韓國餐桌上很常見的分食前菜/下酒菜，配燒酒或馬格利酒都合適。\n\n札嘎其市場、南浦洞的海鮮餐廳大多都有這道菜，份量大適合多人分食。",
+      "images": [
+        "https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=600&q=80",
+        "https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?w=600"
+      ],
+      "showText": "해물파전",
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "8",
+      "category": "美食",
+      "name": "雪冰（빙수）",
+      "tag": "逛街中途消暑",
+      "desc": "韓式刨冰加上煉乳、水果、紅豆或起司粉，8月釜山又熱又濕，逛街中途消暑首選，西面、海雲台一帶咖啡廳都能找到。\n\n建議2-3人分食一份就足夠，份量通常比想像中大；芒果、草莓口味最受歡迎。",
+      "images": [
+        "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600&q=80",
+        "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600"
+      ],
+      "showText": "빙수",
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "9",
+      "category": "購物",
+      "name": "西面樂天百貨＋地下街",
+      "tag": "釜山最大購物區",
+      "desc": "西面樂天百貨1-6樓為百貨、7-8樓是免稅店，韓系美妝品牌齊全；旁邊接駁地下街不怕日曬雨淋。\n\n醫美行程結束後順路逛，地下街連通百貨方便會合；NC百貨、教保文庫也在附近可以一起逛。",
+      "images": [
+        "https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=600&q=80",
+        "https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=600"
+      ],
+      "showText": "롯데백화점 부산본점",
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "10",
+      "category": "購物",
+      "name": "國際市場・光復路時尚街",
+      "tag": "南浦洞逛街必去",
+      "desc": "札嘎其站7號出口步行3分鐘，國際市場營業到晚上8點，賣生活雜貨、布料、五金應有盡有；光復路時尚街則集中美妝、服飾、運動品牌。\n\n跟BIFF廣場、札嘎其市場都在同一區，可以排在同一個下午一次逛完，不用拉車。⚠️ 大型超市（樂天마트/emart）8/9週日公休，零食掃貨記得提早。",
+      "images": [
+        "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=600&q=80",
+        "https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?w=600"
+      ],
+      "showText": "국제시장",
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "ph01",
+      "category": "藥局",
+      "name": "활명수 · 活命水消化液",
+      "tag": "食滯神水",
+      "note": "食滯／消化不良，一支支裝",
+      "images": [
+        "/assets/busan/products/ph01.jpg"
+      ],
+      "showText": "활명수 주세요",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "ph02",
+      "category": "藥局",
+      "name": "우루사 · URSA 護肝丸",
+      "tag": "藍盒護肝",
+      "note": "飲酒／易攰，長輩都合用",
+      "images": [
+        "/assets/busan/products/ph02.jpg"
+      ],
+      "showText": "우루사 주세요",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "ph03",
+      "category": "藥局",
+      "name": "쌍화탕 · 雙和湯",
+      "tag": "感冒暖身",
+      "note": "感冒初起飲，暖身補氣",
+      "images": [
+        "/assets/busan/products/ph03.jpg"
+      ],
+      "showText": "쌍화탕 주세요",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "ph04",
+      "category": "藥局",
+      "name": "판콜에스 · 感冒液",
+      "tag": "綠樽感冒藥",
+      "note": "傷風流鼻水，樽仔即飲",
+      "images": [
+        "/assets/busan/products/ph04.webp"
+      ],
+      "showText": "판콜에스 주세요",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "ph05",
+      "category": "藥局",
+      "name": "게보린 · 止痛藥",
+      "tag": "頭痛必備",
+      "note": "頭痛／經痛快速止痛",
+      "images": [
+        "/assets/busan/products/ph05.jpg"
+      ],
+      "showText": "게보린 주세요",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "ph06",
+      "category": "藥局",
+      "name": "후시딘 · Fucidin 傷口膏",
+      "tag": "抗菌傷口",
+      "note": "擦傷／破皮消炎",
+      "images": [
+        "/assets/busan/products/ph06.jpg"
+      ],
+      "showText": "후시딘 주세요",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "ph07",
+      "category": "藥局",
+      "name": "마데카솔 · 萬用膏",
+      "tag": "國民藥膏",
+      "note": "蚊叮／小傷口都用得",
+      "images": [
+        "/assets/busan/products/ph07.jpg"
+      ],
+      "showText": "마데카솔 주세요",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "ph08",
+      "category": "藥局",
+      "name": "케토톱 · 痠痛貼布",
+      "tag": "長輩恩物",
+      "note": "肩頸腰痠，大盒抵買",
+      "images": [
+        "/assets/busan/products/ph08.jpg"
+      ],
+      "showText": "케토톱 주세요",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "ph09",
+      "category": "藥局",
+      "name": "제일파프 · 涼感貼布",
+      "tag": "涼感消腫",
+      "note": "行到腳痛貼一貼",
+      "images": [
+        "/assets/busan/products/ph09.jpg"
+      ],
+      "showText": "제일파프 주세요",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "ph10",
+      "category": "藥局",
+      "name": "정로환 · 正露丸",
+      "tag": "止瀉",
+      "note": "水土不服／肚屙",
+      "images": [
+        "/assets/busan/products/ph10.jpg"
+      ],
+      "showText": "정로환 주세요",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "ph11",
+      "category": "藥局",
+      "name": "이가탄 · 牙齦保健",
+      "tag": "牙肉保健",
+      "note": "牙肉腫痛／保健",
+      "images": [
+        "/assets/busan/products/ph11.jpg"
+      ],
+      "showText": "이가탄 주세요",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "ph12",
+      "category": "藥局",
+      "name": "아로나민 골드 · 維他命B",
+      "tag": "金盒維他命",
+      "note": "疲勞恢復，金色盒",
+      "images": [
+        "/assets/busan/products/ph12.jpg"
+      ],
+      "showText": "아로나민 골드 주세요",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "oy01",
+      "category": "美妝",
+      "name": "조선미녀 · 米防曬",
+      "tag": "抵過香港一半",
+      "note": "Beauty of Joseon，米糠防曬",
+      "images": [
+        "/assets/busan/products/oy01.jpg"
+      ],
+      "showText": "조선미녀 선크림",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "oy02",
+      "category": "美妝",
+      "name": "Torriden · DIVE-IN 保濕精華",
+      "tag": "玻尿酸補水",
+      "note": "醫美後嘅溫和補水",
+      "images": [
+        "/assets/busan/products/oy02.jpg"
+      ],
+      "showText": "토리든 다이브인",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "oy03",
+      "category": "美妝",
+      "name": "Anua · 魚腥草爽膚水",
+      "tag": "鎮靜爆款",
+      "note": "泛紅／暗瘡肌鎮靜",
+      "images": [
+        "/assets/busan/products/oy03.jpg"
+      ],
+      "showText": "아누아 어성초 토너",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "oy04",
+      "category": "美妝",
+      "name": "Round Lab · 獨島爽膚水",
+      "tag": "溫和保濕",
+      "note": "敏感肌都用得",
+      "images": [
+        "/assets/busan/products/oy04.jpg"
+      ],
+      "showText": "라운드랩 독도 토너",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "oy05",
+      "category": "美妝",
+      "name": "Mediheal · 面膜",
+      "tag": "一盒盒掃",
+      "note": "茶樹／膠原，抵買",
+      "images": [
+        "/assets/busan/products/oy05.jpg"
+      ],
+      "showText": "메디힐 마스크팩",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "oy06",
+      "category": "美妝",
+      "name": "Abib · 弱酸面膜",
+      "tag": "急救面膜",
+      "note": "泛紅急救貼",
+      "images": [
+        "/assets/busan/products/oy06.jpg"
+      ],
+      "showText": "아비브 마스크팩",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "oy07",
+      "category": "美妝",
+      "name": "VT · Reedle Shot 微針精華",
+      "tag": "醫美後隔幾日用",
+      "note": "毛孔／膚質改善",
+      "images": [
+        "/assets/busan/products/oy07.jpg"
+      ],
+      "showText": "브이티 리들샷",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "oy08",
+      "category": "美妝",
+      "name": "Medicube · 毛孔 pad",
+      "tag": "去角質pad",
+      "note": "毛孔粗大／油肌",
+      "images": [
+        "/assets/busan/products/oy08.jpg"
+      ],
+      "showText": "메디큐브 패드",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "oy09",
+      "category": "美妝",
+      "name": "마녀공장 · 卸妝油",
+      "tag": "純淨卸妝",
+      "note": "Ma:nyo，溫和卸妝",
+      "images": [
+        "/assets/busan/products/oy09.png"
+      ],
+      "showText": "마녀공장 클렌징오일",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "oy10",
+      "category": "美妝",
+      "name": "rom&nd · 唇釉",
+      "tag": "人氣唇色",
+      "note": "顯色持久，多色掃",
+      "images": [
+        "/assets/busan/products/oy10.jpg"
+      ],
+      "showText": "롬앤 립틴트",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "sn01",
+      "category": "零食",
+      "name": "허니버터아몬드 · 蜂蜜牛油杏仁",
+      "tag": "手信王",
+      "note": "機場貴好多，市區掃",
+      "images": [
+        "/assets/busan/products/sn01.jpg"
+      ],
+      "showText": "허니버터아몬드",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "sn02",
+      "category": "零食",
+      "name": "꼬북칩 · 朱古力千層脆",
+      "tag": "초코츄러스味",
+      "note": "一咬四層脆",
+      "images": [
+        "/assets/busan/products/sn02.png"
+      ],
+      "showText": "꼬북칩 초코츄러스",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "sn03",
+      "category": "零食",
+      "name": "바나나킥 · 香蕉條",
+      "tag": "童年味",
+      "note": "入口即化香蕉味",
+      "images": [
+        "/assets/busan/products/sn03.jpg"
+      ],
+      "showText": "바나나킥",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "sn04",
+      "category": "零食",
+      "name": "Market O · 布朗尼",
+      "tag": "送禮體面",
+      "note": "真材實料朱古力",
+      "images": [
+        "/assets/busan/products/sn04.jpg"
+      ],
+      "showText": "마켓오 브라우니",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "sn05",
+      "category": "零食",
+      "name": "초코파이 · 朱古力批",
+      "tag": "經典",
+      "note": "一盒盒買，同事恩物",
+      "images": [
+        "/assets/busan/products/sn05.jpg"
+      ],
+      "showText": "초코파이",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "sn06",
+      "category": "零食",
+      "name": "빼빼로 · Pepero",
+      "tag": "分俾人啱",
+      "note": "多款口味",
+      "images": [
+        "/assets/busan/products/sn06.jpg"
+      ],
+      "showText": "빼빼로",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "sn07",
+      "category": "零食",
+      "name": "칙촉 · Chic Choc 曲奇",
+      "tag": "朱古力曲奇",
+      "note": "煙韌唔太甜",
+      "images": [
+        "/assets/busan/products/sn07.jpg"
+      ],
+      "showText": "칙촉",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "sn08",
+      "category": "零食",
+      "name": "오징어땅콩 · 魷魚花生",
+      "tag": "送酒一流",
+      "note": "追劇零食",
+      "images": [
+        "/assets/busan/products/sn08.jpg"
+      ],
+      "showText": "오징어땅콩",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "sn09",
+      "category": "零食",
+      "name": "불닭볶음면 · 辣雞麵",
+      "tag": "粉紅까르보款",
+      "note": "起司款冇咁辣",
+      "images": [
+        "/assets/busan/products/sn09.webp"
+      ],
+      "showText": "불닭볶음면 까르보",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "sn10",
+      "category": "零食",
+      "name": "짜파게티＋너구리 · 炸醬+烏冬",
+      "tag": "自製Chapaguri",
+      "note": "兩包撈埋一齊煮",
+      "images": [
+        "/assets/busan/products/sn10.jpg"
+      ],
+      "showText": "짜파게티 너구리",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "sn11",
+      "category": "零食",
+      "name": "옥수수수염차 · 粟米鬚茶",
+      "tag": "去水腫",
+      "note": "解膩消水腫，箱裝抵",
+      "images": [
+        "/assets/busan/products/sn11.jpg"
+      ],
+      "showText": "옥수수수염차",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "sn12",
+      "category": "零食",
+      "name": "바나나우유 · 香蕉牛奶",
+      "tag": "現場即飲",
+      "note": "帶唔返，喺韓國飲",
+      "images": [
+        "/assets/busan/products/sn12.jpg"
+      ],
+      "showText": "바나나우유",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "gf01",
+      "category": "手信",
+      "name": "삼진어묵 · 三進魚糕禮盒",
+      "tag": "釜山站有店",
+      "note": "最後一日先買，保鮮",
+      "images": [
+        "/assets/busan/products/gf01.jpg"
+      ],
+      "showText": "삼진어묵 선물세트",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "gf02",
+      "category": "手信",
+      "name": "釜山海苔禮盒",
+      "tag": "送長輩啱",
+      "note": "調味海苔，耐放",
+      "images": [
+        "/assets/busan/products/gf02.jpg"
+      ],
+      "showText": "김 선물세트",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "gf03",
+      "category": "手信",
+      "name": "정관장 · 紅蔘液 Everytime",
+      "tag": "條裝方便",
+      "note": "正官庄，送禮貴氣",
+      "images": [
+        "/assets/busan/products/gf03.jpg"
+      ],
+      "showText": "정관장 홍삼 에브리타임",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "gf04",
+      "category": "手信",
+      "name": "柚子茶／五穀茶禮盒",
+      "tag": "沖泡即飲",
+      "note": "送人自用都啱",
+      "images": [
+        "/assets/busan/products/gf04.jpg"
+      ],
+      "showText": "유자차 선물세트",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "gf05",
+      "category": "手信",
+      "name": "OPS · 餅店麵包",
+      "tag": "釜山三大餅店",
+      "note": "當日食，蝦多士出名",
+      "images": [
+        "/assets/busan/products/gf05.jpg"
+      ],
+      "showText": "OPS 빵집",
+      "buyable": true,
+      "source": "legacy"
+    },
+    {
+      "id": "15",
+      "category": "醫美",
+      "name": "金陽濟皮膚科價目筆記",
+      "tag": "8/7(五) 09:30 五位已預約",
+      "desc": "拉提類：鳳凰電波600發300萬₩(約HK$1.7萬,維持~1年,送VRO一個模式)、眼部觸頭450發200萬₩；Xerf電波600發260萬₩(~8個月)；超聲刀二代300/400/500發=180/230/280萬₩(~1年)；VRO電音雙波2000+300發55萬₩(~3-4個月,韓產最抵)、眼部+11萬₩。\n\n眼部/美白：美白激光1台33萬₩、3台複合66萬₩；眼部麗珠蘭水光1cc優惠25萬₩；眼部熱瑪吉450發200萬₩。祛斑：3台儀器複合66萬₩、Fraxel Dual套餐100萬₩；有斑可能結痂約7日。⚠️ 電波當日可加做麗珠蘭/黃金微針等，現場問院長。變更/取消聯絡 LINE @717stezu。（100萬₩≈HK$5,700）",
+      "images": [
+        "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80",
+        "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600"
+      ],
+      "showText": "부산진구 중앙대로 686 경암빌딩 5층",
+      "buyable": false,
+      "source": "legacy"
+    }
+  ],
+  "version": 1,
+  "updatedAt": 0,
+  "updatedBy": "migration"
+}

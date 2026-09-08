@@ -1,0 +1,791 @@
+{
+  "meta": {
+    "title": "泰嘆芭堤雅",
+    "subtitle": "新年度假團 · 2026/2/13-18",
+    "city": "芭堤雅",
+    "country": "泰國",
+    "coords": {
+      "lat": 12.9236,
+      "lng": 100.8825
+    },
+    "currency": "THB",
+    "startDate": "2026-02-13",
+    "endDate": "2026-02-18",
+    "heroImg": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",
+    "photosUrl": "https://photos.app.goo.gl/jQoBiWFPsgr7chNe6",
+    "emergency": [
+      {
+        "label": "泰國旅遊警察",
+        "phone": "1155"
+      },
+      {
+        "label": "泰國救護車",
+        "phone": "191"
+      }
+    ],
+    "status": "past"
+  },
+  "members": [
+    {
+      "id": "lam",
+      "name": "Lam",
+      "avatar": "🦁"
+    },
+    {
+      "id": "ricky",
+      "name": "Ricky",
+      "avatar": "🐻"
+    },
+    {
+      "id": "robin",
+      "name": "Robin",
+      "avatar": "🐯"
+    },
+    {
+      "id": "jolin",
+      "name": "Jolin",
+      "avatar": "🐰"
+    },
+    {
+      "id": "pat",
+      "name": "Pat",
+      "avatar": "🦊"
+    },
+    {
+      "id": "masa",
+      "name": "Masa",
+      "avatar": "🐨"
+    },
+    {
+      "id": "yi",
+      "name": "Yi",
+      "avatar": "🐼"
+    },
+    {
+      "id": "justin",
+      "name": "Justin",
+      "avatar": "🐵"
+    },
+    {
+      "id": "han",
+      "name": "Han",
+      "avatar": "👶",
+      "excludeFromSplit": true
+    }
+  ],
+  "days": [
+    {
+      "id": "d1",
+      "date": "2026-02-13",
+      "weekday": "五",
+      "theme": "「泰」快閃",
+      "highlights": "落機即衝夜市"
+    },
+    {
+      "id": "d2",
+      "date": "2026-02-14",
+      "weekday": "六",
+      "theme": "「泰」科幻",
+      "highlights": "星際探險之旅"
+    },
+    {
+      "id": "d3",
+      "date": "2026-02-15",
+      "weekday": "日",
+      "theme": "「泰」熱血",
+      "highlights": "木雕與越野"
+    },
+    {
+      "id": "d4",
+      "date": "2026-02-16",
+      "weekday": "一",
+      "theme": "「泰」招積",
+      "highlights": "私人包船"
+    },
+    {
+      "id": "d5",
+      "date": "2026-02-17",
+      "weekday": "二",
+      "theme": "「泰」網紅",
+      "highlights": "食神日落"
+    },
+    {
+      "id": "d6",
+      "date": "2026-02-18",
+      "weekday": "三",
+      "theme": "「泰」唔捨得",
+      "highlights": "最後衝刺"
+    }
+  ],
+  "blocks": [
+    {
+      "id": "e1",
+      "type": "transport",
+      "dayId": "d1",
+      "order": 0,
+      "time": "14:25",
+      "durationMin": 125,
+      "title": "抵達 BKK 機場",
+      "desc": "泰航 TG601 準時降落，專車已在機場等候。",
+      "place": {
+        "name": "Suvarnabhumi Airport",
+        "localName": "สนามบินสุวรรณภูมิ",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Suvarnabhumi%20Airport"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1542296332-2e449c29d009?w=800"
+      ]
+    },
+    {
+      "id": "e2",
+      "type": "hotel",
+      "dayId": "d1",
+      "order": 1,
+      "time": "16:30",
+      "durationMin": 90,
+      "title": "入住 Akara Hotel",
+      "desc": "芭堤雅北區精品酒店，頂樓泳池絕美。",
+      "place": {
+        "name": "Akara Hotel Pattaya",
+        "localName": "โรงแรมอัครา พัทยา",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Akara%20Hotel%20Pattaya"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800"
+      ]
+    },
+    {
+      "id": "e3",
+      "type": "sight",
+      "dayId": "d1",
+      "order": 2,
+      "time": "18:00",
+      "durationMin": 90,
+      "title": "飛機夜市掃街",
+      "desc": "就在酒店對面！必吃香蕉煎餅。",
+      "place": {
+        "name": "Runway Street Food Pattaya",
+        "localName": "ตลาดนัดเครื่องบิน พัทยา",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Runway%20Street%20Food%20Pattaya"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1555243560-ef023c04294a?w=800"
+      ]
+    },
+    {
+      "id": "e4",
+      "type": "food",
+      "dayId": "d1",
+      "order": 3,
+      "time": "19:30",
+      "durationMin": 120,
+      "title": "Ginger Farm",
+      "desc": "米芝蓮泰北菜，環境夢幻。",
+      "place": {
+        "name": "Ginger Farm Kitchen Pattaya",
+        "localName": "ร้านจินเจอร์ ฟาร์ม คิทเช่น",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Ginger%20Farm%20Kitchen%20Pattaya"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800"
+      ]
+    },
+    {
+      "id": "e5",
+      "type": "rest",
+      "dayId": "d1",
+      "order": 4,
+      "time": "21:30",
+      "durationMin": 90,
+      "title": "Makkah Spa",
+      "desc": "舒緩飛行疲勞。",
+      "place": {
+        "name": "Makkah Health & Spa Pattaya",
+        "localName": "มัคคา เฮลท์ แอนด์ สปา",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Makkah%20Health%20%26%20Spa%20Pattaya"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800"
+      ]
+    },
+    {
+      "id": "e6",
+      "type": "hotel",
+      "dayId": "d2",
+      "order": 0,
+      "time": "11:00",
+      "durationMin": 60,
+      "title": "往 Space Hotel",
+      "desc": "入住全泰首座太空酒店。",
+      "place": {
+        "name": "Grande Centre Point Space Pattaya",
+        "localName": "โรงแรม แกรนด์ เซนเตอร์ พอยต์ สเปซ พัทยา",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Grande%20Centre%20Point%20Space%20Pattaya"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1571896349842-6e5c48dc52e3?w=800"
+      ]
+    },
+    {
+      "id": "e7",
+      "type": "food",
+      "dayId": "d2",
+      "order": 1,
+      "time": "12:00",
+      "durationMin": 120,
+      "title": "Tora Tapas",
+      "desc": "精緻泰西合璧料理。",
+      "place": {
+        "name": "Tora Tapas Pattaya",
+        "localName": "โทรา ทาปาส พัทยา",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Tora%20Tapas%20Pattaya"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1514326640560-7d063ef2aed5?w=800"
+      ]
+    },
+    {
+      "id": "e8",
+      "type": "sight",
+      "dayId": "d2",
+      "order": 2,
+      "time": "14:00",
+      "durationMin": 300,
+      "title": "Space 水上樂園",
+      "desc": "挑戰滑水道與人造浪。",
+      "place": {
+        "name": "Grande Centre Point Space Pattaya",
+        "localName": "สวนน้ำอวกาศ",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Grande%20Centre%20Point%20Space%20Pattaya"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1533316447883-492770977218?w=800"
+      ]
+    },
+    {
+      "id": "e9",
+      "type": "food",
+      "dayId": "d2",
+      "order": 3,
+      "time": "19:00",
+      "durationMin": 90,
+      "title": "Orbit 自助餐",
+      "desc": "海鮮生蠔任食。",
+      "place": {
+        "name": "Grande Centre Point Space Pattaya",
+        "localName": "ห้องอาหารออร์บิท",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Grande%20Centre%20Point%20Space%20Pattaya"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1625937751876-453009747972?w=800"
+      ]
+    },
+    {
+      "id": "e10",
+      "type": "sight",
+      "dayId": "d3",
+      "order": 0,
+      "time": "10:30",
+      "durationMin": 150,
+      "title": "真理聖殿",
+      "desc": "全木造建築奇蹟。",
+      "place": {
+        "name": "Sanctuary of Truth",
+        "localName": "ปราสาทสัจธรรม",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Sanctuary%20of%20Truth"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1599553765870-07a828cb0085?w=800"
+      ]
+    },
+    {
+      "id": "e11",
+      "type": "sight",
+      "dayId": "d3",
+      "order": 1,
+      "time": "13:00",
+      "durationMin": 330,
+      "title": "ATV 越野飛車",
+      "desc": "穿越叢林，熱血沸騰。",
+      "place": {
+        "name": "Pattaya Offroad Safari",
+        "localName": "พัทยา ออฟโรด ซาฟารี",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Pattaya%20Offroad%20Safari"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=800"
+      ]
+    },
+    {
+      "id": "e12",
+      "type": "food",
+      "dayId": "d3",
+      "order": 2,
+      "time": "18:30",
+      "durationMin": 120,
+      "title": "Bay Bay Seafood",
+      "desc": "海濱 BBQ 盛宴。",
+      "place": {
+        "name": "BayBay Buffet Talaypao",
+        "localName": "เบย์เบย์ บุฟเฟต์ทะเลเผา",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=BayBay%20Buffet%20Talaypao"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1534008753122-a837cf46d288?w=800"
+      ]
+    },
+    {
+      "id": "e13",
+      "type": "sight",
+      "dayId": "d3",
+      "order": 3,
+      "time": "20:30",
+      "durationMin": 90,
+      "title": "中天夜市",
+      "desc": "散步吃宵夜。",
+      "place": {
+        "name": "Jomtien Night Market",
+        "localName": "ตลาดนัดจอมเทียน",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Jomtien%20Night%20Market"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=800"
+      ]
+    },
+    {
+      "id": "e14",
+      "type": "transport",
+      "dayId": "d4",
+      "order": 0,
+      "time": "10:30",
+      "durationMin": 60,
+      "title": "往 Villa",
+      "desc": "人貨分流，行李先行。",
+      "place": {
+        "name": "Villa De Amore Pattaya",
+        "localName": "วิลล่า เดอ อะมอเร่ พัทยา",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Villa%20De%20Amore%20Pattaya"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1580587771525-78b9dba3b91d?w=800"
+      ]
+    },
+    {
+      "id": "e15",
+      "type": "transport",
+      "dayId": "d4",
+      "order": 1,
+      "time": "11:30",
+      "durationMin": 90,
+      "title": "前往碼頭",
+      "desc": "準備出海！",
+      "place": {
+        "name": "Port of Samae Sarn",
+        "localName": "ท่าเรือแสมสาร",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Port%20of%20Samae%20Sarn"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1569263979104-565b63418962?w=800"
+      ]
+    },
+    {
+      "id": "e16",
+      "type": "sight",
+      "dayId": "d4",
+      "order": 2,
+      "time": "13:00",
+      "durationMin": 270,
+      "title": "Sealyn 私人包船",
+      "desc": "豪華雙層船，滑梯、獨木舟。",
+      "place": {
+        "name": "Samae San Island",
+        "localName": "เหมาเรือส่วนตัว Seanlyn",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Samae%20San%20Island"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=800"
+      ]
+    },
+    {
+      "id": "e17",
+      "type": "hotel",
+      "dayId": "d4",
+      "order": 3,
+      "time": "17:30",
+      "durationMin": 90,
+      "title": "Villa De Amore",
+      "desc": "入住私人泳池別墅。",
+      "place": {
+        "name": "Villa De Amore Pattaya",
+        "localName": "วิลล่า เดอ อะมอเร่",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Villa%20De%20Amore%20Pattaya"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800"
+      ]
+    },
+    {
+      "id": "e18",
+      "type": "food",
+      "dayId": "d5",
+      "order": 0,
+      "time": "11:30",
+      "durationMin": 90,
+      "title": "Khun Sri 豬雜",
+      "desc": "80年老店。",
+      "place": {
+        "name": "Khun Sri Pork Blood Soup",
+        "localName": "ต้มเลือดหมูคุณศรี",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Khun%20Sri%20Pork%20Blood%20Soup"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1548943487-a2e4e43b485c?w=800"
+      ]
+    },
+    {
+      "id": "e19",
+      "type": "food",
+      "dayId": "d5",
+      "order": 1,
+      "time": "13:00",
+      "durationMin": 120,
+      "title": "After Yum",
+      "desc": "全泰最紅生醃。",
+      "place": {
+        "name": "After Yum",
+        "localName": "ร้านอาฟเตอร์ยำ",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=After%20Yum"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1626804475297-411d0c624f9c?w=800"
+      ]
+    },
+    {
+      "id": "e20",
+      "type": "sight",
+      "dayId": "d5",
+      "order": 2,
+      "time": "15:00",
+      "durationMin": 90,
+      "title": "水上市場",
+      "desc": "體驗手划船。",
+      "place": {
+        "name": "Pattaya Floating Market",
+        "localName": "ตลาดน้ำ 4 ภาค พัทยา",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Pattaya%20Floating%20Market"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1598970434795-0c54fe7c0648?w=800"
+      ]
+    },
+    {
+      "id": "e21",
+      "type": "sight",
+      "dayId": "d5",
+      "order": 3,
+      "time": "16:30",
+      "durationMin": 90,
+      "title": "House of Benedict",
+      "desc": "超好拍網紅點。",
+      "place": {
+        "name": "House of Benedict Pattaya",
+        "localName": "เฮาส์ ออฟ เบเนดิกต์",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=House%20of%20Benedict%20Pattaya"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800"
+      ]
+    },
+    {
+      "id": "e22",
+      "type": "food",
+      "dayId": "d5",
+      "order": 4,
+      "time": "18:00",
+      "durationMin": 180,
+      "title": "Glass House",
+      "desc": "日落海鮮餐。",
+      "place": {
+        "name": "The Glass House Boho",
+        "localName": "เดอะ กลาสเฮ้าส์ โบโฮ",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=The%20Glass%20House%20Boho"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1537047902294-6228b02e6993?w=800"
+      ]
+    },
+    {
+      "id": "e23",
+      "type": "rest",
+      "dayId": "d5",
+      "order": 5,
+      "time": "21:00",
+      "durationMin": 90,
+      "title": "Oasis Spa",
+      "desc": "高級按摩。",
+      "place": {
+        "name": "Oasis Spa Pattaya Jomtien",
+        "localName": "โอเอซิส สปา พัทยา",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Oasis%20Spa%20Pattaya%20Jomtien"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1519823551278-64ac92734fb1?w=800"
+      ]
+    },
+    {
+      "id": "e24",
+      "type": "hotel",
+      "dayId": "d6",
+      "order": 0,
+      "time": "11:00",
+      "durationMin": 30,
+      "title": "Villa 退房",
+      "desc": "收拾心情。",
+      "place": {
+        "name": "Villa De Amore Pattaya",
+        "localName": "วิลล่า เดอ อะมอเร่",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Villa%20De%20Amore%20Pattaya"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800"
+      ]
+    },
+    {
+      "id": "e25",
+      "type": "food",
+      "dayId": "d6",
+      "order": 1,
+      "time": "11:30",
+      "durationMin": 105,
+      "title": "Lek Seafood",
+      "desc": "最後海鮮。",
+      "place": {
+        "name": "Lek Seafood",
+        "localName": "ร้านอาหารเล็กอาหารทะเล",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Lek%20Seafood"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1599488615731-7e512819a636?w=800"
+      ]
+    },
+    {
+      "id": "e26",
+      "type": "transport",
+      "dayId": "d6",
+      "order": 2,
+      "time": "13:15",
+      "durationMin": 90,
+      "title": "往機場",
+      "desc": "專車直送 BKK。",
+      "place": {
+        "name": "Suvarnabhumi Airport",
+        "localName": "สนามบินสุวรรณภูมิ",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Suvarnabhumi%20Airport"
+      },
+      "images": [
+        "https://images.unsplash.com/photo-1530521954074-e64f6810b32d?w=800"
+      ]
+    }
+  ],
+  "guide": [
+    {
+      "id": "1",
+      "category": "玩樂",
+      "name": "Sealyn 包船",
+      "tag": "豪華長尾船",
+      "desc": "體驗芭堤雅最奢華的私人海上派對！這艘雙層豪華長尾船不僅外型復古吸睛，設施更是應有盡有。\n\n船員會貼心準備釣具讓你體驗海釣樂趣，釣到的魚還能現場加菜。最棒的是船上提供的 BBQ 午餐。",
+      "images": [
+        "https://images.unsplash.com/photo-1544644181-1484b3fdfc62?w=600&q=80",
+        "https://images.unsplash.com/photo-1544551763-46a8723ba3f9?w=600"
+      ],
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "4",
+      "category": "美食",
+      "name": "After Yum",
+      "tag": "生醃傳奇",
+      "desc": "沒吃過 After Yum 就不算來過芭堤雅！這家店是泰國生醃界的頂流。\n\n醬汁酸辣鮮甜比例完美，完全沒有腥味。必點生醃三文魚，厚切肥美；酸辣生蝦口感彈牙。",
+      "images": [
+        "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80",
+        "https://images.unsplash.com/photo-1626804475297-411d0c624f9c?w=600",
+        "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600"
+      ],
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "15",
+      "category": "購物",
+      "name": "必買清單",
+      "tag": "手信推薦",
+      "desc": "泰國 7-11 熱壓吐司、Pocky 香蕉口味、手標泰式茶粉。\n\nBig C 超市可以買到各種零食，推薦小老闆海苔與芒果乾。",
+      "images": [
+        "https://images.unsplash.com/photo-1583209814683-c023dd293cc6?w=600&q=80",
+        "https://images.unsplash.com/photo-1583209814683-c023dd293cc6?w=600"
+      ],
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "3",
+      "category": "住宿",
+      "name": "Space Pattaya",
+      "tag": "科幻未來",
+      "desc": "全泰首座...\n\n房間天花板...",
+      "images": [
+        "https://images.unsplash.com/photo-1571896349842-6e5c48dc52e3?w=600&q=80",
+        "https://images.unsplash.com/photo-1571896349842-6e5c48dc52e3?w=600"
+      ],
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "5",
+      "category": "美食",
+      "name": "Glass House Boho",
+      "tag": "日落晚餐",
+      "desc": "波希米亞...\n\n吃飽後...",
+      "images": [
+        "https://images.unsplash.com/photo-1537047902294-6228b02e6993?w=600&q=80",
+        "https://images.unsplash.com/photo-1537047902294-6228b02e6993?w=600"
+      ],
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "6",
+      "category": "住宿",
+      "name": "Villa De Amore",
+      "tag": "私人隱世",
+      "desc": "9人家庭專屬包場...\n\n客廳挑高寬敞...",
+      "images": [
+        "https://images.unsplash.com/photo-1580587771525-78b9dba3b91d?w=600&q=80",
+        "https://images.unsplash.com/photo-1580587771525-78b9dba3b91d?w=600"
+      ],
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "7",
+      "category": "住宿",
+      "name": "Akara Hotel",
+      "tag": "都會輕奢",
+      "desc": "頂樓無邊際泳池...\n\n房間設計現代時尚...",
+      "images": [
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80",
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600"
+      ],
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "2",
+      "category": "玩樂",
+      "name": "ATV 越野車",
+      "tag": "熱血冒險",
+      "desc": "穿越叢林泥地...\n\n跟隨專業教練...",
+      "images": [
+        "https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=600&q=80",
+        "https://images.unsplash.com/photo-1551816230-ef5deaed4a26?w=600"
+      ],
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "8",
+      "category": "美食",
+      "name": "Ginger Farm",
+      "tag": "泰北風味",
+      "desc": "來自清邁的米芝蓮推薦餐廳...\n\n必點炸豬皮...",
+      "images": [
+        "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80",
+        "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600"
+      ],
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "9",
+      "category": "玩樂",
+      "name": "Makkah Spa",
+      "tag": "舒緩放鬆",
+      "desc": "環境清幽典雅...\n\n第一天舟車勞頓...",
+      "images": [
+        "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80",
+        "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600"
+      ],
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "10",
+      "category": "美食",
+      "name": "Tora Tapas",
+      "tag": "精緻料理",
+      "desc": "結合泰式風味...\n\n午餐時間...",
+      "images": [
+        "https://images.unsplash.com/photo-1514326640560-7d063ef2aed5?w=600&q=80",
+        "https://images.unsplash.com/photo-1514326640560-7d063ef2aed5?w=600"
+      ],
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "11",
+      "category": "美食",
+      "name": "Orbit Restaurant",
+      "tag": "海鮮自助",
+      "desc": "飯店頂級海鮮 Buffet...\n\n晚餐就在飯店內...",
+      "images": [
+        "https://images.unsplash.com/photo-1625937751876-453009747972?w=600&q=80",
+        "https://images.unsplash.com/photo-1625937751876-453009747972?w=600"
+      ],
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "12",
+      "category": "玩樂",
+      "name": "真理聖殿",
+      "tag": "木雕藝術",
+      "desc": "全木造結構不含一顆釘子...\n\n除了參觀...",
+      "images": [
+        "https://images.unsplash.com/photo-1599553765870-07a828cb0085?w=600&q=80",
+        "https://images.unsplash.com/photo-1599553765870-07a828cb0085?w=600"
+      ],
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "13",
+      "category": "美食",
+      "name": "Bay Bay Seafood",
+      "tag": "海鮮BBQ",
+      "desc": "露天海景...\n\n晚餐來到中天海濱...",
+      "images": [
+        "https://images.unsplash.com/photo-1534008753122-a837cf46d288?w=600&q=80",
+        "https://images.unsplash.com/photo-1534008753122-a837cf46d288?w=600"
+      ],
+      "buyable": false,
+      "source": "legacy"
+    },
+    {
+      "id": "14",
+      "category": "玩樂",
+      "name": "Jomtien Market",
+      "tag": "地道夜市",
+      "desc": "沿著海濱散步...\n\n吃飽後散步...",
+      "images": [
+        "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&q=80",
+        "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600"
+      ],
+      "buyable": false,
+      "source": "legacy"
+    }
+  ],
+  "version": 1,
+  "updatedAt": 0,
+  "updatedBy": "migration"
+}

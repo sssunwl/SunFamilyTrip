@@ -278,6 +278,7 @@ users/{uid}/events/{eventId}                站長個人行程
 
 **產品圖片從哪來、誰付儲存費**：
 - Phase 2：貼圖片 URL（零成本）＋ 現有 `assets/busan/products/` 39 張留在 repo 不動
+- **舊圖如何進新站（P3 前必須解決）**：新站只部署 `app/dist`，而 39 張圖在 repo 根目錄的 `assets/`。做法是在 build 前把 `assets/` 複製進 `app/public/assets/`，Vite 會自動帶進 `dist`，資料裡的 `/assets/busan/products/...` 路徑不用改。根目錄原圖保持不動（舊站還在用）
 - Phase 3：開 Firebase Storage 上傳。前端上傳前先壓成 WebP、長邊 ≤1200px、≤200KB，一個行程 50 張約 10MB —— Storage 免費額度 5GB 用十年也用不完。**Blaze 方案要綁卡但免費額度內不扣款**，並設預算警報 US$1。
 - 不做的事：不自動去抓別人網站的圖（版權與熱連結失效）。
 
@@ -423,13 +424,16 @@ P2 是價值分水嶺 —— **P1 沒做完不要碰 P2；P2 沒做完不要碰 
 
 1. **手機拖曳** 是最大實作風險。務必先做手機再做桌面，且一定要有非拖曳的備援操作路徑。
 2. **iOS clipboard** 必須在 user gesture 同步流程內呼叫，不能 await 後才呼叫。
-3. **Firestore Rules** 是這次唯一的真安全邊界。團員免登入寫入必須逐欄位白名單，否則等於公開可寫資料庫。上線前要用 Firebase Rules 模擬器測過。
+3. **舊資料本身有錯，遷移不會自動修**：芭堤雅的「泰國救護車 191」是錯的——191 是警察／緊急報案，泰國的救護車（EMS）是 **1669**。遷移刻意原樣保留，需人工更正。另外釜山指南 #15 的 tag 仍寫「8/7(五) 09:30」，但行程早已改到 8/8。緊急電話寫錯是會出事的那種錯，優先修。
+4. **Firestore Rules** 是這次唯一的真安全邊界。團員免登入寫入必須逐欄位白名單，否則等於公開可寫資料庫。上線前要用 Firebase Rules 模擬器測過。
    **2026-09-08 已處理**：當日實測發現規則完全開放（未認證即可讀取全部資料、寫入未被擋），同日寫好過渡版 `firestore.rules` 並由 SS 在 Console 發布。發布後複驗四項全數通過：任意路徑讀取／寫入被擋、舊站需要的讀取仍通、既有記帳不可竄改。P1 的 `app/firestore.rules` 上線後取代它。
-4. **lucide icon 崩潰**：現行 `shared/app.js` 用 `<span>` 外殼包 lucide 以避免 React `removeChild` 崩潰。新版改用 `lucide-react` 元件即可根治，但別忘了這個坑存在過。
-5. **holidays.json 是副本**，改資料要回 `SoSolsunday/docs/data/holidays.json` 改，不要在這裡改。
-6. **Firebase 免費額度**：Firestore 免費層每日 5 萬讀。整份行程存一個 doc 正是為了省讀取次數。編輯器要注意別在 `onSnapshot` 迴圈裡重複觸發寫入。
-7. **舊網址**已經傳給家人，轉址頁不可少。
-8. **不要用 Cloudflare Access 保護個人首頁（2026-09-08 定案）**。原本考慮「只對 `/` 開 Access、`/f/**` 不開」，但在 SPA 上這是**假的安全邊界**：所有路由都由同一份 `index.html` 提供，家人載入公開的 `/f/sunlau/` 就已經拿到整個 app shell，可以在瀏覽器裡直接前端導航去 `/me`——Access 只擋得住那一次 HTML 請求，擋不住路由。另外 Access 的路徑比對是前綴式的，保護 `/` 等於保護全站，要放行家庭頁還得替 `/assets`、`/favicon.ico` 逐一開 Bypass，否則家人連 JS/CSS 都載不到。
+5. **lucide icon 崩潰**：現行 `shared/app.js` 用 `<span>` 外殼包 lucide 以避免 React `removeChild` 崩潰。新版改用 `lucide-react` 元件即可根治，但別忘了這個坑存在過。
+6. **holidays.json 是副本**，改資料要回 `SoSolsunday/docs/data/holidays.json` 改，不要在這裡改。
+7. **Firebase 免費額度**：Firestore 免費層每日 5 萬讀。整份行程存一個 doc 正是為了省讀取次數。編輯器要注意別在 `onSnapshot` 迴圈裡重複觸發寫入。
+8. **舊網址**已經傳給家人，轉址頁不可少。
+9. **P1 埋下的 Firestore 靜默 fallback（P2 開工第一件事就是拆掉）**：P1 的 `app/src/lib/db.ts` 在讀 Firestore 失敗時會 `catch {}` 然後改用版控裡的 `migration/out/*.json`。P1 未執行 import、需要畫面跑得起來，這在當下合理；但一旦 P2 開始寫入，**權限錯誤或斷線會被無聲吞掉並顯示過期的打包資料**，領隊會以為自己的修改消失了，或把舊資料當成現況。P2 必須改成：讀取失敗就明確報錯，fallback 只在開發模式下啟用且畫面上要有明顯標示。
+
+10. **不要用 Cloudflare Access 保護個人首頁（2026-09-08 定案）**。原本考慮「只對 `/` 開 Access、`/f/**` 不開」，但在 SPA 上這是**假的安全邊界**：所有路由都由同一份 `index.html` 提供，家人載入公開的 `/f/sunlau/` 就已經拿到整個 app shell，可以在瀏覽器裡直接前端導航去 `/me`——Access 只擋得住那一次 HTML 請求，擋不住路由。另外 Access 的路徑比對是前綴式的，保護 `/` 等於保護全站，要放行家庭頁還得替 `/assets`、`/favicon.ico` 逐一開 Bypass，否則家人連 JS/CSS 都載不到。
    **採用做法**：全站不開 Access，個人隱私靠應用層 + Firestore Rules（見 §5）——個人行程存 `users/{uid}`，Rules 限本人讀寫。`/` 未登入只顯示公眾假期年曆與請假攻略（本來就是公開資料），登入站長帳號後才疊上個人行程。
    **日後要更硬的升級路徑**：把個人頁搬到**獨立 hostname**（例如 `me.sssuni.com`）再套 Access。獨立 hostname 沒有路徑前綴與 assets 的問題，那時 Access 才是真的邊界。不要在同一個 hostname 上用路徑做這件事。
 
@@ -451,6 +455,8 @@ P2 是價值分水嶺 —— **P1 沒做完不要碰 P2；P2 沒做完不要碰 
 
 ## 附錄 B：釜山 2026 已結束
 
-釜山團 2026-08-05→08-10 已經走完；Pattaya 那份仍是沒日期的草稿。
+釜山團 2026-08-05→08-10 已經走完；芭堤雅 2026-02-13→02-18 也已走完
+（**更正**：本檔初稿誤記芭堤雅為「沒日期的草稿」，實際上 `trips/pattaya2026.html`
+明確寫了六日行程與日期，遷移時以 HTML 為準）。
 所以遷移進來的兩趟行程都屬「回憶錄」，新站上線時**不會有進行中的行程**——
 這正好是驗收 P1 的乾淨條件：先確認舊資料顯示正確，再用一趟 2027 的新行程驗收 P2 編輯器。

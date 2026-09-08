@@ -147,6 +147,11 @@ export interface Trip {
     heroImg?: string; photosUrl?: string;
     emergency: { label: string; phone: string }[];
     status: 'draft' | 'upcoming' | 'live' | 'past';
+    // 舊資料原樣承接，本期只需顯示，P2 之前不重新建模
+    flights?: { group: string; from: string; note?: string;
+                flightOut: string; timeOut: string;
+                flightBack: string; timeBack: string }[];
+    accommodation?: Record<string, unknown>;
   };
   members: TripMember[];
   days: Day[];
@@ -232,9 +237,9 @@ Block 的視覺照 §4 的類型色：左緣 3px 色條 + 類型 icon + 類型�
 color-scheme:dark;
 ```
 
-字體（Google Fonts）：
-- 標題 `Noto Serif HK` 700/900
-- 內文與介面 `Noto Sans HK` 400/500/700
+字體（Google Fonts）—— **2026-09-08 更正**：以 SPEC §8 為準，全站無襯線，靠字重與字級拉層次，不用襯線裝飾字。（本檔原先寫 `Noto Serif HK` 是誤植，襯線只用於設計提案文件，不進產品。）
+- 標題 `Noto Sans HK` 700，字級與字距拉開
+- 內文與介面 `Noto Sans HK` 400/500
 - 時間／金額／代號 `IBM Plex Mono` 400/500/600，一律加 `font-variant-numeric: tabular-nums`
 
 `body` 必須明確設 `background: var(--paper)`（不設會借用宿主底色）。
@@ -269,6 +274,21 @@ color-scheme:dark;
 | `TRIP_FLIGHTS` / `TRIP_ACCOMMODATION` | 先原樣塞進 `meta` 下的 `flights` / `accommodation`，本期只需顯示 |
 
 `durationMin` 舊資料沒有 → 用**下一個 block 的時間減自己的時間**推算，最後一個給 90。推不出來給 60。
+**上限 240 分**：推算超過 240 的一律截到 240（舊資料的「下午自由活動」會推出 300+ 分鐘，那是時間差不是真實時長）。
+
+**沒有對應舊欄位的必填值**（2026-09-08 補）：
+| 欄位 | 值 |
+|---|---|
+| `meta.country` | 由 `city` 對照表推（釜山→韓國、芭堤雅→泰國） |
+| `meta.status` | 由 `startDate`/`endDate` 對今天計算 |
+| `version` | `1` |
+| `updatedAt` | 遷移執行當下的 epoch ms（不要用 0，0 會被誤讀成「1970 年改過」） |
+| `updatedBy` | `'migration'` |
+| `Family.theme.accent` | `#0B6E63`（主 token 色） |
+| `Family.leaders` | `[]` —— **P2 開工前必須補上領隊 UID，否則沒人寫得了** |
+| `Family.members` | 該家庭所有行程成員的聯集 |
+
+**指南圖片**：`cover` / `gallery1` / `gallery2` 合併進 `images[]` 時要**去重**（`cover` 常是 `gallery1` 同一張只差 query string，比對去掉 query 後的 URL）。
 
 產出的 JSON **要進版控**，方便人肉審查對不對。
 
@@ -276,6 +296,7 @@ color-scheme:dark;
 把 `out/*.json` 寫進 Firestore：
 - `families/sunlau`（name「Sun & Lau Family」, shortName「SLFT」, holidayCountries `["HK","TW"]`）
 - `families/sunlau/trips/busan2026`、`families/sunlau/trips/pattaya2026`
+- `families/mok`（name「Mok Family」，無行程，空成員）—— 首頁要列兩個家庭連結，不建立的話 Mok 那條是死連結
 - `families/sunlau/availability/`（家人檔期，SPEC §7.8）**本期只建集合與型別，不做介面**——介面是 P4。舊資料裡 Lam 8/3–8/5 自己先到沖繩／廣安里這段，順手轉成一筆 `kind:'trip'` 當範例資料
 - 舊的 `trips/{id}/expenses|polls|notes|tools` 子集合**一併搬到** `families/sunlau/trips/{id}/` 底下（記帳與留言是真實家庭資料，不能弄丟）
 - 用 Firebase Admin SDK，service account 金鑰放 `~/.config/songsong/`，**不要進 repo**

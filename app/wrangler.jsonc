@@ -1,0 +1,9 @@
+{
+  // 純靜態 Vite SPA；songsong.sssuni.com 由 SS 在 Cloudflare 手動設定。
+  "name": "songsong",
+  "compatibility_date": "2026-09-08",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "single-page-application"
+  }
+}

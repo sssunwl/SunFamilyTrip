@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+HK:wght@400;500;700;900&display=swap');
+
+:root {
+  --paper:#E8ECEB; --surface:#F8FAF9; --surface-2:#EFF3F2;
+  --ink:#0E1918; --ink2:#55605E; --ink3:#8A9694;
+  --rule:#C6D0CE; --rule-soft:#D8E0DE;
+  --accent:#0B6E63; --accent-ink:#FFFFFF; --accent-wash:#0B6E6314;
+  --warn:#A8551B; --warn-wash:#A8551B14;
+  --bt-transport:#4C6E9B; --bt-food:#B85F31; --bt-sight:#377B57;
+  --bt-shopping:#7E4F92; --bt-hotel:#2F4858; --bt-rest:#8C7F5E;
+  --bt-free:#6E7D7B; --bt-meetup:#B33A2B; --bt-split:#9A7616;
+  --bt-todo:#A3355A; --bt-note:#67736F;
+  color-scheme:light;
+}
+
+@media (prefers-color-scheme:dark) {
+  :root:not([data-theme="light"]) {
+    --paper:#0C1211; --surface:#141B1A; --surface-2:#1B2321;
+    --ink:#E7EDEB; --ink2:#9AA7A4; --ink3:#6B7876;
+    --rule:#28322F; --rule-soft:#1F2826;
+    --accent:#3BB9A5; --accent-ink:#07211D; --accent-wash:#3BB9A51F;
+    --warn:#D98F4E; --warn-wash:#D98F4E1F;
+    --bt-transport:#7FA3D0; --bt-food:#E0906A; --bt-sight:#6DB98D;
+    --bt-shopping:#B588C7; --bt-hotel:#7D9BAE; --bt-rest:#C0B18A;
+    --bt-free:#9BAAA7; --bt-meetup:#E27567; --bt-split:#D4AC4A;
+    --bt-todo:#DC7896; --bt-note:#9AA6A2;
+    color-scheme:dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper:#0C1211; --surface:#141B1A; --surface-2:#1B2321;
+  --ink:#E7EDEB; --ink2:#9AA7A4; --ink3:#6B7876;
+  --rule:#28322F; --rule-soft:#1F2826;
+  --accent:#3BB9A5; --accent-ink:#07211D; --accent-wash:#3BB9A51F;
+  --warn:#D98F4E; --warn-wash:#D98F4E1F;
+  --bt-transport:#7FA3D0; --bt-food:#E0906A; --bt-sight:#6DB98D;
+  --bt-shopping:#B588C7; --bt-hotel:#7D9BAE; --bt-rest:#C0B18A;
+  --bt-free:#9BAAA7; --bt-meetup:#E27567; --bt-split:#D4AC4A;
+  --bt-todo:#DC7896; --bt-note:#9AA6A2;
+  color-scheme:dark;
+}
