@@ -90,13 +90,32 @@ const members = Array.from(
   ).values(),
 ) as TripMember[];
 
+// 領隊 UID 由環境變數帶入。留空的話沒有人寫得了行程，P2 開不了工。
+const leaders = (process.env.SONGSONG_LEADER_UID ?? '')
+  .split(',').map((x) => x.trim()).filter(Boolean);
+if (leaders.length === 0) {
+  console.warn('⚠️  沒有給 SONGSONG_LEADER_UID，leaders 會是空陣列，之後沒有人能編輯行程。');
+}
+
 await db.collection('families').doc('sunlau').set({
   name: 'Sun & Lau Family',
   shortName: 'SLFT',
   theme: { accent: '#0B6E63', bg: '#E8ECEB' },
-  leaders: [],
+  leaders,
   members,
   holidayCountries: ['HK', 'TW'],
+  createdAt: FieldValue.serverTimestamp(),
+  updatedAt: FieldValue.serverTimestamp(),
+});
+
+// 首頁要列兩個家庭，不建立的話 Mok 那條是死連結
+await db.collection('families').doc('mok').set({
+  name: 'Mok Family',
+  shortName: 'MokFT',
+  theme: { accent: '#8C5A3C', bg: '#EFEAE5' },
+  leaders,
+  members: [],
+  holidayCountries: ['HK'],
   createdAt: FieldValue.serverTimestamp(),
   updatedAt: FieldValue.serverTimestamp(),
 });
@@ -118,4 +137,5 @@ await db.collection('families').doc('sunlau').collection('availability').doc('la
 });
 
 console.log(`備份完成：${backupDir}`);
+console.log(`領隊 UID：${leaders.length ? leaders.join(', ') : '(空，沒人能編輯)'}`);
 console.log('Firestore 遷移完成。');
