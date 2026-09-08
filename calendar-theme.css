@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&family=Playfair+Display:wght@700&display=swap');
+/* 家族旅行誌配色覆寫（頁面主體與 SoSolsunday 共用同一份 calendar.html） */
+:root{
+  --navy:#2E5F73; --navy-2:#3E7E97; --blue:#3E7E97; --lagoon:#9AD3E0; --lagoon-soft:#E7F2F6;
+  --coral:#DD8E5C; --sun:#F2C57C; --sand:#F5F2ED; --paper:#FFFFFF; --ink:#4A4A4A; --muted:#8B8B8B;
+  --line:rgba(74,74,74,.12); --go:#5B9E86; --go-soft:#E8F2EE;
+  --shadow-sm:0 4px 20px rgba(0,0,0,.07);
+}
+body{font-family:'Zen Maru Gothic',"Noto Sans TC","PingFang TC",system-ui,sans-serif}
+.hero h1{font-family:'Playfair Display',serif}
+.panel,.mo{border-radius:24px}
