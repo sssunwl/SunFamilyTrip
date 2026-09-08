@@ -20,5 +20,58 @@ service cloud.firestore {
     match /users/{uid}/{doc=**} {
       allow read, write: if request.auth != null && request.auth.uid == uid;
     }
+
+    // ─────────────────────────────────────────────────────────────
+    // 舊站相容區（2026-09-08 補）
+    // 舊站 sssunwl.github.io/SunFamilyTrip 仍在線上，家人還在用它記帳／留言／
+    // 勾必買，資料在根層的 trips/{tripId}/**。這份規則若不含以下區塊，
+    // 一旦部署就會把舊站的寫入功能整組打死。
+    // 內容與根目錄 firestore.rules 的過渡版一致。
+    // ⚠️ 舊站正式退役後，連同根目錄那份一起刪掉。
+    // ─────────────────────────────────────────────────────────────
+    match /trips/{tripId} {
+      // 行程本體不在 Firestore（寫死在 trips/*.html），這層不該有任何寫入
+      allow read: if true;
+      allow write: if false;
+
+      // 記帳：可新增、可刪除（舊站有刪除鈕），不可竄改既有紀錄
+      match /expenses/{expenseId} {
+        allow read: if true;
+        allow create: if request.resource.data.keys().hasOnly(
+                           ['item','cost','inputCurrency','baseAmount',
+                            'payer','splitters','type','category','createdAt'])
+                      && request.resource.data.item is string
+                      && request.resource.data.item.size() < 200
+                      && request.resource.data.cost is number
+                      && request.resource.data.cost >= 0;
+        allow delete: if true;
+        allow update: if false;
+      }
+
+      // 投票
+      match /polls/{pollId} {
+        allow read: if true;
+        allow write: if request.resource.data.keys().hasOnly(['votes'])
+                      && request.resource.data.votes.size() < 50;
+      }
+
+      // 回憶留言：只可新增，不可改、不可刪
+      match /notes/{noteId} {
+        allow read: if true;
+        allow create: if request.resource.data.keys().hasOnly(
+                           ['userId','name','avatar','text','createdAt'])
+                      && request.resource.data.text is string
+                      && request.resource.data.text.size() > 0
+                      && request.resource.data.text.size() < 1000;
+        allow update, delete: if false;
+      }
+
+      // 必買勾選（全團共用一份 checked map）
+      match /tools/{toolId} {
+        allow read: if true;
+        allow write: if request.resource.data.keys().hasOnly(['checked'])
+                      && request.resource.data.checked.size() < 300;
+      }
+    }
   }
 }

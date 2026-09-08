@@ -5,7 +5,7 @@ import {
   initializeTestEnvironment,
   type RulesTestEnvironment,
 } from '@firebase/rules-unit-testing';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { deleteDoc, doc, getDoc, setDoc, updateDoc } from 'firebase/firestore';
 import { afterAll, beforeAll, describe, it } from 'vitest';
 
 let environment: RulesTestEnvironment;
@@ -48,5 +48,69 @@ describe('P1 Firestore rules', () => {
     await assertSucceeds(getDoc(ownEvent));
     await assertFails(getDoc(doc(otherDb, 'users/user-a/events/event-1')));
     await assertFails(getDoc(doc(publicDb, 'users/user-a/events/event-1')));
+  });
+});
+
+// 舊站（sssunwl.github.io/SunFamilyTrip）仍在線上，家人還在用它記帳／留言／
+// 勾必買。這組測試確保新規則部署後不會把舊站打死，同時真的有收緊。
+describe('舊站相容區 trips/**', () => {
+  const validExpense = {
+    item: '札嘎其海鮮', cost: 45000, inputCurrency: 'KRW', baseAmount: 45000,
+    payer: 'ricky', splitters: ['ricky', 'pat'], type: 'public',
+    category: '食', createdAt: 1757300000000,
+  };
+
+  beforeAll(async () => {
+    await environment.withSecurityRulesDisabled(async (ctx) => {
+      const raw = ctx.firestore();
+      await setDoc(doc(raw, 'trips/busan2026/expenses/seeded'), validExpense);
+      await setDoc(doc(raw, 'trips/busan2026/notes/seeded'), {
+        userId: 'yi', name: 'Yi', avatar: '🐼', text: '好開心', createdAt: 1757300000000,
+      });
+    });
+  });
+
+  it('舊站需要的讀取仍然通', async () => {
+    const db = environment.unauthenticatedContext().firestore();
+    await assertSucceeds(getDoc(doc(db, 'trips/busan2026/tools/shopping')));
+    await assertSucceeds(getDoc(doc(db, 'trips/busan2026/expenses/seeded')));
+  });
+
+  it('記帳可新增、可刪除，但不可竄改既有紀錄', async () => {
+    const db = environment.unauthenticatedContext().firestore();
+    await assertSucceeds(setDoc(doc(db, 'trips/busan2026/expenses/new1'), validExpense));
+    await assertSucceeds(deleteDoc(doc(db, 'trips/busan2026/expenses/new1')));
+    await assertFails(updateDoc(doc(db, 'trips/busan2026/expenses/seeded'), { cost: 1 }));
+  });
+
+  it('記帳夾帶白名單外的欄位會被擋', async () => {
+    const db = environment.unauthenticatedContext().firestore();
+    await assertFails(setDoc(doc(db, 'trips/busan2026/expenses/bad'), {
+      ...validExpense, evil: 'x',
+    }));
+  });
+
+  it('回憶留言只可新增，不可改不可刪', async () => {
+    const db = environment.unauthenticatedContext().firestore();
+    await assertSucceeds(setDoc(doc(db, 'trips/busan2026/notes/n1'), {
+      userId: 'pat', name: 'Pat', avatar: '🦊', text: '記低咗', createdAt: 1757300000000,
+    }));
+    await assertFails(deleteDoc(doc(db, 'trips/busan2026/notes/seeded')));
+    await assertFails(updateDoc(doc(db, 'trips/busan2026/notes/seeded'), { text: '改咗' }));
+  });
+
+  it('必買勾選與投票可寫，行程本體不可寫', async () => {
+    const db = environment.unauthenticatedContext().firestore();
+    await assertSucceeds(setDoc(doc(db, 'trips/busan2026/tools/shopping'),
+      { checked: { ph01: '🦊' } }, { merge: true }));
+    await assertSucceeds(setDoc(doc(db, 'trips/busan2026/polls/first_pick'),
+      { votes: { pat: '海雲台海邊' } }, { merge: true }));
+    await assertFails(setDoc(doc(db, 'trips/busan2026'), { title: 'x' }));
+  });
+
+  it('白名單以外的路徑一律關閉', async () => {
+    const db = environment.unauthenticatedContext().firestore();
+    await assertFails(getDoc(doc(db, 'whatever/x')));
+    await assertFails(setDoc(doc(db, 'whatever/x'), { a: 1 }));
   });
 });
