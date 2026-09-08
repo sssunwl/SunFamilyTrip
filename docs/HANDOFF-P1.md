@@ -157,6 +157,18 @@ export interface Trip {
   updatedBy: string;
 }
 
+export interface AvailabilityEntry {
+  id: string;
+  memberIds: string[];
+  from: string;              // ISO
+  to: string;                // ISO
+  kind: 'trip' | 'busy' | 'free';
+  label: string;
+  note?: string;
+  createdBy: string;
+  createdAt: number;
+}
+
 export interface Family {
   id: string; name: string; shortName: string;
   theme: { accent: string; bg: string };
@@ -264,6 +276,7 @@ color-scheme:dark;
 把 `out/*.json` 寫進 Firestore：
 - `families/sunlau`（name「Sun & Lau Family」, shortName「SLFT」, holidayCountries `["HK","TW"]`）
 - `families/sunlau/trips/busan2026`、`families/sunlau/trips/pattaya2026`
+- `families/sunlau/availability/`（家人檔期，SPEC §7.8）**本期只建集合與型別，不做介面**——介面是 P4。舊資料裡 Lam 8/3–8/5 自己先到沖繩／廣安里這段，順手轉成一筆 `kind:'trip'` 當範例資料
 - 舊的 `trips/{id}/expenses|polls|notes|tools` 子集合**一併搬到** `families/sunlau/trips/{id}/` 底下（記帳與留言是真實家庭資料，不能弄丟）
 - 用 Firebase Admin SDK，service account 金鑰放 `~/.config/songsong/`，**不要進 repo**
 

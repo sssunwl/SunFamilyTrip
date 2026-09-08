@@ -1,0 +1,65 @@
+rules_version = '2';
+
+// ─────────────────────────────────────────────────────────────
+// 過渡版規則（2026-09-08）
+// 用途：舊站 sssunwl.github.io/SunFamilyTrip 仍在運作期間，把資料庫從
+//       「全世界可讀可寫」收到「只有舊站真正用到的四條路徑可寫」。
+// 現況：apiKey 與 projectId 都在公開 repo，安全性只能靠這份規則。
+// 之後：P1 上線時由 app/firestore.rules 取代（families/ 結構 + 領隊認證）。
+// 部署：Firebase Console → Firestore Database → 規則 → 貼上 → 發布
+// ─────────────────────────────────────────────────────────────
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /trips/{tripId} {
+      // 行程本體不在 Firestore（寫死在 trips/*.html），這層不該有任何寫入
+      allow read: if true;
+      allow write: if false;
+
+      // 記帳：可新增、可刪除（舊站有刪除鈕），不可竄改既有紀錄
+      match /expenses/{expenseId} {
+        allow read: if true;
+        allow create: if request.resource.data.keys().hasOnly(
+                           ['item','cost','inputCurrency','baseAmount',
+                            'payer','splitters','type','category','createdAt'])
+                      && request.resource.data.item is string
+                      && request.resource.data.item.size() < 200
+                      && request.resource.data.cost is number
+                      && request.resource.data.cost >= 0;
+        allow delete: if true;
+        allow update: if false;
+      }
+
+      // 投票
+      match /polls/{pollId} {
+        allow read: if true;
+        allow write: if request.resource.data.keys().hasOnly(['votes'])
+                      && request.resource.data.votes.size() < 50;
+      }
+
+      // 回憶留言：只可新增，不可改、不可刪
+      match /notes/{noteId} {
+        allow read: if true;
+        allow create: if request.resource.data.keys().hasOnly(
+                           ['userId','name','avatar','text','createdAt'])
+                      && request.resource.data.text is string
+                      && request.resource.data.text.size() > 0
+                      && request.resource.data.text.size() < 1000;
+        allow update, delete: if false;
+      }
+
+      // 必買勾選（全團共用一份 checked map）
+      match /tools/{toolId} {
+        allow read: if true;
+        allow write: if request.resource.data.keys().hasOnly(['checked'])
+                      && request.resource.data.checked.size() < 300;
+      }
+    }
+
+    // 其餘一律關閉
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
