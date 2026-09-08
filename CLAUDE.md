@@ -11,11 +11,20 @@
 
 ## 現在的狀態（2026-09-08）
 
-規格定稿中，**尚未動工**。repo 內現有的檔案全部是舊版：
+改版規格已定稿，P1 唯讀骨架已完成並提交到 `main`／`origin/main`。`app/` 已包含 Vite + React + TypeScript 新站、Firebase Auth／Firestore、釜山與芭堤雅資料遷移及四條路由；build 通過，Firestore Emulator 9 項規則測試全過。根目錄舊站仍維持上線，尚未匯入正式 Firestore 或部署新站。
 
 - `index.html`、`trips/*.html`、`shared/app.js` — 舊版，改版後會整組被取代，**先不要在上面加功能**
 - `calendar.html` + `calendar-theme.css` + `holidays.json` — 亞洲假期年曆（2026-09-08 已入庫）。裡面的 `findWindows()` 請假攻略演算法**已驗過、要原樣搬到新站，不要重寫**
 - `assets/busan/products/` — 39 張必買產品實拍圖，**保留不動**，新站沿用
+
+舊資料的兩處錯誤已於 2026-09-08 修正（芭堤雅泰國救護車 191→**1669**，191 是警察；釜山指南 #15 的 tag 日期 8/7→8/8），修在舊 HTML 再重跑遷移，兩份 JSON 只有這兩處差異。
+
+**P2 開工前的三件前置**：
+1. 移除 `app/src/lib/db.ts` 的靜默 fallback（讀 Firestore 失敗會 `catch{}` 改用打包 JSON，寫入開始後會讓領隊以為改動消失）
+2. 在 Firebase Console 建領隊帳號、把 UID 補進 `families/*.leaders`（現在是空陣列，等於沒人寫得了）
+3. 備份舊 Firestore 後執行 `npm run migration:import`（需要 Admin service account 金鑰，放 `~/.config/songsong/`）
+
+新站圖片部署方案（39 張舊產品圖怎麼進 `app/dist`）見 SPEC，P3 前要定。
 
 ## 規矩
 
