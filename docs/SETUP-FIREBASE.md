@@ -107,3 +107,26 @@ cd /Users/sws/Sun/Claude/SunFamilyTrip/app && npm run dev
 舊站也去看一眼還活著：https://sssunwl.github.io/SunFamilyTrip/trips/busan2026.html
 
 六步都過了，P2 就可以開工。
+
+---
+
+## 第 7 步 · 開啟 Cloud Storage（P3 需要）
+
+2026-09-09 實測：`sunfamily-trips` 的 Storage **尚未啟用**（bucket 回 404）。
+P3 的「領隊上傳產品圖」要用到它。
+
+1. 開 https://console.firebase.google.com/project/sunfamily-trips/storage
+2. 按「**開始使用**」
+3. 安全規則選「**以正式版模式啟動**」（鎖定）——規則之後由 `app/storage.rules` 管
+4. **選位置**：建議 `asia-northeast1`（東京）。家人在港／台／日，東京延遲最低
+   ⚠️ **位置一旦選定不能改**，也不能搬 bucket，選錯只能重開專案
+5. 這時會要求升級到 **Blaze 方案**（需要綁信用卡）
+
+### 關於 Blaze 的費用
+- Storage 免費額度 **5GB 儲存 + 每日 1GB 下載**。一趟行程 50 張壓過的 WebP 約 10MB，用十年也用不完
+- 但 Blaze 是「用多少算多少」，**一定要設預算警報**：
+  https://console.cloud.google.com/billing/budgets?project=sunfamily-trips
+  → 建立預算 → 金額設 **US$1** → 勾選達到 50%／90%／100% 寄信通知
+- 這個警報不會自動停用服務，只會寄信。但以這個用量，正常情況永遠不會觸發
+
+開好之後跟 Claude 說一聲，會用 REST 驗證 bucket 真的能用。

@@ -91,7 +91,9 @@ category, name, localName, tag, note, desc, imageUrl, showText, buyable, priceAm
 
 ## 5. 圖片
 
-**先確認 Firebase Storage 有沒有開**（見 §9 前置）。沒開就只做第 1 條，並在回報裡寫明。
+**Storage 正在由 SS 開啟中，你不要等**。用 **Firebase Storage Emulator** 開發與驗收上傳路徑
+（在 `firebase.json` 加 storage emulator 設定，`app/storage.rules` 寫規則），這樣不管正式
+Storage 開好了沒，程式都是完成的。回報時寫明你是對模擬器驗的。
 
 1. **貼圖片 URL**（零成本，一定要做）
 2. **上傳到 Firebase Storage**（Storage 已開才做）
@@ -141,7 +143,7 @@ SPEC 附錄 C9：規則已放行 create，但沒有 UI。本期補上。
 
 ## 9. 前置條件（SS 做，做不了就回報並繼續其他項目）
 
-1. **Firebase Storage 要不要開** —— 需要 Blaze 方案（綁卡，免費額度 5GB 內不扣款）。沒開就只做貼 URL
+1. **Firebase Storage** —— SS 正在開（步驟見 `docs/SETUP-FIREBASE.md` 第 7 步）。你用 Storage Emulator 開發，不要等，也不要嘗試對正式 bucket 寫入
 2. resolve-maps Worker 由 SS 部署後填 `VITE_MAPS_RESOLVER_URL`，本期不管
 
 ---
