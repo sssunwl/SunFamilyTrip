@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import type { Block as BlockData, Day } from '../types/trip';
+import type { TripDocument } from '../types/legacy';
 import { Block } from './Block';
+import { CopyTextButton } from './CopyTextButton';
 
 interface DayListProps {
-  days: Day[];
-  blocks: BlockData[];
+  trip: TripDocument;
   initialDayId?: string;
 }
 
-export function DayList({ days, blocks, initialDayId }: DayListProps) {
+export function DayList({ trip, initialDayId }: DayListProps) {
+  const { days, blocks } = trip;
   const [activeDayId, setActiveDayId] = useState(initialDayId ?? days[0]?.id ?? '');
   const activeDay = days.find((day) => day.id === activeDayId) ?? days[0];
 
@@ -43,6 +44,7 @@ export function DayList({ days, blocks, initialDayId }: DayListProps) {
             <h2 id="day-heading">{activeDay.theme}</h2>
             {activeDay.highlights && <p className="day-highlight">{activeDay.highlights}</p>}
           </div>
+          <CopyTextButton dayId={activeDay.id} trip={trip} />
         </header>
         <div className="block-list">
           {activeBlocks.map((block) => <Block block={block} key={block.id} />)}

@@ -1,6 +1,8 @@
-import { ArrowLeft, ArrowUpRight } from 'lucide-react';
+import type { User } from 'firebase/auth';
+import { ArrowLeft, ArrowUpRight, Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { CreateTripDialog } from '../components/CreateTripDialog';
 import { MemberList } from '../components/MemberList';
 import { friendlyDataError, getFamily, getFamilyTrips, type DataSource } from '../lib/db';
 import type { Family as FamilyData } from '../types/trip';
@@ -12,13 +14,15 @@ const statusGroups = [
   { status: 'past', label: '回憶錄' },
 ] as const;
 
-export function Family() {
+export function Family({ user, authReady }: { user: User | null; authReady: boolean }) {
   const { family: familyId = '' } = useParams();
+  const navigate = useNavigate();
   const [family, setFamily] = useState<FamilyData | null>();
   const [trips, setTrips] = useState<TripSummary[]>([]);
   const [source, setSource] = useState<DataSource>('firestore');
   const [error, setError] = useState('');
   const [loadKey, setLoadKey] = useState(0);
+  const [createOpen, setCreateOpen] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -56,7 +60,7 @@ export function Family() {
       {source === 'local' && <div className="dev-banner" role="status">開發模式：正在使用本機遷移資料，不是線上資料</div>}
       <Link className="back-link" to="/"><ArrowLeft size={16} aria-hidden />全部家庭</Link>
       <p className="eyebrow trip-code">{family.shortName}</p>
-      <h1>{family.name}</h1>
+      <div className="family-title-row"><h1>{family.name}</h1>{authReady && user && family.leaders.includes(user.uid) && source === 'firestore' && <button className="primary-button" type="button" onClick={() => setCreateOpen(true)}><Plus aria-hidden />開新行程</button>}</div>
 
       <section className="member-section" aria-labelledby="members-heading">
         <h2 id="members-heading">家庭成員</h2>
@@ -89,6 +93,7 @@ export function Family() {
           );
         })}
       </section>
+      {createOpen && user && <CreateTripDialog family={family} trips={trips} uid={user.uid} onClose={() => setCreateOpen(false)} onCreated={(tripId) => navigate(`/f/${familyId}/t/${tripId}/edit`)} />}
     </main>
   );
 }

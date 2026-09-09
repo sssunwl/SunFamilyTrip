@@ -74,6 +74,33 @@ describe('P2 Firestore rules', () => {
     await assertFails(setDoc(doc(memberDb, 'families/sunlau/presets/p2'), { title: '早餐', type: 'food' }));
   });
 
+  it('領隊可修改家庭範本，非領隊不可', async () => {
+    const leaderDb = environment.authenticatedContext(leaderUid).firestore();
+    const memberDb = environment.authenticatedContext('member').firestore();
+    await assertSucceeds(updateDoc(doc(leaderDb, 'families/sunlau/presets/p1'), { title: '早午餐' }));
+    await assertFails(updateDoc(doc(memberDb, 'families/sunlau/presets/p1'), { title: '竄改' }));
+  });
+
+  it('家庭範本只有領隊可以刪除', async () => {
+    await environment.withSecurityRulesDisabled(async (ctx) => {
+      await setDoc(doc(ctx.firestore(), 'families/sunlau/presets/delete-me'), { title: '刪除測試', type: 'note' });
+      await setDoc(doc(ctx.firestore(), 'families/sunlau/presets/keep-me'), { title: '保留測試', type: 'note' });
+    });
+    const leaderDb = environment.authenticatedContext(leaderUid).firestore();
+    const memberDb = environment.authenticatedContext('member').firestore();
+    const publicDb = environment.unauthenticatedContext().firestore();
+    await assertFails(deleteDoc(doc(memberDb, 'families/sunlau/presets/keep-me')));
+    await assertFails(deleteDoc(doc(publicDb, 'families/sunlau/presets/keep-me')));
+    await assertSucceeds(deleteDoc(doc(leaderDb, 'families/sunlau/presets/delete-me')));
+  });
+
+  it('必買勾選只可寫 tools/shopping 的 checked map', async () => {
+    const publicDb = environment.unauthenticatedContext().firestore();
+    await assertSucceeds(setDoc(doc(publicDb, 'families/sunlau/trips/busan2026/tools/shopping'), { checked: { ph01: '✓' } }));
+    await assertFails(setDoc(doc(publicDb, 'families/sunlau/trips/busan2026/tools/shopping'), { checked: {}, extra: true }));
+    await assertFails(setDoc(doc(publicDb, 'families/sunlau/trips/busan2026/tools/anything'), { checked: {} }));
+  });
+
   it('allows only the signed-in user to read and write their nested documents', async () => {
     const ownDb = environment.authenticatedContext('user-a').firestore();
     const otherDb = environment.authenticatedContext('user-b').firestore();

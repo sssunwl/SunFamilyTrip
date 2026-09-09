@@ -1,6 +1,7 @@
 import { useDraggable } from '@dnd-kit/core';
 import type { BlockType } from '../../types/trip';
 import { blockTemplates } from '../../editor/blockTemplates';
+import type { FamilyPreset } from '../../lib/db';
 
 function LibraryItem({
   type, label, icon, preview, onAdd, disabled,
@@ -31,7 +32,14 @@ function LibraryItem({
   );
 }
 
-export function BlockLibrary({ onAdd, disabled }: { onAdd: (type: BlockType) => void; disabled: boolean }) {
+export function BlockLibrary({ onAdd, onAddPreset, onRenamePreset, onDeletePreset, presets, disabled }: {
+  onAdd: (type: BlockType) => void;
+  onAddPreset: (preset: FamilyPreset) => void;
+  onRenamePreset: (preset: FamilyPreset) => void;
+  onDeletePreset: (preset: FamilyPreset) => void;
+  presets: FamilyPreset[];
+  disabled: boolean;
+}) {
   return (
     <div className="block-library">
       <div className="panel-heading"><p className="eyebrow">積木庫</p><h2>加一段安排</h2></div>
@@ -41,6 +49,10 @@ export function BlockLibrary({ onAdd, disabled }: { onAdd: (type: BlockType) => 
           <LibraryItem {...template} disabled={disabled} key={template.type} onAdd={onAdd} />
         ))}
       </div>
+      <section className="custom-presets" aria-labelledby="custom-presets-title">
+        <div className="panel-heading"><p className="eyebrow">＋ 自訂範本</p><h2 id="custom-presets-title">家庭範本</h2></div>
+        {presets.length === 0 ? <p className="panel-help">還沒有家庭範本。</p> : <div className="preset-list">{presets.map((preset) => <div className="preset-row" key={preset.id}><button disabled={disabled} type="button" onClick={() => onAddPreset(preset)}><span aria-hidden>{blockTemplates.find((item) => item.type === preset.type)?.icon ?? '🧩'}</span><strong>{preset.title}</strong><span aria-hidden>＋</span></button><div><button disabled={disabled} type="button" onClick={() => onRenamePreset(preset)}>改名</button><button className="danger-text" disabled={disabled} type="button" onClick={() => onDeletePreset(preset)}>刪除</button></div></div>)}</div>}
+      </section>
     </div>
   );
 }

@@ -7,13 +7,13 @@
 **`docs/SPEC.md`**。任何實作以它為準；程式碼與它衝突時，先改 SPEC 再改程式碼。
 本檔只放「工作規矩」，產品內容一律不要抄一份在這裡。
 
-派工單：`docs/HANDOFF-P1.md`、`docs/HANDOFF-P2.md`（皆已完成）、`docs/HANDOFF-P3.md`（傳播與內容，待開工）。每期一份。
+派工單：`docs/HANDOFF-P1.md`、`docs/HANDOFF-P2.md`（皆已完成）、`docs/HANDOFF-P3.md`（傳播與內容，實作中）。每期一份。
 
 Codex 每期回報的「規格哪裡寫錯」是這個分工最值錢的產出（P1 挑出 9 個、P2 挑出 16 個），裁決結果寫在 SPEC 附錄 C。派工單一定要保留這一項。
 
-## 現在的狀態（2026-09-08）
+## 現在的狀態（2026-09-09）
 
-改版規格已定稿，P1 唯讀骨架已完成並提交到 `main`／`origin/main`。`app/` 已包含 Vite + React + TypeScript 新站、Firebase Auth／Firestore、釜山與芭堤雅資料遷移及四條路由；build 通過，Firestore Emulator 9 項規則測試全過。根目錄舊站仍維持上線，尚未匯入正式 Firestore 或部署新站。
+改版規格已定稿，P1 唯讀骨架及 P2 行程積木編輯器已完成、驗收並提交到 `main`／`origin/main`。P2 包含手機與桌面編輯、跨天移動、屬性／成員面板、地點解析 Worker、樂觀鎖及 Firestore Rules；其後亦修正新增積木預設時間與 create 規則的 `version` 檢查。P3「傳播與內容」派工單、Firebase Storage 啟用步驟與 `asia-east1` 區域決策已入庫；P3 實作目前仍在未提交工作樹，尚未視為完成。根目錄舊站仍維持上線，新站尚未匯入正式 Firestore 或部署。
 
 - `index.html`、`trips/*.html`、`shared/app.js` — 舊版，改版後會整組被取代，**先不要在上面加功能**
 - `calendar.html` + `calendar-theme.css` + `holidays.json` — 亞洲假期年曆（2026-09-08 已入庫）。裡面的 `findWindows()` 請假攻略演算法**已驗過、要原樣搬到新站，不要重寫**
@@ -21,12 +21,7 @@ Codex 每期回報的「規格哪裡寫錯」是這個分工最值錢的產出�
 
 舊資料的兩處錯誤已於 2026-09-08 修正（芭堤雅泰國救護車 191→**1669**，191 是警察；釜山指南 #15 的 tag 日期 8/7→8/8），修在舊 HTML 再重跑遷移，兩份 JSON 只有這兩處差異。
 
-**P2 開工前的三件前置**：
-1. 移除 `app/src/lib/db.ts` 的靜默 fallback（讀 Firestore 失敗會 `catch{}` 改用打包 JSON，寫入開始後會讓領隊以為改動消失）
-2. 在 Firebase Console 建領隊帳號、把 UID 補進 `families/*.leaders`（現在是空陣列，等於沒人寫得了）
-3. 備份舊 Firestore 後執行 `npm run migration:import`（需要 Admin service account 金鑰，放 `~/.config/songsong/`）
-
-新站圖片部署方案（39 張舊產品圖怎麼進 `app/dist`）見 SPEC，P3 前要定。
+**目前下一步**：完成並驗收 P3 的文字複製、旅行指南／必買清單、CSV 匯入、家庭範本讀取與建立行程 UI；用 Storage Emulator 開發圖片功能，正式 bucket 不寫入。完成後須跑規則測試與 build，再決定提交；正式 Firestore 匯入、領隊 UID 設定及新站部署仍由 SS 處理。
 
 ## 規矩
 

@@ -10,7 +10,7 @@ import {
 } from '@dnd-kit/core';
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import type { User } from 'firebase/auth';
-import { ArrowLeft, Boxes, Users } from 'lucide-react';
+import { ArrowLeft, BookOpen, Boxes, Users } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { BlockLibrary } from '../components/editor/BlockLibrary';
@@ -21,12 +21,16 @@ import { PropertyPanel } from '../components/editor/PropertyPanel';
 import { createBlock, normalizeOrders } from '../editor/blockTemplates';
 import {
   VersionConflictError,
+  deleteFamilyPreset,
   friendlyDataError,
   getFamily,
+  getFamilyPresets,
   getTrip,
+  renameFamilyPreset,
   saveFamilyPreset,
   saveTrip,
   type DataSource,
+  type FamilyPreset,
 } from '../lib/db';
 import type { Block, BlockType, Day, Family, TripMember } from '../types/trip';
 import type { TripDocument } from '../types/legacy';
@@ -65,6 +69,7 @@ export function TripEditor({ user, authReady }: { user: User | null; authReady: 
   const online = useOnline();
   const [trip, setTrip] = useState<TripDocument | null>();
   const [family, setFamily] = useState<Family | null>();
+  const [presets, setPresets] = useState<FamilyPreset[]>([]);
   const [source, setSource] = useState<DataSource>('firestore');
   const [error, setError] = useState('');
   const [loadKey, setLoadKey] = useState(0);
@@ -94,11 +99,12 @@ export function TripEditor({ user, authReady }: { user: User | null; authReady: 
   useEffect(() => {
     let active = true;
     setTrip(undefined); setFamily(undefined); setError('');
-    Promise.all([getTrip(familyId, tripId), getFamily(familyId)])
-      .then(([tripResult, familyResult]) => {
+    Promise.all([getTrip(familyId, tripId), getFamily(familyId), getFamilyPresets(familyId).catch(() => [])])
+      .then(([tripResult, familyResult, presetResult]) => {
         if (!active) return;
         const loadedTrip = tripResult.data;
         setTrip(loadedTrip); setFamily(familyResult.data);
+        setPresets(presetResult);
         setSource(tripResult.source === 'local' || familyResult.source === 'local' ? 'local' : 'firestore');
         if (loadedTrip) {
           tripRef.current = loadedTrip;
@@ -185,6 +191,22 @@ export function TripEditor({ user, authReady }: { user: User | null; authReady: 
           : '';
       const next = createBlock(type, dayId, dayBlocks.length);
       next.time = defaultTime;
+      id = next.id;
+      return { ...current, blocks: [...current.blocks, next] };
+    });
+    setActiveDayId(dayId); setSelectedBlockId(id); setLibraryOpen(false);
+  }
+
+  function addPreset(preset: FamilyPreset, dayId = activeDayId) {
+    if (!dayId || disabled) return;
+    let id = '';
+    mutate((current) => {
+      const dayBlocks = current.blocks.filter((block) => block.dayId === dayId).sort((a, b) => a.order - b.order);
+      const lastBlock = dayBlocks.at(-1);
+      const lastStart = lastBlock ? minutes(lastBlock.time) : null;
+      const time = !lastBlock ? '09:00' : lastStart !== null ? shiftedTime(lastBlock.time, lastBlock.durationMin) : '';
+      const { createdAt: _createdAt, createdBy: _createdBy, ...template } = preset;
+      const next: Block = { ...template, id: crypto.randomUUID(), dayId, order: dayBlocks.length, time };
       id = next.id;
       return { ...current, blocks: [...current.blocks, next] };
     });
@@ -360,12 +382,12 @@ export function TripEditor({ user, authReady }: { user: User | null; authReady: 
       {source === 'local' && <div className="dev-banner" role="alert">開發模式：正在使用本機遷移資料，不是線上資料；編輯已停用</div>}
       <div className="save-bar" data-state={saveState}><span>{statusLabel}</span>{(saveState === 'error') && <button type="button" onClick={() => void persist()}>重試</button>}{saveState === 'conflict' && <button type="button" onClick={() => setLoadKey((key) => key + 1)}>重新載入</button>}</div>
       {!online && <div className="offline-banner" role="alert">網路中斷，恢復連線前不能修改行程，避免改動遺失。</div>}
-      <header className="editor-topbar"><div><Link className="back-link" to={`/f/${familyId}/t/${tripId}`}><ArrowLeft size={16} aria-hidden />返回唯讀行程</Link><h1>{trip.meta.title}</h1></div><div className="editor-actions"><button className="secondary-button" disabled={disabled} type="button" onClick={() => setMembersOpen(true)}><Users aria-hidden />成員設定</button><button className="mobile-library-button" disabled={disabled} type="button" onClick={() => setLibraryOpen(true)}><Boxes aria-hidden />積木庫</button></div></header>
+      <header className="editor-topbar"><div><Link className="back-link" to={`/f/${familyId}/t/${tripId}`}><ArrowLeft size={16} aria-hidden />返回唯讀行程</Link><h1>{trip.meta.title}</h1></div><div className="editor-actions"><Link className="secondary-button" to={`/f/${familyId}/t/${tripId}/guide`}><BookOpen aria-hidden />指南＆必買</Link><button className="secondary-button" disabled={disabled} type="button" onClick={() => setMembersOpen(true)}><Users aria-hidden />成員設定</button><button className="mobile-library-button" disabled={disabled} type="button" onClick={() => setLibraryOpen(true)}><Boxes aria-hidden />積木庫</button></div></header>
       {toast && <div className="toast" role="status" onAnimationEnd={() => setToast('')}>{toast}</div>}
       <DndContext collisionDetection={closestCenter} sensors={sensors} onDragEnd={handleDragEnd}>
         <div className="editor-layout">
-          <aside className={`library-panel ${libraryOpen ? 'is-open' : ''}`}><button className="sheet-close library-close" type="button" onClick={() => setLibraryOpen(false)}>關閉</button><BlockLibrary disabled={disabled} onAdd={addBlock} /></aside>
-          <EditorCanvas activeDayId={activeDayId} blocks={trip.blocks} days={trip.days} disabled={disabled} selectedBlockId={selectedBlockId} onActiveDay={setActiveDayId} onAddDay={addDay} onCopyDay={copyDay} onDelete={deleteBlock} onDeleteDay={deleteDay} onDuplicate={duplicateBlock} onImportDay={() => setImportOpen(true)} onMove={moveBlock} onSavePreset={(id) => { const block = trip.blocks.find((item) => item.id === id); if (block) void saveFamilyPreset(familyId, block, user!.uid).then(() => setToast('已另存為家庭範本')).catch(() => setToast('範本儲存失敗')); }} onSelect={(id) => setSelectedBlockId(id)} />
+          <aside className={`library-panel ${libraryOpen ? 'is-open' : ''}`}><button className="sheet-close library-close" type="button" onClick={() => setLibraryOpen(false)}>關閉</button><BlockLibrary disabled={disabled} presets={presets} onAdd={addBlock} onAddPreset={addPreset} onRenamePreset={(preset) => { const title = window.prompt('範本新名稱', preset.title)?.trim(); if (title) void renameFamilyPreset(familyId, preset.id, title).then(() => setPresets((items) => items.map((item) => item.id === preset.id ? { ...item, title } : item))).catch(() => setToast('範本改名失敗')); }} onDeletePreset={(preset) => { if (window.confirm(`確定刪除範本「${preset.title}」？`)) void deleteFamilyPreset(familyId, preset.id).then(() => setPresets((items) => items.filter((item) => item.id !== preset.id))).catch(() => setToast('範本刪除失敗')); }} /></aside>
+          <EditorCanvas activeDayId={activeDayId} blocks={trip.blocks} days={trip.days} members={trip.members} disabled={disabled} selectedBlockId={selectedBlockId} onActiveDay={setActiveDayId} onAddDay={addDay} onCopyDay={copyDay} onDelete={deleteBlock} onDeleteDay={deleteDay} onDuplicate={duplicateBlock} onImportDay={() => setImportOpen(true)} onMove={moveBlock} onSavePreset={(id) => { const block = trip.blocks.find((item) => item.id === id); if (block) void saveFamilyPreset(familyId, block, user!.uid).then(() => getFamilyPresets(familyId)).then((items) => { setPresets(items); setToast('已另存為家庭範本'); }).catch(() => setToast('範本儲存失敗')); }} onSelect={(id) => setSelectedBlockId(id)} />
           <div className={`property-panel-wrap ${selectedBlock ? 'is-open' : ''}`}><PropertyPanel block={selectedBlock} disabled={disabled} members={trip.members} onClose={() => setSelectedBlockId(null)} onTimeChange={changeTime} onUpdate={updateSelected} /></div>
         </div>
       </DndContext>

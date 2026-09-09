@@ -17,6 +17,8 @@ import {
 import type { CSSProperties } from 'react';
 import type { Block as BlockData, BlockType } from '../types/trip';
 
+const affiliateDisclosure = '透過此連結購買，我可能獲得少量回饋，價格不變';
+
 const blockMeta: Record<BlockType, { label: string; icon: LucideIcon }> = {
   transport: { label: '交通', icon: BusFront },
   food: { label: '餐飲', icon: Utensils },
@@ -67,6 +69,7 @@ export function Block({ block }: { block: BlockData }) {
             ))}
           </ul>
         )}
+        {block.affiliate?.url && <div className="affiliate-box"><a className="text-link" href={block.affiliate.url} target="_blank" rel="nofollow sponsored noreferrer">到 {block.affiliate.platform} 查看</a><p className="affiliate-disclosure">{affiliateDisclosure}</p></div>}
       </div>
     </article>
   );

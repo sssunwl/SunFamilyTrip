@@ -4,7 +4,8 @@ import { CSS } from '@dnd-kit/utilities';
 import { ChevronDown, ChevronUp, GripVertical, MoreHorizontal } from 'lucide-react';
 import type { CSSProperties } from 'react';
 import { blockTemplates } from '../../editor/blockTemplates';
-import type { Block, Day } from '../../types/trip';
+import type { Block, Day, TripMember } from '../../types/trip';
+import { CopyTextButton } from '../CopyTextButton';
 
 function DayTab({ day, index, active, onClick }: { day: Day; index: number; active: boolean; onClick: () => void }) {
   const { isOver, setNodeRef } = useDroppable({ id: `day:${day.id}`, data: { kind: 'day', dayId: day.id } });
@@ -77,9 +78,9 @@ function SortableBlock({
 export function EditorCanvas({
   days, blocks, activeDayId, selectedBlockId, disabled, onActiveDay, onSelect,
   onMove, onDuplicate, onDelete, onSavePreset, onCopyDay, onImportDay,
-  onAddDay, onDeleteDay,
+  onAddDay, onDeleteDay, members,
 }: {
-  days: Day[]; blocks: Block[]; activeDayId: string; selectedBlockId: string | null; disabled: boolean;
+  days: Day[]; blocks: Block[]; members: TripMember[]; activeDayId: string; selectedBlockId: string | null; disabled: boolean;
   onActiveDay: (id: string) => void; onSelect: (id: string) => void;
   onMove: (id: string, dayId: string, direction?: -1 | 1) => void;
   onDuplicate: (id: string, dayId: string) => void; onDelete: (id: string) => void;
@@ -102,16 +103,19 @@ export function EditorCanvas({
       </div>
       <header className="editor-day-heading">
         <div><p className="eyebrow">Day {activeIndex + 1} · {activeDay.date}</p><h2>{activeDay.theme || '未命名的一天'}</h2></div>
-        <details className="day-menu">
-          <summary>Day 選單</summary>
-          <div className="menu-popover">
-            <span className="menu-label">複製整天到…</span>
-            <div className="menu-day-buttons">{days.map((day, index) => day.id === activeDay.id ? null : <button disabled={disabled} type="button" key={day.id} onClick={() => onCopyDay(day.id)}>複製整天到 Day {index + 1}</button>)}</div>
-            <button disabled={disabled} type="button" onClick={onImportDay}>從其他行程匯入這天</button>
-            <button disabled={disabled} type="button" onClick={onAddDay}>加一天</button>
-            <button className="danger-text" disabled={disabled} type="button" onClick={onDeleteDay}>刪一天</button>
-          </div>
-        </details>
+        <div className="editor-day-actions">
+          <CopyTextButton dayId={activeDay.id} trip={{ days, blocks, members }} />
+          <details className="day-menu">
+            <summary>Day 選單</summary>
+            <div className="menu-popover">
+              <span className="menu-label">複製整天到…</span>
+              <div className="menu-day-buttons">{days.map((day, index) => day.id === activeDay.id ? null : <button disabled={disabled} type="button" key={day.id} onClick={() => onCopyDay(day.id)}>複製整天到 Day {index + 1}</button>)}</div>
+              <button disabled={disabled} type="button" onClick={onImportDay}>從其他行程匯入這天</button>
+              <button disabled={disabled} type="button" onClick={onAddDay}>加一天</button>
+              <button className="danger-text" disabled={disabled} type="button" onClick={onDeleteDay}>刪一天</button>
+            </div>
+          </details>
+        </div>
       </header>
       <SortableContext items={activeBlocks.map((block) => `block:${block.id}`)} strategy={verticalListSortingStrategy}>
         <div className="editor-block-list" data-over={isCanvasOver || undefined} ref={setCanvasRef}>

@@ -1,0 +1,20 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    function isLeader(fid) {
+      return request.auth != null
+          && request.auth.uid in firestore.get(
+            /databases/(default)/documents/families/$(fid)
+          ).data.leaders;
+    }
+
+    match /families/{fid}/trips/{tid}/guide/{fileName} {
+      allow read: if true;
+      allow create, update: if isLeader(fid)
+                            && request.resource.size <= 200 * 1024
+                            && request.resource.contentType == 'image/webp';
+      allow delete: if false;
+    }
+  }
+}

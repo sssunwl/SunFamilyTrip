@@ -1578,3 +1578,164 @@ h3 {
     transition-duration: .01ms !important;
   }
 }
+
+/* P3 · 傳播與指南 */
+.trip-actions,
+.guide-actions,
+.dialog-actions,
+.editor-day-actions,
+.family-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .65rem;
+  align-items: center;
+}
+
+.trip-actions .primary-link,
+.trip-actions .secondary-button,
+.guide-actions .primary-button,
+.dialog-actions .primary-button,
+.family-title-row .primary-button {
+  margin-top: 0;
+}
+
+.family-title-row {
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.copy-control {
+  position: relative;
+  display: inline-flex;
+  align-items: stretch;
+  justify-self: end;
+}
+
+.day-heading { grid-template-columns: 7.5rem minmax(0, 1fr) auto; }
+
+.copy-text-button,
+.copy-settings-button {
+  display: inline-flex;
+  min-height: 42px;
+  border: 1px solid var(--accent);
+  padding: .6rem .75rem;
+  align-items: center;
+  gap: .4rem;
+  background: var(--accent);
+  color: var(--accent-ink);
+  cursor: pointer;
+  font-size: .78rem;
+  font-weight: 800;
+}
+
+.copy-text-button { border-radius: .4rem 0 0 .4rem; }
+.copy-settings-button { border-left-color: color-mix(in srgb, var(--accent-ink) 35%, transparent); border-radius: 0 .4rem .4rem 0; }
+.copy-text-button svg,
+.copy-settings-button svg { width: 1rem; height: 1rem; }
+
+.copy-options {
+  position: absolute;
+  top: calc(100% + .35rem);
+  right: 0;
+  z-index: 50;
+  display: grid;
+  gap: .6rem;
+  width: 220px;
+  border: 1px solid var(--rule);
+  border-radius: .45rem;
+  padding: .8rem;
+  background: var(--surface);
+  box-shadow: 0 16px 40px #0002;
+  color: var(--ink2);
+  font-size: .78rem;
+  font-weight: 650;
+}
+
+.copy-options label { display: flex; align-items: center; gap: .45rem; }
+.copy-options label:first-child { justify-content: space-between; }
+.copy-options select { border: 1px solid var(--rule); border-radius: .3rem; padding: .3rem; background: var(--surface); color: var(--ink); }
+.copy-fallback textarea { width: 100%; border: 1px solid var(--rule); border-radius: .4rem; padding: .8rem; background: var(--surface-2); color: var(--ink); font: .82rem/1.55 "IBM Plex Mono", monospace; resize: vertical; }
+.editor-dialog .sheet-close { display: grid; }
+
+.guide-page { padding-top: 2rem; }
+.guide-page > .dev-banner { margin: -2rem calc(50% - 50vw) 2rem; }
+.guide-header { display: flex; justify-content: space-between; gap: 2rem; align-items: flex-end; margin-bottom: 2rem; }
+.guide-header h1 { margin-bottom: .5rem; }
+.guide-actions { justify-content: flex-end; }
+.guide-actions button { min-height: 44px; }
+.guide-actions svg { width: 1rem; height: 1rem; }
+.guide-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.guide-card { display: grid; grid-template-columns: minmax(120px, 34%) minmax(0, 1fr); min-height: 230px; border: 1px solid var(--rule-soft); border-radius: .6rem; background: var(--surface); overflow: hidden; }
+.guide-card-image { width: 100%; height: 100%; min-height: 230px; object-fit: cover; background: var(--surface-2); }
+.guide-card-placeholder { display: grid; place-items: center; color: var(--ink3); }
+.guide-card-placeholder svg { width: 2rem; height: 2rem; }
+.guide-card-body { min-width: 0; padding: 1rem; }
+.guide-card h2 { margin-bottom: .35rem; font-size: 1.18rem; }
+.guide-category { margin-bottom: .4rem; color: var(--accent); font-size: .72rem; font-weight: 800; }
+.guide-category span { margin-left: .5rem; color: var(--ink3); font-weight: 600; }
+.guide-note,
+.guide-description,
+.show-text { margin-bottom: .65rem; color: var(--ink2); font-size: .82rem; }
+.guide-description { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 4; white-space: pre-line; }
+.show-text { border-left: 2px solid var(--accent); padding-left: .6rem; }
+.guide-price { color: var(--ink); font-size: .9rem; font-weight: 800; }
+.shopping-check { display: inline-flex; align-items: center; gap: .45rem; min-height: 40px; cursor: pointer; color: var(--accent); font-size: .82rem; font-weight: 800; }
+.shopping-check span { display: inline-flex; align-items: center; gap: .3rem; }
+.shopping-check svg { width: .9rem; }
+.affiliate-box { margin-top: .8rem; border-top: 1px solid var(--rule-soft); padding-top: .8rem; }
+.affiliate-box .primary-link { min-height: 38px; padding: .45rem .7rem; }
+.affiliate-disclosure { margin: .55rem 0 0; color: var(--ink2); font-size: .75rem; line-height: 1.55; }
+.card-actions { display: flex; gap: .35rem; margin-top: .8rem; border-top: 1px solid var(--rule-soft); padding-top: .6rem; }
+.card-actions button { display: inline-flex; align-items: center; gap: .25rem; border: 0; padding: .35rem .45rem; background: transparent; color: var(--ink2); cursor: pointer; font-size: .74rem; font-weight: 750; }
+.card-actions svg { width: .85rem; height: .85rem; }
+
+.guide-form { width: min(820px, 96vw); }
+.emoji-picker { display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; margin-bottom: 1rem; color: var(--ink2); font-size: .74rem; font-weight: 750; }
+.emoji-picker button { width: 36px; min-height: 36px; border: 1px solid var(--rule-soft); border-radius: .35rem; background: var(--surface-2); cursor: pointer; }
+.inline-fields { display: flex; flex-wrap: wrap; gap: .5rem; }
+.inline-fields > input { flex: 1 1 240px; min-height: 42px; border: 1px solid var(--rule); border-radius: .35rem; padding: .55rem .65rem; background: var(--surface); color: var(--ink); }
+.inline-fields .secondary-button { margin-top: 0; }
+.file-button { position: relative; overflow: hidden; }
+.file-button input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.form-image-list { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .75rem; }
+.form-image-list > div { position: relative; }
+.form-image-list img { width: 82px; height: 82px; border-radius: .35rem; object-fit: cover; }
+.form-image-list button { position: absolute; top: .2rem; right: .2rem; display: grid; width: 28px; min-height: 28px; border: 0; border-radius: 50%; place-items: center; background: #000b; color: #fff; cursor: pointer; }
+.form-image-list svg { width: .85rem; }
+.dialog-actions { justify-content: flex-end; margin-top: 1.25rem; }
+.csv-dialog { width: min(860px, 96vw); }
+.import-summary { margin: 1rem 0 .5rem; font-weight: 800; }
+.csv-preview { max-height: 300px; overflow: auto; border: 1px solid var(--rule); border-radius: .4rem; }
+.csv-preview table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.csv-preview th,
+.csv-preview td { border-bottom: 1px solid var(--rule-soft); padding: .55rem .65rem; text-align: left; vertical-align: top; }
+.csv-preview tr[data-error] { color: var(--warn); background: var(--warn-wash); }
+
+.custom-presets { margin-top: 1.5rem; border-top: 1px solid var(--rule); padding-top: 1.2rem; }
+.custom-presets .panel-heading h2 { font-size: 1rem; }
+.preset-list { display: grid; gap: .55rem; margin-top: .8rem; }
+.preset-row { border: 1px solid var(--rule-soft); border-radius: .4rem; background: var(--surface-2); overflow: hidden; }
+.preset-row > button { display: grid; grid-template-columns: 1.5rem minmax(0, 1fr) auto; gap: .45rem; align-items: center; width: 100%; min-height: 44px; border: 0; padding: .5rem .6rem; background: transparent; color: var(--ink); cursor: pointer; text-align: left; }
+.preset-row > div { display: flex; border-top: 1px solid var(--rule-soft); }
+.preset-row > div button { flex: 1; min-height: 32px; border: 0; background: transparent; color: var(--ink2); cursor: pointer; font-size: .68rem; }
+
+@media (max-width: 767px) {
+  .day-heading { grid-template-columns: 1fr; }
+  .day-heading .copy-control { justify-self: start; }
+  .editor-day-heading { align-items: flex-start; }
+  .editor-day-actions { justify-content: flex-end; }
+  .editor-day-actions .copy-text-button { max-width: 150px; }
+  .copy-options { position: fixed; top: auto; right: 1rem; bottom: 1rem; width: calc(100vw - 2rem); z-index: 76; }
+  .guide-header { display: block; }
+  .guide-actions { justify-content: flex-start; margin-top: 1.25rem; }
+  .guide-list { grid-template-columns: 1fr; }
+  .guide-card { grid-template-columns: 110px minmax(0, 1fr); }
+  .guide-card-image { min-height: 100%; }
+  .family-title-row { display: block; }
+  .family-title-row .primary-button { margin-top: .5rem; }
+}
+
+@media (max-width: 420px) {
+  .guide-card { grid-template-columns: 1fr; }
+  .guide-card-image { height: 190px; min-height: 190px; }
+}

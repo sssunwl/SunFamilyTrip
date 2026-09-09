@@ -76,13 +76,16 @@ export function Trip({ user, authReady }: { user: User | null; authReady: boolea
         {(location.state as { editNotice?: string } | null)?.editNotice && (
           <p className="notice-banner" role="alert">{(location.state as { editNotice: string }).editNotice}</p>
         )}
-        {authReady && isLeader && <Link className="primary-link" to={`/f/${family}/t/${tripId}/edit`}>編輯行程</Link>}
+        <div className="trip-actions">
+          <Link className="secondary-button" to={`/f/${family}/t/${tripId}/guide`}>指南＆必買</Link>
+          {authReady && isLeader && <Link className="primary-link" to={`/f/${family}/t/${tripId}/edit`}>編輯行程</Link>}
+        </div>
         {authReady && user && !isLeader && <p className="permission-note">你不是這個家庭的領隊。</p>}
         <section className="member-section" aria-labelledby="travelers-heading">
           <h2 id="travelers-heading">同行成員</h2>
           <MemberList members={trip.members} />
         </section>
-        <DayList days={trip.days} blocks={trip.blocks} initialDayId={todayDayId} />
+        <DayList trip={trip} initialDayId={todayDayId} />
         <TripMeta trip={trip} />
       </div>
     </main>

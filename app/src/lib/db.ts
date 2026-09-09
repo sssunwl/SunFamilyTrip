@@ -1,12 +1,16 @@
 import {
   collection,
+  deleteDoc,
+  deleteField,
   doc,
   getDoc,
   getDocs,
+  onSnapshot,
   runTransaction,
   setDoc,
+  updateDoc,
 } from 'firebase/firestore';
-import type { Block, Family, TripMember } from '../types/trip';
+import type { Block, Family, Trip, TripMember } from '../types/trip';
 import type { TripDocument, TripSummary } from '../types/legacy';
 import { db } from './firebase';
 
@@ -152,4 +156,80 @@ export async function saveFamilyPreset(
     createdAt: Date.now(),
     createdBy: uid,
   });
+}
+
+export type FamilyPreset = Block & { createdAt?: number; createdBy?: string };
+
+export async function getFamilyPresets(familyId: string): Promise<FamilyPreset[]> {
+  const snapshot = await getDocs(collection(db, 'families', familyId, 'presets'));
+  return snapshot.docs.map((preset) => ({ ...preset.data(), id: preset.id }) as FamilyPreset)
+    .sort((a, b) => (a.createdAt ?? 0) - (b.createdAt ?? 0));
+}
+
+export async function renameFamilyPreset(familyId: string, presetId: string, title: string) {
+  await updateDoc(doc(db, 'families', familyId, 'presets', presetId), { title });
+}
+
+export async function deleteFamilyPreset(familyId: string, presetId: string) {
+  await deleteDoc(doc(db, 'families', familyId, 'presets', presetId));
+}
+
+export function subscribeShopping(
+  familyId: string,
+  tripId: string,
+  onValue: (checked: Record<string, unknown>) => void,
+  onError?: (error: Error) => void,
+) {
+  return onSnapshot(
+    doc(db, 'families', familyId, 'trips', tripId, 'tools', 'shopping'),
+    (snapshot) => onValue((snapshot.data()?.checked ?? {}) as Record<string, unknown>),
+    (error) => onError?.(error),
+  );
+}
+
+export async function setShoppingChecked(familyId: string, tripId: string, itemId: string, checked: boolean) {
+  await setDoc(
+    doc(db, 'families', familyId, 'trips', tripId, 'tools', 'shopping'),
+    { checked: { [itemId]: checked ? '✓' : deleteField() } },
+    { merge: true },
+  );
+}
+
+function tripSlug(value: string) {
+  return value.normalize('NFKD').toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 36);
+}
+
+export async function createTrip(
+  familyId: string,
+  input: Pick<Trip['meta'], 'title' | 'city' | 'country' | 'currency' | 'startDate' | 'endDate'>,
+  days: Trip['days'],
+  members: TripMember[],
+  uid: string,
+) {
+  const year = input.startDate.slice(0, 4);
+  const base = `${tripSlug(input.city || input.title) || 'trip'}-${year}`;
+  let tripId = base;
+  let suffix = 1;
+  while ((await getDoc(doc(db, 'families', familyId, 'trips', tripId))).exists()) {
+    suffix += 1;
+    tripId = `${base}-${suffix}`;
+  }
+  const now = Date.now();
+  const today = new Date().toISOString().slice(0, 10);
+  const status: Trip['meta']['status'] = input.endDate < today ? 'past' : input.startDate <= today ? 'live' : 'upcoming';
+  const trip: TripDocument = {
+    meta: { ...input, subtitle: '', emergency: [], status },
+    members,
+    days,
+    blocks: [],
+    guide: [],
+    version: 1,
+    updatedAt: now,
+    updatedBy: uid,
+  };
+  await setDoc(doc(db, 'families', familyId, 'trips', tripId), trip);
+  return { tripId, trip };
 }

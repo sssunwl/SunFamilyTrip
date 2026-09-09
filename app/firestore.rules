@@ -26,12 +26,20 @@ service cloud.firestore {
           allow read: if true;
           allow write: if false;
         }
+
+        match /tools/{toolId} {
+          allow read: if true;
+          allow write: if toolId == 'shopping'
+                       && request.resource.data.keys().hasOnly(['checked'])
+                       && request.resource.data.checked is map
+                       && request.resource.data.checked.size() < 300;
+        }
       }
 
       match /presets/{presetId} {
         allow read: if true;
         allow create: if isLeader(fid);
-        allow update, delete: if false;
+        allow update, delete: if isLeader(fid);
       }
     }
 
