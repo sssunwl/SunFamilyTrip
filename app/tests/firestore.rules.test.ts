@@ -89,6 +89,21 @@ describe('P2 Firestore rules', () => {
 
 // 舊站（sssunwl.github.io/SunFamilyTrip）仍在線上，家人還在用它記帳／留言／
 // 勾必買。這組測試確保新規則部署後不會把舊站打死，同時真的有收緊。
+describe('行程 create 的最低 schema', () => {
+  it('沒有 version 的 create 會被擋（否則之後永遠 update 不了）', async () => {
+    const db = environment.authenticatedContext('iFT5Ppx7EPcJoSA13DUN2mWaIGu2').firestore();
+    await assertFails(setDoc(doc(db, 'families/sunlau/trips/no-version'), { meta: { title: 'x' } }));
+  });
+
+  it('帶合法 version 的 create 可以通過', async () => {
+    const db = environment.authenticatedContext('iFT5Ppx7EPcJoSA13DUN2mWaIGu2').firestore();
+    await assertSucceeds(setDoc(doc(db, 'families/sunlau/trips/with-version'), {
+      meta: { title: '新行程' }, days: [], blocks: [], guide: [], members: [],
+      version: 1, updatedAt: 1757300000000, updatedBy: 'iFT5Ppx7EPcJoSA13DUN2mWaIGu2',
+    }));
+  });
+});
+
 describe('舊站相容區 trips/**', () => {
   const validExpense = {
     item: '札嘎其海鮮', cost: 45000, inputCurrency: 'KRW', baseAmount: 45000,

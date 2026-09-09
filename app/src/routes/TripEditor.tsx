@@ -173,7 +173,18 @@ export function TripEditor({ user, authReady }: { user: User | null; authReady: 
     if (!dayId || disabled) return;
     let id = '';
     mutate((current) => {
-      const next = createBlock(type, dayId, current.blocks.filter((block) => block.dayId === dayId).length);
+      const dayBlocks = current.blocks
+        .filter((block) => block.dayId === dayId)
+        .sort((a, b) => a.order - b.order);
+      const lastBlock = dayBlocks.at(-1);
+      const lastStart = lastBlock ? minutes(lastBlock.time) : null;
+      const defaultTime = !lastBlock
+        ? '09:00'
+        : lastStart !== null && Number.isFinite(lastBlock.durationMin) && lastBlock.durationMin >= 0
+          ? shiftedTime(lastBlock.time, lastBlock.durationMin)
+          : '';
+      const next = createBlock(type, dayId, dayBlocks.length);
+      next.time = defaultTime;
       id = next.id;
       return { ...current, blocks: [...current.blocks, next] };
     });
