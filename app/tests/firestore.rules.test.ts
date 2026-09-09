@@ -14,7 +14,11 @@ beforeAll(async () => {
   const rules = await readFile(new URL('../firestore.rules', import.meta.url), 'utf8');
   environment = await initializeTestEnvironment({
     projectId: 'sunfamily-trips',
-    firestore: { host: '127.0.0.1', port: 8080, rules },
+    firestore: {
+      host: '127.0.0.1',
+      port: Number(process.env.FIRESTORE_RULES_TEST_PORT ?? 8080),
+      rules,
+    },
   });
 });
 
@@ -22,7 +26,17 @@ afterAll(async () => {
   await environment.cleanup();
 });
 
-describe('P1 Firestore rules', () => {
+describe('P2 Firestore rules', () => {
+  const leaderUid = 'iFT5Ppx7EPcJoSA13DUN2mWaIGu2';
+
+  beforeAll(async () => {
+    await environment.withSecurityRulesDisabled(async (ctx) => {
+      const raw = ctx.firestore();
+      await setDoc(doc(raw, 'families/sunlau'), { leaders: [leaderUid], name: 'Sun & Lau Family' });
+      await setDoc(doc(raw, 'families/sunlau/trips/busan2026'), { version: 1, title: 'Busan' });
+    });
+  });
+
   it('allows public reads from families and trip subcollections', async () => {
     const firestore = environment.unauthenticatedContext().firestore();
     await assertSucceeds(getDoc(doc(firestore, 'families/sunlau')));
@@ -30,12 +44,34 @@ describe('P1 Firestore rules', () => {
     await assertSucceeds(getDoc(doc(firestore, 'families/sunlau/trips/busan2026/notes/a')));
   });
 
-  it('rejects all family and trip writes, including authenticated writes', async () => {
+  it('領隊可建立行程，非領隊不可建立或修改', async () => {
     const publicDb = environment.unauthenticatedContext().firestore();
-    const leaderDb = environment.authenticatedContext('leader').firestore();
+    const leaderDb = environment.authenticatedContext(leaderUid).firestore();
+    const memberDb = environment.authenticatedContext('member').firestore();
     await assertFails(setDoc(doc(publicDb, 'families/sunlau'), { name: 'changed' }));
-    await assertFails(setDoc(doc(leaderDb, 'families/sunlau/trips/busan2026'), { version: 2 }));
+    await assertSucceeds(setDoc(doc(leaderDb, 'families/sunlau/trips/new-trip'), { version: 1 }));
+    await assertFails(setDoc(doc(memberDb, 'families/sunlau/trips/member-trip'), { version: 1 }));
+    await assertFails(updateDoc(doc(memberDb, 'families/sunlau/trips/busan2026'), { version: 2 }));
+  });
+
+  it('領隊更新時 version 必須剛好遞增 1', async () => {
+    const leaderDb = environment.authenticatedContext(leaderUid).firestore();
+    await assertFails(updateDoc(doc(leaderDb, 'families/sunlau/trips/busan2026'), { version: 1, title: 'no increment' }));
+    await assertFails(updateDoc(doc(leaderDb, 'families/sunlau/trips/busan2026'), { version: 3, title: 'skip' }));
+    await assertSucceeds(updateDoc(doc(leaderDb, 'families/sunlau/trips/busan2026'), { version: 2, title: 'updated' }));
+  });
+
+  it('行程不可刪除，子集合仍不可由領隊任意寫入', async () => {
+    const leaderDb = environment.authenticatedContext(leaderUid).firestore();
+    await assertFails(deleteDoc(doc(leaderDb, 'families/sunlau/trips/busan2026')));
     await assertFails(setDoc(doc(leaderDb, 'families/sunlau/trips/busan2026/notes/a'), { text: 'x' }));
+  });
+
+  it('領隊可建立家庭範本，非領隊不可', async () => {
+    const leaderDb = environment.authenticatedContext(leaderUid).firestore();
+    const memberDb = environment.authenticatedContext('member').firestore();
+    await assertSucceeds(setDoc(doc(leaderDb, 'families/sunlau/presets/p1'), { title: '早餐', type: 'food' }));
+    await assertFails(setDoc(doc(memberDb, 'families/sunlau/presets/p2'), { title: '早餐', type: 'food' }));
   });
 
   it('allows only the signed-in user to read and write their nested documents', async () => {

@@ -2,7 +2,7 @@ import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { MemberList } from '../components/MemberList';
-import { getFamily, getFamilyTrips } from '../lib/db';
+import { friendlyDataError, getFamily, getFamilyTrips, type DataSource } from '../lib/db';
 import type { Family as FamilyData } from '../types/trip';
 import type { TripSummary } from '../types/legacy';
 
@@ -16,19 +16,32 @@ export function Family() {
   const { family: familyId = '' } = useParams();
   const [family, setFamily] = useState<FamilyData | null>();
   const [trips, setTrips] = useState<TripSummary[]>([]);
+  const [source, setSource] = useState<DataSource>('firestore');
+  const [error, setError] = useState('');
+  const [loadKey, setLoadKey] = useState(0);
 
   useEffect(() => {
     let active = true;
-    Promise.all([getFamily(familyId), getFamilyTrips(familyId)]).then(([nextFamily, nextTrips]) => {
-      if (!active) return;
-      setFamily(nextFamily);
-      setTrips(nextTrips.sort((a, b) => b.meta.startDate.localeCompare(a.meta.startDate)));
-    });
+    setFamily(undefined);
+    setError('');
+    Promise.all([getFamily(familyId), getFamilyTrips(familyId)])
+      .then(([nextFamily, nextTrips]) => {
+        if (!active) return;
+        setFamily(nextFamily.data);
+        setTrips(nextTrips.data.sort((a, b) => b.meta.startDate.localeCompare(a.meta.startDate)));
+        setSource(nextFamily.source === 'local' || nextTrips.source === 'local' ? 'local' : 'firestore');
+      })
+      .catch((caught) => {
+        if (!active) return;
+        setError(friendlyDataError(caught));
+        setFamily(null);
+      });
     return () => { active = false; };
-  }, [familyId]);
+  }, [familyId, loadKey]);
 
   if (family === undefined) return <main className="page"><p className="loading">正在載入家庭資料…</p></main>;
   if (family === null) {
+    if (error) return <main className="page page-narrow"><h1>載入失敗</h1><p className="error-state">{error}</p><button className="primary-button" type="button" onClick={() => setLoadKey((key) => key + 1)}>重試</button></main>;
     return (
       <main className="page page-narrow">
         <Link className="back-link" to="/"><ArrowLeft size={16} aria-hidden />返回首頁</Link>
@@ -40,6 +53,7 @@ export function Family() {
 
   return (
     <main className="page">
+      {source === 'local' && <div className="dev-banner" role="status">開發模式：正在使用本機遷移資料，不是線上資料</div>}
       <Link className="back-link" to="/"><ArrowLeft size={16} aria-hidden />全部家庭</Link>
       <p className="eyebrow trip-code">{family.shortName}</p>
       <h1>{family.name}</h1>

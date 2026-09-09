@@ -2,18 +2,32 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function isLeader(fid) {
+      return request.auth != null
+          && request.auth.uid in get(/databases/$(database)/documents/families/$(fid)).data.leaders;
+    }
+
     match /families/{fid} {
       allow read: if true;
       allow write: if false;
 
       match /trips/{tid} {
         allow read: if true;
-        allow write: if false;
+        allow create: if isLeader(fid);
+        allow update: if isLeader(fid)
+                      && request.resource.data.version == resource.data.version + 1;
+        allow delete: if false;
 
         match /{sub=**} {
           allow read: if true;
           allow write: if false;
         }
+      }
+
+      match /presets/{presetId} {
+        allow read: if true;
+        allow create: if isLeader(fid);
+        allow update, delete: if false;
       }
     }
 

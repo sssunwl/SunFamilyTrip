@@ -32,6 +32,26 @@ export interface Block {
   images?: string[];
   groups?: SplitGroup[];
   affiliate?: { url: string; platform: string } | null;
+  from?: string;
+  to?: string;
+  mode?: '步行' | '地鐵' | '的士' | '巴士' | '火車' | '航班' | '船';
+  fare?: string;
+  mealType?: '早' | '午' | '晚' | '宵夜' | '咖啡';
+  budget?: string;
+  needReserve?: boolean;
+  ticketPrice?: string;
+  needBooking?: boolean;
+  openHours?: string;
+  taxRefund?: boolean;
+  checkIn?: string;
+  checkOut?: string;
+  address?: string;
+  localAddress?: string;
+  directions?: string;
+  meetingPoint?: string;
+  contact?: string;
+  reminderDate?: string;
+  responsibleMemberIds?: string[];
 }
 
 export interface Day {
@@ -45,6 +65,7 @@ export interface Day {
 export interface TripMember {
   id: string; name: string; avatar: string;
   role?: string;
+  defaultRole?: string;
   excludeFromSplit?: boolean;
 }
 
