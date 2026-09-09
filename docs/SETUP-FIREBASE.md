@@ -118,8 +118,11 @@ P3 的「領隊上傳產品圖」要用到它。
 1. 開 https://console.firebase.google.com/project/sunfamily-trips/storage
 2. 按「**開始使用**」
 3. 安全規則選「**以正式版模式啟動**」（鎖定）——規則之後由 `app/storage.rules` 管
-4. **選位置**：建議 `asia-northeast1`（東京）。家人在港／台／日，東京延遲最低
+4. **選位置：`asia-east1`（台灣）**
+   理由是**跟 Firestore 同區**——2026-09-09 查證 `sunfamily-trips` 的 Firestore
+   就在 `asia-east1`。同區可避免跨區讀寫，這比延遲差幾十毫秒重要。
    ⚠️ **位置一旦選定不能改**，也不能搬 bucket，選錯只能重開專案
+   （本檔初稿誤寫「建議東京 asia-northeast1」，已更正）
 5. 這時會要求升級到 **Blaze 方案**（需要綁信用卡）
 
 ### 關於 Blaze 的費用
