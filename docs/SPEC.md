@@ -433,7 +433,11 @@ P2 是價值分水嶺 —— **P1 沒做完不要碰 P2；P2 沒做完不要碰 
 8. **舊網址**已經傳給家人，轉址頁不可少。
 9. **P1 埋下的 Firestore 靜默 fallback（P2 開工第一件事就是拆掉）**：P1 的 `app/src/lib/db.ts` 在讀 Firestore 失敗時會 `catch {}` 然後改用版控裡的 `migration/out/*.json`。P1 未執行 import、需要畫面跑得起來，這在當下合理；但一旦 P2 開始寫入，**權限錯誤或斷線會被無聲吞掉並顯示過期的打包資料**，領隊會以為自己的修改消失了，或把舊資料當成現況。P2 必須改成：讀取失敗就明確報錯，fallback 只在開發模式下啟用且畫面上要有明顯標示。
 
-10. **不要用 Cloudflare Access 保護個人首頁（2026-09-08 定案）**。原本考慮「只對 `/` 開 Access、`/f/**` 不開」，但在 SPA 上這是**假的安全邊界**：所有路由都由同一份 `index.html` 提供，家人載入公開的 `/f/sunlau/` 就已經拿到整個 app shell，可以在瀏覽器裡直接前端導航去 `/me`——Access 只擋得住那一次 HTML 請求，擋不住路由。另外 Access 的路徑比對是前綴式的，保護 `/` 等於保護全站，要放行家庭頁還得替 `/assets`、`/favicon.ico` 逐一開 Bypass，否則家人連 JS/CSS 都載不到。
+10. **Storage 公開讀 + Blaze 綁卡 = 有帳單濫用的風險（2026-09-10 起適用）**：`storage.rules` 是 `allow read: if true`，而路徑 `families/{fid}/trips/{tid}/guide/{檔名}` 裡的 fid 與 tid 就寫在公開網址上，等於可被列舉下載。免費額度是每日 1GB 下載，單張 ≤200KB 約等於 5000 次／日；超過就開始計費，而帳單帳戶已經綁卡。
+    **現在的緩解**：Blaze 的 HK$100 起付金額 + 預算警報（US$1，達 50/90/100% 寄信）。
+    **P5 要做**：開 Firebase App Check（Console 的 Storage 頁面有入口），只允許自家網域的請求寫入與讀取。在那之前不要把圖片路徑當成秘密。
+
+11. **不要用 Cloudflare Access 保護個人首頁（2026-09-08 定案）**。原本考慮「只對 `/` 開 Access、`/f/**` 不開」，但在 SPA 上這是**假的安全邊界**：所有路由都由同一份 `index.html` 提供，家人載入公開的 `/f/sunlau/` 就已經拿到整個 app shell，可以在瀏覽器裡直接前端導航去 `/me`——Access 只擋得住那一次 HTML 請求，擋不住路由。另外 Access 的路徑比對是前綴式的，保護 `/` 等於保護全站，要放行家庭頁還得替 `/assets`、`/favicon.ico` 逐一開 Bypass，否則家人連 JS/CSS 都載不到。
    **採用做法**：全站不開 Access，個人隱私靠應用層 + Firestore Rules（見 §5）——個人行程存 `users/{uid}`，Rules 限本人讀寫。`/` 未登入只顯示公眾假期年曆與請假攻略（本來就是公開資料），登入站長帳號後才疊上個人行程。
    **日後要更硬的升級路徑**：把個人頁搬到**獨立 hostname**（例如 `me.sssuni.com`）再套 Access。獨立 hostname 沒有路徑前綴與 assets 的問題，那時 Access 才是真的邊界。不要在同一個 hostname 上用路徑做這件事。
 
