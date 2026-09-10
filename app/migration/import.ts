@@ -83,7 +83,8 @@ async function copyLegacySubcollections(tripId: string) {
 }
 
 const backupDir = await backupFirestore(db);
-const trips = await Promise.all([readTrip('busan2026'), readTrip('pattaya2026')]);
+const tripIds = ['busan2026', 'pattaya2026', 'taipei2026'];
+const trips = await Promise.all(tripIds.map(readTrip));
 const members = Array.from(
   new Map(
     trips.flatMap((trip) => trip.members).map((member) => [member.id, member]),
@@ -120,7 +121,7 @@ await db.collection('families').doc('mok').set({
   updatedAt: FieldValue.serverTimestamp(),
 });
 
-for (const [index, tripId] of ['busan2026', 'pattaya2026'].entries()) {
+for (const [index, tripId] of tripIds.entries()) {
   await db.collection('families').doc('sunlau').collection('trips').doc(tripId).set(trips[index]);
   await copyLegacySubcollections(tripId);
 }

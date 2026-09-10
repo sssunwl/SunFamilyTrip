@@ -1,0 +1,421 @@
+{
+  "meta": {
+    "title": "台北秋涼小旅",
+    "subtitle": "四天三夜 · 2026/10/16-19 · 8 大 1 小",
+    "city": "台北",
+    "country": "台灣",
+    "coords": {
+      "lat": 25.033,
+      "lng": 121.5654
+    },
+    "currency": "TWD",
+    "startDate": "2026-10-16",
+    "endDate": "2026-10-19",
+    "photosUrl": "",
+    "emergency": [
+      {
+        "label": "台灣報案（警察）",
+        "phone": "110"
+      },
+      {
+        "label": "台灣火警・救護車",
+        "phone": "119"
+      },
+      {
+        "label": "觀光署旅遊服務熱線（24小時）",
+        "phone": "0800-011-765"
+      },
+      {
+        "label": "香港入境處 24 小時求助",
+        "phone": "+852 1868"
+      }
+    ],
+    "status": "upcoming"
+  },
+  "members": [
+    {
+      "id": "lam",
+      "name": "Lam",
+      "avatar": "🦁",
+      "role": "沖繩來回"
+    },
+    {
+      "id": "ricky",
+      "name": "Ricky",
+      "avatar": "🐻",
+      "role": "香港組 UO112"
+    },
+    {
+      "id": "robin",
+      "name": "Robin",
+      "avatar": "🐯",
+      "role": "香港組 UO112"
+    },
+    {
+      "id": "jolin",
+      "name": "Jolin",
+      "avatar": "🐰",
+      "role": "香港組 UO112"
+    },
+    {
+      "id": "pat",
+      "name": "Pat",
+      "avatar": "🦊",
+      "role": "香港組 UO112"
+    },
+    {
+      "id": "masa",
+      "name": "Masa",
+      "avatar": "🐨",
+      "role": "去程晚機 · 回程 UO111"
+    },
+    {
+      "id": "yi",
+      "name": "Yi",
+      "avatar": "🐼",
+      "role": "台灣會合 · 留台"
+    },
+    {
+      "id": "justin",
+      "name": "Justin",
+      "avatar": "🐵",
+      "role": "去程晚機 · 回程 UO111"
+    },
+    {
+      "id": "han",
+      "name": "Han",
+      "avatar": "👶",
+      "excludeFromSplit": true,
+      "role": "香港組 UO112 · 小童"
+    }
+  ],
+  "days": [
+    {
+      "id": "d1",
+      "date": "2026-10-16",
+      "weekday": "五",
+      "theme": "分批抵達・西門町放低行李",
+      "highlights": "香港組 4 大 1 小 14:25 到桃園；Yi 台北會合，Masa、Justin 晚機，Lam 由沖繩過嚟"
+    },
+    {
+      "id": "d2",
+      "date": "2026-10-17",
+      "weekday": "六",
+      "theme": "（未排）",
+      "highlights": "全日自由，等排"
+    },
+    {
+      "id": "d3",
+      "date": "2026-10-18",
+      "weekday": "日",
+      "theme": "轉場北投・浸溫泉",
+      "highlights": "西門退房 → 北投晶泉丰旅"
+    },
+    {
+      "id": "d4",
+      "date": "2026-10-19",
+      "weekday": "一",
+      "theme": "返程",
+      "highlights": "13:40 桃園起飛，15:35 到香港"
+    }
+  ],
+  "blocks": [
+    {
+      "id": "e16",
+      "type": "todo",
+      "dayId": "d1",
+      "order": 0,
+      "time": "08:00",
+      "durationMin": 30,
+      "title": "Lam 沖繩 ↔ 台北來回機票 — 未買",
+      "desc": "Lam 由沖繩飛台北、返程亦係飛返沖繩，來回一次過買。買咗之後補返去程抵達時間同回程班次。",
+      "warn": "沖繩直飛台北班次少，愈遲買愈貴，要盡快落實。",
+      "assignees": [
+        "lam"
+      ]
+    },
+    {
+      "id": "e1",
+      "type": "transport",
+      "dayId": "d1",
+      "order": 1,
+      "time": "10:30",
+      "durationMin": 125,
+      "title": "香港組機場集合 · UO112",
+      "desc": "HK Express UO112，12:35 香港起飛。國際線建議起飛前 2 小時到，即 10:30 前到 T1。經濟飛：每人隨身 7kg，另外來回各有一件 20kg 寄艙行李（兩個人夾住用，記得夾埋一個喼）。",
+      "place": {
+        "name": "香港國際機場",
+        "localName": "HKG Terminal 1",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Hong%20Kong%20International%20Airport"
+      },
+      "from": "香港",
+      "to": "桃園",
+      "mode": "航班",
+      "assignees": [
+        "robin",
+        "pat",
+        "ricky",
+        "jolin",
+        "han"
+      ]
+    },
+    {
+      "id": "e2",
+      "type": "transport",
+      "dayId": "d1",
+      "order": 2,
+      "time": "12:35",
+      "durationMin": 110,
+      "title": "UO112 香港 → 台北桃園（香港組 4 大 1 小）",
+      "desc": "12:35 HKG 起飛，14:25 TPE 落地，飛 1 小時 50 分。香港組：Robin、Pat、Ricky、Jolin + Han（小童）。落機後過關取行李，計埋大約 15:15 出到大堂。",
+      "place": {
+        "name": "桃園國際機場",
+        "localName": "TPE Terminal 1",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Taoyuan%20International%20Airport"
+      },
+      "from": "HKG",
+      "to": "TPE",
+      "mode": "航班",
+      "assignees": [
+        "robin",
+        "pat",
+        "ricky",
+        "jolin",
+        "han"
+      ]
+    },
+    {
+      "id": "e3",
+      "type": "transport",
+      "dayId": "d1",
+      "order": 3,
+      "time": "15:15",
+      "durationMin": 75,
+      "title": "桃園機場 → 西門町",
+      "desc": "香港組落機後過關取行李，機場捷運直達車 A1 台北車站（約 40 分鐘），再轉板南線一個站到西門，或者由台北車站行地下街過去。行李多的話直接叫車／包車去西門會鬆動好多。",
+      "from": "桃園機場",
+      "to": "西門町",
+      "mode": "火車",
+      "assignees": [
+        "robin",
+        "pat",
+        "ricky",
+        "jolin",
+        "han"
+      ]
+    },
+    {
+      "id": "e14",
+      "type": "meetup",
+      "dayId": "d1",
+      "order": 4,
+      "time": "16:00",
+      "durationMin": 30,
+      "title": "Yi 台北會合",
+      "desc": "Yi 本來就喺台灣，唔使坐飛機。夾定喺西門住處定係出面等。",
+      "meetingPoint": "西門町住處",
+      "assignees": [
+        "yi"
+      ]
+    },
+    {
+      "id": "e4",
+      "type": "hotel",
+      "dayId": "d1",
+      "order": 5,
+      "time": "16:30",
+      "durationMin": 60,
+      "title": "入住 西門町 Airbnb（兩間屋）",
+      "desc": "由兩間屋組成，其中淺色嗰間有兩張床、係樓中樓。入住／退房時間同門鎖密碼以 Airbnb 訊息為準。10/16 入住，10/18 退房。",
+      "place": {
+        "name": "西門町 Airbnb",
+        "mapUrl": "https://www.airbnb.com.hk/rooms/1044564379535615503"
+      },
+      "checkIn": "2026-10-16",
+      "checkOut": "2026-10-18",
+      "assignees": [
+        "robin",
+        "pat",
+        "ricky",
+        "jolin",
+        "han"
+      ]
+    },
+    {
+      "id": "e15",
+      "type": "todo",
+      "dayId": "d1",
+      "order": 6,
+      "time": "20:00",
+      "durationMin": 30,
+      "title": "Masa、Justin 晚機到步（去程班次待定）",
+      "desc": "兩位去程晚啲先出發，唔同機；回程就跟香港組同一班 UO111。落實咗去程班次再改做航班積木，順便睇下夜晚幾點到、要唔要人接。",
+      "assignees": [
+        "masa",
+        "justin"
+      ]
+    },
+    {
+      "id": "e5",
+      "type": "todo",
+      "dayId": "d2",
+      "order": 0,
+      "time": "09:00",
+      "durationMin": 30,
+      "title": "10/17 全日未排",
+      "desc": "唯一一日完整喺台北市區，等大家夾要去邊。"
+    },
+    {
+      "id": "e6",
+      "type": "hotel",
+      "dayId": "d3",
+      "order": 0,
+      "time": "11:00",
+      "durationMin": 30,
+      "title": "西門町 Airbnb 退房",
+      "desc": "退房前執齊嘢，行李可以先寄存或者直接拖去北投。",
+      "checkOut": "2026-10-18"
+    },
+    {
+      "id": "e7",
+      "type": "transport",
+      "dayId": "d3",
+      "order": 1,
+      "time": "13:30",
+      "durationMin": 60,
+      "title": "西門 → 新北投",
+      "desc": "西門搭板南線去台北車站，轉淡水信義線去北投，再轉新北投支線一個站；全程約 45 分鐘。酒店由新北投站行過去約 10 分鐘（上斜）。",
+      "from": "西門",
+      "to": "新北投",
+      "mode": "地鐵"
+    },
+    {
+      "id": "e8",
+      "type": "hotel",
+      "dayId": "d3",
+      "order": 2,
+      "time": "15:00",
+      "durationMin": 60,
+      "title": "入住 北投晶泉丰旅",
+      "desc": "Wellspring by Silks Beitou。訂咗三間房：4 人房一間、4 人陽台房一間、2 人陽台房一間。10/18 入住，10/19 退房。",
+      "place": {
+        "name": "北投晶泉丰旅",
+        "localName": "Wellspring by Silks Beitou",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=%E5%8C%97%E6%8A%95%E6%99%B6%E6%B3%89%E4%B8%B0%E6%97%85"
+      },
+      "address": "112 台北市北投區泉源路19號",
+      "checkIn": "2026-10-18",
+      "checkOut": "2026-10-19"
+    },
+    {
+      "id": "e9",
+      "type": "todo",
+      "dayId": "d3",
+      "order": 3,
+      "time": "16:00",
+      "durationMin": 15,
+      "title": "分房未定",
+      "desc": "三間房（4 人／4 人陽台／2 人陽台）合共 10 個位，9 個人瞓，即係有一個位鬆動。要決定邊個瞓邊間。"
+    },
+    {
+      "id": "e10",
+      "type": "hotel",
+      "dayId": "d4",
+      "order": 0,
+      "time": "09:00",
+      "durationMin": 30,
+      "title": "北投晶泉丰旅 退房",
+      "desc": "趕飛機，建議 09:30 前退房出發，唔好等到 11:00 尾水。",
+      "checkOut": "2026-10-19",
+      "assignees": [
+        "robin",
+        "pat",
+        "ricky",
+        "jolin",
+        "han",
+        "masa",
+        "justin"
+      ]
+    },
+    {
+      "id": "e11",
+      "type": "transport",
+      "dayId": "d4",
+      "order": 1,
+      "time": "09:30",
+      "durationMin": 100,
+      "title": "北投 → 桃園機場",
+      "desc": "北投出台北車站約 30 分鐘，轉機場捷運直達車再約 40 分鐘，連轉車埋唔少過 80 分鐘。",
+      "warn": "13:40 起飛，最遲 11:40 要到機場。北投出發唔好遲過 09:45。",
+      "from": "北投",
+      "to": "桃園機場",
+      "mode": "火車",
+      "assignees": [
+        "robin",
+        "pat",
+        "ricky",
+        "jolin",
+        "han",
+        "masa",
+        "justin"
+      ]
+    },
+    {
+      "id": "e18",
+      "type": "todo",
+      "dayId": "d4",
+      "order": 2,
+      "time": "10:00",
+      "durationMin": 30,
+      "title": "Lam 飛返沖繩（班次待定）",
+      "desc": "Lam 走另一條線返沖繩，唔跟 UO111。機票買咗就補返時間，順便睇下同大隊係咪同一程去機場。",
+      "assignees": [
+        "lam"
+      ]
+    },
+    {
+      "id": "e19",
+      "type": "note",
+      "dayId": "d4",
+      "order": 3,
+      "time": "12:00",
+      "durationMin": 15,
+      "title": "Yi 留台，唔使送機",
+      "desc": "Yi 本身喺台灣，行程完咗就散水，唔使一齊去桃園。",
+      "assignees": [
+        "yi"
+      ]
+    },
+    {
+      "id": "e12",
+      "type": "transport",
+      "dayId": "d4",
+      "order": 4,
+      "time": "13:40",
+      "durationMin": 115,
+      "title": "UO111 台北桃園 → 香港",
+      "desc": "13:40 TPE 起飛，15:35 HKG 落地，飛 1 小時 55 分。香港組 4 大 1 小，Masa、Justin 另一張飛但同一班機。行李係每人 7kg 隨身 + 一件 20kg 寄艙（兩人夾用）。",
+      "place": {
+        "name": "桃園國際機場",
+        "localName": "TPE Terminal 1",
+        "mapUrl": "https://www.google.com/maps/search/?api=1&query=Taoyuan%20International%20Airport"
+      },
+      "from": "TPE",
+      "to": "HKG",
+      "mode": "航班",
+      "assignees": [
+        "robin",
+        "pat",
+        "ricky",
+        "jolin",
+        "han",
+        "masa",
+        "justin"
+      ]
+    }
+  ],
+  "guide": [],
+  "version": 1,
+  "updatedAt": 1789008161105,
+  "updatedBy": "migration"
+}
