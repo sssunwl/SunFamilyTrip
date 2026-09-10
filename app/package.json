@@ -11,6 +11,7 @@
     "deploy": "npm run build && wrangler deploy",
     "migration:extract": "tsx migration/extract.ts",
     "migration:import": "tsx migration/import.ts",
+    "migration:add-trip": "tsx migration/add-trip.ts",
     "test:rules": "CI=true XDG_CONFIG_HOME=/tmp/songsong-firebase-config FIRESTORE_RULES_TEST_PORT=8085 firebase emulators:exec --config firebase.rules-test.json --only firestore \"vitest run tests/firestore.rules.test.ts\"",
     "test:unit": "vitest run tests/maps.test.ts tests/copyText.test.ts tests/csv.test.ts"
   },
